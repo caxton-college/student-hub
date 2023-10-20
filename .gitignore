@@ -4,6 +4,7 @@ __pycache__
 
 #db.sqlite3 won't be used in production, PostgreSQL instead
 
+/backend
 
 # Environemntal variables
 /env
