@@ -1,9 +1,7 @@
 # student-hub
 
 ## Backend Setup
-1. ```console 
-cd backend
-```
+1. ```cd backend```
 2. ```pip install```
 3. ```python manage.py makemigrations```
 4. ```python manage.py migrate```
