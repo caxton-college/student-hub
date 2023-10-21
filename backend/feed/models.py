@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class Announcement(models.Model):
     title = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
+    body = models.CharField(max_length=500)
     date_created = models.DateField(auto_now=True)
     owner = models.ForeignKey('users.User', related_name='announcements', on_delete=models.CASCADE)
     
