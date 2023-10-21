@@ -16,11 +16,10 @@ class UserManager(BaseUserManager):
 		if not surname:
 			raise ValueError('A surname is required.')
 
-		if not role:
-			raise ValueError('A role is required.')
 
 		email = self.normalize_email(email)
-		user = self.model(email=email, password=password, name=name, surname=surname, role=role)
+		user = self.model(email=email, name=name, surname=surname, role=role)
+		user.set_password(password)
 		user.save()
 		return user
 
