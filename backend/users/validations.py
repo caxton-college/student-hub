@@ -4,7 +4,7 @@ UserModel = get_user_model()
 
 def custom_validation(data):
     email = data['email'].strip()
-    ##
+    
     if not email or UserModel.objects.filter(email=email).exists():
         raise ValidationError('choose another email')
 

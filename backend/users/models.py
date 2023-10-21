@@ -72,5 +72,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 	points = models.PositiveSmallIntegerField(default=0)
 	
 	objects = UserManager()
+ 
 	def __str__(self):
 		return self.name
