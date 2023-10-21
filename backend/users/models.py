@@ -26,7 +26,7 @@ class UserManager(BaseUserManager):
 
 	
  
-	def create_superuser(self, email: str, password: str, name: str, surname: str, role: int=1):
+	def create_superuser(self, email: str, password: str, name: str, surname: str, role: int=3):
 		if not email:
 			raise ValueError('An email is required.')
 
@@ -39,11 +39,11 @@ class UserManager(BaseUserManager):
 		if not surname:
 			raise ValueError('A surname is required.')
 
-		if not role:
-			raise ValueError('A role is required.')
 		
-		user = self.create_user(email=email, password=password, name=name, surname=surname)
+		user = self.create_user(email=email, password=password, name=name, surname=surname, role=role)
 		user.is_superuser = True
+		user.is_staff = True
+		
 		user.save()
 		return user
 
@@ -68,9 +68,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = ['name', 'surname', 'role']
 	
-	@property
-	def is_staff(self):
-		return self.is_superuser
+	is_active = models.BooleanField(default=True)  # Added 'is_active' field for user activation
+	is_staff = models.BooleanField(default=False) 
  
 	objects = UserManager()
 	def __str__(self):
