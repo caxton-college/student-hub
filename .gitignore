@@ -1,6 +1,57 @@
+# Python cache
 *.pyc
 __pycache__
-db.sqlite3
+
+#db.sqlite3 won't be used in production, PostgreSQL instead
+
+# Environemntal variables
 /env
 *.env
+
+# Visual Studio Code specific files
 .vscode
+
+
+# Flutter/Dart specific files and directories
+*.iml
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+.dart_tool/
+.flutter-plugins/
+.flutter-plugins-dependencies/
+.pub-cache/
+.pub/
+.build/
+.idea/
+
+# Android specific files
+android/.gradle/
+android/app/build/
+android/build/
+android/gradle/
+android/gradlew
+android/gradlew.bat
+android/local.properties
+
+# iOS specific files
+ios/Pods/
+ios/Podfile.lock
+ios/Runner.xcworkspace/
+ios/.symlinks/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/App.framework/
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/flutter_xcconfig_generated.sh
+ios/Flutter/flutter_assets/
+
+# macOS specific files
+macos/Flutter/Generated.xcconfig
+macos/Flutter/Flutter.framework/
+macos/Flutter/flutter_export_environment.sh
+
+
+

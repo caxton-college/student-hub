@@ -130,13 +130,7 @@ Replace sqlite with this on production
         'HOST': env("DB_HOST"),
         'PORT': env("DB_PORT"),
     }
-
-
-"""
-
-
-## User model
-AUTH_USER_MODEL = 'users.User'
+}
 
 
 # Password validation
