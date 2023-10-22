@@ -1,20 +1,19 @@
-import datetime
-
+from django.http import HttpRequest
 from django.contrib.auth import login, logout, authenticate
 
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.exceptions import ValidationError
 from rest_framework import permissions, status
-from django.http import HttpRequest
+
 from users.models import User
-from users.serialisers import UserRegisterSerialiser, UserLoginSerialiser, UserSerialiser
+from users.serialisers import UserRegisterSerialiser, UserSerialiser
+from users.validations import custom_validation
+
 
 from feed.models import Announcement, Suggestion, Poll, PollOption
 from feed.serialisers import AnnouncementSerializer, SuggestionSerializer, PollSerializer, PollOptionSerializer
 
-from users.validations import custom_validation, validate_email, validate_password
 
 # Create your views here.
 class Index(APIView):
