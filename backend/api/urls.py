@@ -10,6 +10,7 @@ urlpatterns = [
     path("announcements", views.GetAnnouncements.as_view(), name="announcements"),
     path("create_suggestion", views.CreateSuggestion.as_view(), name="createsuggestion"),
     path("create_announcement", views.CreateAnnouncement.as_view(), name="createannouncement"),
-
+    path("update_suggestion_likes", views.UpdateSuggestionLikes.as_view(), name="udpatesuggestionlikes"),
+    path("update_suggestion_pin", views.UpdateSuggestionPin.as_view(), name="udpatesuggestionpin"),
 ]
 

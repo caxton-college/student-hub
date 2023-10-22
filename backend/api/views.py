@@ -77,9 +77,17 @@ class GetSuggestions(APIView):
 		suggestions = Suggestion.objects.all()
 		serialiser = SuggestionSerializer(suggestions, many=True)
 		
+		
+		
 		for i in range(len(serialiser.data)):
 			serialiser.data[i]["owner"] = User.objects.all().filter(user_id=serialiser.data[i]["owner"])[0].name.capitalize()
-			
+
+			if (user := request.user): # Not the most efficient, just wanted to use walrus operator :)
+				serialiser.data[i]["liked"] = user.user_id in serialiser.data[i]["liked_by"]
+				del serialiser.data[i]["liked_by"]
+
+
+
 		return Response(serialiser.data, status=status.HTTP_200_OK)
 	
 
@@ -105,7 +113,10 @@ class CreateSuggestion(APIView):
 		suggestion_body = dict(request.data)["body"]
 		user = request.user
 
-		new_suggestion = Suggestion.objects.create(body=suggestion_body, owner=user)
+		if user.role == "teacher":
+			return Response(status=status.HTTP_403_FORBIDDEN)
+  
+		new_suggestion = Suggestion.objects.create(body=suggestion_body, owner=user, liked_by=user)
 		new_suggestion.save()
   
 		return Response(status=status.HTTP_200_OK)
@@ -120,6 +131,9 @@ class CreateAnnouncement(APIView):
 		data = dict(request.data)
 		user = request.user
 
+		if user.role == "teacher":
+			return Response(status=status.HTTP_403_FORBIDDEN)
+  
 		new_announcement = Announcement.objects.create(title=data["title"], body=data["body"], owner=user)
 		new_announcement.save()
   
@@ -127,7 +141,57 @@ class CreateAnnouncement(APIView):
 
 
 
+class UpdateSuggestionLikes(APIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	authentication_classes = (SessionAuthentication,)
+	
+	def post(self, request):
+		user = request.user
+		suggestion_id = dict(request.data)["suggestion_id"]
+		
+		suggestion = Suggestion.objects.get(id=suggestion_id)
+		serialiser = SuggestionSerializer(suggestion)
+		
+		if user.role == "teacher":
+			return Response(status=status.HTTP_403_FORBIDDEN)
+		
+		if user.user_id in serialiser.data["liked_by"]:
+			suggestion.liked_by.remove(user.user_id)
+			suggestion.likes -= 1
+			suggestion.save()
+			
+		else:
+			suggestion.liked_by.add(user.user_id)
+			suggestion.likes += 1
+			suggestion.save()
+			
+		return Response(status=status.HTTP_200_OK)
+		
 
+class UpdateSuggestionPin(APIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	authentication_classes = (SessionAuthentication,)
+	
+	def post(self, request):
+		user = request.user
+		suggestion_id = dict(request.data)["suggestion_id"]
+		
+		suggestion = Suggestion.objects.get(id=suggestion_id)
+		
+		
+		if user.role == "teacher":
+			return Response(status=status.HTTP_403_FORBIDDEN)
+  
+		elif user.role == "student":
+			return Response(status=status.HTTP_403_FORBIDDEN)
+
+		else:
+			suggestion.pinned = not suggestion.pinned
+			suggestion.save()
+			return Response(status=status.HTTP_200_OK)
+
+
+		
 		
 		
 		
