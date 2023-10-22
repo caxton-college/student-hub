@@ -406,8 +406,7 @@ class UpdatePollOptionLikedStatus(APIView):
 
         if option.poll.owner == user:
             # Return an error message if the user tries to like their own poll option.
-            #return Response({"message": "You cannot like your own poll option."}, status=status.HTTP_400_BAD_REQUEST)
-            pass
+            return Response({"message": "You cannot like your own poll option."}, status=status.HTTP_400_BAD_REQUEST)
 
         # Un-like other poll options in the same poll
         other_options = PollOption.objects.filter(poll=option.poll).exclude(id=option_id)
