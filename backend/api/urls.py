@@ -13,5 +13,8 @@ urlpatterns = [
     path("create_announcement", views.CreateAnnouncement.as_view(), name="createannouncement"),
     path("update_suggestion_likes", views.UpdateSuggestionLikes.as_view(), name="udpatesuggestionlikes"),
     path("update_suggestion_pin", views.UpdateSuggestionPin.as_view(), name="udpatesuggestionpin"),
+    path("get_polls", views.GetPolls.as_view(), name="createpoll"),
+    path("create_poll", views.CreatePoll.as_view(), name="createpoll"),
+    path("update_poll_liked_status", views.UpdatePollOptionLikedStatus.as_view(), name="updatepolllikedstatus")
 ]
 

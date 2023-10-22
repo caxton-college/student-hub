@@ -33,8 +33,6 @@ class Index(APIView):
         return Response({"status": "online"}, status=status.HTTP_200_OK)
 
 
-
-
 class UserRegister(APIView):
     permission_classes = (permissions.AllowAny,)
     
@@ -56,8 +54,6 @@ class UserRegister(APIView):
             user.save()
             return Response(status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
 
 
 class UserLogin(APIView):
@@ -94,7 +90,6 @@ class UserLogin(APIView):
                 return Response({"message": "User not found."}, status=status.HTTP_400_BAD_REQUEST)
 	
 
-
 class UserLogout(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
@@ -115,7 +110,6 @@ class UserLogout(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-
 class UserView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (SessionAuthentication,)
@@ -134,7 +128,6 @@ class UserView(APIView):
         """
         serialiser = UserSerialiser(request.user)
         return Response({'user': serialiser.data}, status=status.HTTP_200_OK)
-
 
 
 class GetSuggestions(APIView):
@@ -164,7 +157,6 @@ class GetSuggestions(APIView):
 
         return Response(serialiser.data, status=status.HTTP_200_OK)
 
-	
 
 class GetAnnouncements(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -218,7 +210,6 @@ class CreateSuggestion(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-
 class CreateAnnouncement(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (SessionAuthentication,)
@@ -245,8 +236,6 @@ class CreateAnnouncement(APIView):
         new_announcement.save()
   
         return Response(status=status.HTTP_200_OK)
-
-
 
 
 class UpdateSuggestionLikes(APIView):
@@ -285,8 +274,7 @@ class UpdateSuggestionLikes(APIView):
             suggestion.save()
             
         return Response(status=status.HTTP_200_OK)
-
-		
+	
 
 class UpdateSuggestionPin(APIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -317,7 +305,131 @@ class UpdateSuggestionPin(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
+class GetPolls(APIView):
+    permission_classes = (permissions.AllowAny,)  # Allow access to anyone.
 
+    def get(self, request: HttpRequest) -> Response:
+        """
+        Retrieve a list of all polls with their options.
+
+        Args:
+            request: Request to retrieve polls.
+
+        Returns:
+            Response: A list of polls with their options and a status code of 200 (OK).
+        """
+        polls = Poll.objects.all()
+        poll_data = []
+
+        # Get the authenticated user (if any)
+        user = request.user
+
+        for poll in polls:
+            # Serialize poll and its options
+            poll_serializer = PollSerializer(poll)
+            options = PollOption.objects.filter(poll=poll)
+            options_data = PollOptionSerializer(options, many=True).data
+
+            # If the user is authenticated, add "liked" key to options
+            if user:
+                for option in options_data:
+                    option["liked"] = user.user_id in option["liked_by"]
+                    del option["liked_by"]
+
+            poll_data.append({
+                'poll': poll_serializer.data,
+                'options': options_data
+            })
+
+        return Response(poll_data, status=status.HTTP_200_OK)
 		
-		
-		
+class CreatePoll(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request: HttpRequest) -> Response:
+        """
+        Create a new poll.
+
+        Args:
+            request (HttpRequest): Request containing a JSON with a question and a list of poll options.
+
+        Returns:
+            Response: Status code 201 if the poll is created, 400 if not.
+        """
+        data = request.data
+
+        # Create a poll with the provided question and owner (authenticated user).
+        poll_serializer = PollSerializer(data={'question': data.get('question'), 'owner': request.user.user_id})
+
+        if poll_serializer.is_valid():
+            poll = poll_serializer.save()
+
+            # Create poll options from the list of options provided in the request.
+            poll_option_data = data.get('poll_options', [])
+            poll_option_instances = []
+
+            for option_text in poll_option_data:
+                poll_option_instances.append(PollOption(body=option_text, poll=poll))
+
+            PollOption.objects.bulk_create(poll_option_instances)
+
+            return Response({'message': 'Poll created successfully.'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(poll_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+class UpdatePollOptionLikedStatus(APIView):
+    permission_classes = (permissions.IsAuthenticated,)  # Requires authentication for the entire view.
+
+    def post(self, request):
+        """
+        Update the liked status of a poll option.
+
+        Args:
+            request: Request containing the poll option ID.
+
+        Returns:
+            Response: Status code 200 (OK) if liked status is updated, 400 (Bad Request) if not.
+        """
+        user = request.user
+        data = request.data
+        option_id = data.get('option_id', None)
+
+        if not option_id:
+            return Response({"message": "Option ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            option = PollOption.objects.get(id=option_id)
+            option_data = PollOptionSerializer(option).data
+        except PollOption.DoesNotExist:
+            return Response({"message": "Poll option not found."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if option.poll.owner == user:
+            # Return an error message if the user tries to like their own poll option.
+            #return Response({"message": "You cannot like your own poll option."}, status=status.HTTP_400_BAD_REQUEST)
+            pass
+
+        # Un-like other poll options in the same poll
+        other_options = PollOption.objects.filter(poll=option.poll).exclude(id=option_id)
+
+        for other_option in other_options:
+            other_option_data = PollOptionSerializer(other_option).data
+            if user.user_id in other_option_data["liked_by"]:
+                other_option.liked_by.remove(user.user_id)
+                if other_option.likes > 0:  # Check that likes count is greater than zero before decrementing.
+                    other_option.likes -= 1
+                other_option.save()
+
+        if user.user_id in option_data["liked_by"]:
+            # If the user has already liked the option, un-like it.
+            option.liked_by.remove(user.user_id)
+            if option.likes > 0:  # Check that likes count is greater than zero before decrementing.
+                option.likes -= 1
+        else:
+            # If the user hasn't liked the option, like it.
+            option.liked_by.add(user.user_id)
+            option.likes += 1
+
+        option.save()
+        
+        return Response({"message": "Liked status updated."}, status=status.HTTP_200_OK)
