@@ -15,6 +15,6 @@ urlpatterns = [
     path("update_suggestion_pin", views.UpdateSuggestionPin.as_view(), name="udpatesuggestionpin"),
     path("get_polls", views.GetPolls.as_view(), name="createpoll"),
     path("create_poll", views.CreatePoll.as_view(), name="createpoll"),
-    path("update_poll_liked_status", views.UpdatePollOptionLikedStatus.as_view(), name="updatepolllikedstatus")
+    path("update_poll_liked_status", views.UpdatePollOptionLikedStatus.as_view(), name="updatepolllikedstatus"),
 ]
 
