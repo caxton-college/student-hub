@@ -11,7 +11,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
 class SuggestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Suggestion
-        fields = '__all__'      
+        fields = '__all__'
         
 class PollSerializer(serializers.ModelSerializer):
     class Meta:
