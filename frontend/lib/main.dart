@@ -36,27 +36,27 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    body: screens[index],
-    bottomNavigationBar: NavigationBar(
-      selectedIndex: index,
-      onDestinationSelected: (index) => setState(() => this.index = index),
-      destinations: const [
-        NavigationDestination(
-          icon: Icon(Icons.feed_outlined),
-          selectedIcon: Icon(Icons.feed),
-          label: 'Feed',
+        body: screens[index],
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: index,
+          onDestinationSelected: (index) => setState(() => this.index = index),
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.feed_outlined),
+              selectedIcon: Icon(Icons.feed),
+              label: 'Feed',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.lightbulb_outlined),
+              selectedIcon: Icon(Icons.lightbulb),
+              label: 'Suggestions',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.person_outline),
+              selectedIcon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
         ),
-        NavigationDestination(
-          icon: Icon(Icons.lightbulb_outlined),
-          selectedIcon: Icon(Icons.lightbulb),
-          label: 'Suggestions',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.person_outline),
-          selectedIcon: Icon(Icons.person),
-          label: 'Profile',
-        ),
-      ],
-    ),
-  );
+      );
 }
