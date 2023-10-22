@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return const Directionality(
       textDirection: TextDirection.ltr, // specify the text directionality
       child: MaterialApp(
-        title: 'My App.',
+        title: 'My App',
         home: MainPage(),
       ),
     );
