@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       textDirection: TextDirection.ltr, // specify the text directionality
       child: MaterialApp(
         title: 'My App',
-        home: LoginScreen(),
+        home: AuthScreen(),
       ),
     );
   }
