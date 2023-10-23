@@ -8,6 +8,7 @@ urlpatterns = [
     path("logout", views.UserLogout.as_view(), name="logout"),
     path("user", views.UserView.as_view(), name="userview"),
     path("suggestions", views.GetSuggestions.as_view(), name="suggestions"),
+    path("usersuggestions", views.GetUserSuggestions.as_view(), name="usersuggestions"),
     path("announcements", views.GetAnnouncements.as_view(), name="announcements"),
     path("create_suggestion", views.CreateSuggestion.as_view(), name="createsuggestion"),
     path("create_announcement", views.CreateAnnouncement.as_view(), name="createannouncement"),

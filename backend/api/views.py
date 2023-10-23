@@ -157,6 +157,35 @@ class GetSuggestions(APIView):
         return Response(serialiser.data, status=status.HTTP_200_OK)
 
 
+
+class GetUserSuggestions(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    
+    def get(self, request: HttpRequest) -> Response:
+        """
+        Retrieve a list of all suggestions made by the current user.
+
+        This endpoint allows a user to retrieve a list of suggestions. It includes information about the owner of each suggestion and whether the authenticated user has liked each suggestion.
+
+        Args:
+            request (HttpRequest): Request from the user.
+
+        Returns:
+            Response: A list of suggestions as serialized data and a status code of 200 (OK).
+        """
+        suggestions = Suggestion.objects.all().filter(owner=request.user)
+        serialiser = SuggestionSerializer(suggestions, many=True)
+        
+        for i in range(len(serialiser.data)):
+            serialiser.data[i]["owner"] = User.objects.get(user_id=serialiser.data[i]["owner"]).name.capitalize()
+
+            if (user := request.user):  # Not the most efficient, just wanted to use the walrus operator :)
+                serialiser.data[i]["liked"] = user.user_id in serialiser.data[i]["liked_by"]
+                del serialiser.data[i]["liked_by"]
+
+        return Response(serialiser.data, status=status.HTTP_200_OK)
+
+
 class GetAnnouncements(APIView):
     permission_classes = (permissions.AllowAny,)
     
@@ -197,11 +226,18 @@ class CreateSuggestion(APIView):
         Returns:
             Response: Status code 200 (OK) if the suggestion is created, 403 (FORBIDDEN) if the user is a teacher.
         """
-        suggestion_body = dict(request.data)["body"]
-        user = request.user
-
         if user.role == "teacher":
             return Response(status=status.HTTP_403_FORBIDDEN)
+        
+        data = dict(request.data)
+        if not "body" in data.keys():
+            return Response({"message": "suggestion body missing"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        suggestion_body = data["body"]
+        
+        user = request.user
+
+        
   
         new_suggestion = Suggestion.objects.create(body=suggestion_body, owner=user, liked_by=user)
         new_suggestion.save()
@@ -225,12 +261,21 @@ class CreateAnnouncement(APIView):
         Returns:
             Response: Status code 200 (OK) if the announcement is created, 403 (FORBIDDEN) if the user is a teacher.
         """
-        data = dict(request.data)
+        
         user = request.user
 
         if user.role == "teacher":
             return Response(status=status.HTTP_403_FORBIDDEN)
-  
+        
+        
+        data = dict(request.data)
+        
+        if "title" not in data.keys():
+            return Response({"message": "Announcement title missing"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if "body" not in data.keys():
+            return Response({"message": "Announcement body missing"}, status=status.HTTP_400_BAD_REQUEST)
+        
         new_announcement = Announcement.objects.create(title=data["title"], body=data["body"], owner=user)
         new_announcement.save()
   
@@ -254,13 +299,21 @@ class UpdateSuggestionLikes(APIView):
             Response: Status code 200 (OK) if the like is updated, 403 (FORBIDDEN) if the user is a teacher.
         """
         user = request.user
-        suggestion_id = dict(request.data)["suggestion_id"]
+        
+        if user.role == "teacher":
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        
+        data = dict(request.data)
+        
+        if "suggestion_id" not in data.keys():
+            return Response({"message": "suggestion_id missing"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        suggestion_id = data["suggestion_id"]
         
         suggestion = Suggestion.objects.get(id=suggestion_id)
         serialiser = SuggestionSerializer(suggestion)
         
-        if user.role == "teacher":
-            return Response(status=status.HTTP_403_FORBIDDEN)
+        
         
         if user.user_id in serialiser.data["liked_by"]:
             suggestion.liked_by.remove(user.user_id)
@@ -292,12 +345,20 @@ class UpdateSuggestionPin(APIView):
             Response: Status code 200 (OK) if the pinned status is updated, 403 (FORBIDDEN) if the user is a teacher or student.
         """
         user = request.user
-        suggestion_id = dict(request.data)["suggestion_id"]
-        
-        suggestion = Suggestion.objects.get(id=suggestion_id)
         
         if user.role == "teacher" or user.role == "student":
             return Response(status=status.HTTP_403_FORBIDDEN)
+        
+        data = dict(request.data)
+        
+        if "suggestion_id" not in data.keys():
+            return Response({"message": "suggestion_id missing"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        suggestion_id = data["suggestion_id"]
+        
+        suggestion = Suggestion.objects.get(id=suggestion_id)
+        
+        
   
         suggestion.pinned = not suggestion.pinned
         suggestion.save()
@@ -355,8 +416,21 @@ class CreatePoll(APIView):
         Returns:
             Response: Status code 201 if the poll is created, 400 if not.
         """
-        data = request.data
+        
+        user = request.user
+        
+        if user.role == "teacher" or user.role == "student":
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        
+        
+        data = dict(request.data)
 
+        if "question" not in data.keys():
+            return Response({"message": "Poll question missing"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if "poll_options" not in data.keys():
+            return Response({"message": "Poll options missing"}, status=status.HTTP_400_BAD_REQUEST)
+        
         # Create a poll with the provided question and owner (authenticated user).
         poll_serializer = PollSerializer(data={'question': data.get('question'), 'owner': request.user.user_id})
 
@@ -391,6 +465,10 @@ class UpdatePollOptionLikedStatus(APIView):
             Response: Status code 200 (OK) if liked status is updated, 400 (Bad Request) if not.
         """
         user = request.user
+        if user.role == "teacher":
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        
+        
         data = request.data
         option_id = data.get('option_id', None)
 
