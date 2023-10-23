@@ -1,0 +1,6 @@
+SECRET_KEY="%lyfw7iuz0(c^v%7#!p94^@&lf(6l#b*n+3c&@$t*3b$vf@b=h"
+DB_NAME="studenthub"
+DB_USER="postgres"
+DB_PASSWORD="gaxBe3bm&+DqT6YE"
+DB_HOST="localhost"
+DB_PORT=5432
