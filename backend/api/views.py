@@ -15,7 +15,8 @@ from feed.models import Announcement, Suggestion, Poll, PollOption
 from feed.serialisers import AnnouncementSerializer, SuggestionSerializer, PollSerializer, PollOptionSerializer
 
 
-# Create your views here.
+
+# Index
 class Index(APIView):
     permission_classes = (permissions.AllowAny,)
     
@@ -32,6 +33,7 @@ class Index(APIView):
         return Response({"status": "online"}, status=status.HTTP_200_OK)
 
 
+# User views
 class UserRegister(APIView):
     permission_classes = (permissions.AllowAny,)
     
@@ -129,6 +131,9 @@ class UserView(APIView):
         return Response({'user': serialiser.data}, status=status.HTTP_200_OK)
 
 
+
+
+# Suggestion views
 class GetSuggestions(APIView):
     permission_classes = (permissions.AllowAny,)
     
@@ -155,7 +160,6 @@ class GetSuggestions(APIView):
                 del serialiser.data[i]["liked_by"]
 
         return Response(serialiser.data, status=status.HTTP_200_OK)
-
 
 
 class GetUserSuggestions(APIView):
@@ -186,30 +190,6 @@ class GetUserSuggestions(APIView):
         return Response(serialiser.data, status=status.HTTP_200_OK)
 
 
-class GetAnnouncements(APIView):
-    permission_classes = (permissions.AllowAny,)
-    
-    def get(self, request: HttpRequest) -> Response:
-        """
-        Retrieve a list of announcements.
-
-        This endpoint allows users to retrieve a list of announcements, including information about the owner of each announcement.
-
-        Args:
-            request (HttpRequest): Request from the user.
-
-        Returns:
-            Response: A list of announcements as serialized data and a status code of 200 (OK).
-        """
-        announcements = Announcement.objects.all()
-        serialiser = AnnouncementSerializer(announcements, many=True)
-        
-        for i in range(len(serialiser.data)):
-            serialiser.data[i]["owner"] = User.objects.get(user_id=serialiser.data[i]["owner"]).name.capitalize()
-            
-        return Response(serialiser.data, status=status.HTTP_200_OK)
-
-	
 class CreateSuggestion(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (SessionAuthentication,)
@@ -245,41 +225,40 @@ class CreateSuggestion(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class CreateAnnouncement(APIView):
+class DeleteSuggestion(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
- 
-    def post(self, request: HttpRequest) -> Response:
-        """
-        Create a new announcement.
 
-        This endpoint allows authenticated users (excluding teachers) to create a new announcement.
+    def post(self, request):
+        """
+        Delete a suggestion by ID.
 
         Args:
-            request (HttpRequest): Request with the announcement title and body.
+            request: Request to delete a suggestion.
 
         Returns:
-            Response: Status code 200 (OK) if the announcement is created, 403 (FORBIDDEN) if the user is a teacher.
+            Response:
+            Status code 200 (No Content) if the suggestion is successfully deleted.
+            Status code 404 (Not Found) if the suggestion with the given ID is not found.
+            Status code 403 (Forbidden) if the user is not allowed to delete the suggestion.
         """
-        
-        user = request.user
+        try:
+            data = dict(request.data)
+            suggestion = Suggestion.objects.get(id=data["suggestion_id"])
 
-        if user.role == "teacher":
-            return Response(status=status.HTTP_403_FORBIDDEN)
-        
-        
-        data = dict(request.data)
-        
-        if "title" not in data.keys():
-            return Response({"message": "Announcement title missing"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        if "body" not in data.keys():
-            return Response({"message": "Announcement body missing"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        new_announcement = Announcement.objects.create(title=data["title"], body=data["body"], owner=user)
-        new_announcement.save()
-  
-        return Response(status=status.HTTP_200_OK)
+            # Check if the user is the owner of the suggestion or has permission to delete it.
+            if request.user == suggestion.owner or request.user.role not in ["teacher", "student"]:
+                suggestion.delete()
+                return Response({"message": "Suggestion deleted"}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response(
+                    {"message": "You don't have permission to delete this suggestion."},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        except Suggestion.DoesNotExist:
+            return Response(
+                {"message": "Suggestion not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
 
 
 class UpdateSuggestionLikes(APIView):
@@ -365,6 +344,109 @@ class UpdateSuggestionPin(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
+
+
+# Announcement views
+class GetAnnouncements(APIView):
+    permission_classes = (permissions.AllowAny,)
+    
+    def get(self, request: HttpRequest) -> Response:
+        """
+        Retrieve a list of announcements.
+
+        This endpoint allows users to retrieve a list of announcements, including information about the owner of each announcement.
+
+        Args:
+            request (HttpRequest): Request from the user.
+
+        Returns:
+            Response: A list of announcements as serialized data and a status code of 200 (OK).
+        """
+        announcements = Announcement.objects.all()
+        serialiser = AnnouncementSerializer(announcements, many=True)
+        
+        for i in range(len(serialiser.data)):
+            serialiser.data[i]["owner"] = User.objects.get(user_id=serialiser.data[i]["owner"]).name.capitalize()
+            
+        return Response(serialiser.data, status=status.HTTP_200_OK)
+
+
+class CreateAnnouncement(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+ 
+    def post(self, request: HttpRequest) -> Response:
+        """
+        Create a new announcement.
+
+        This endpoint allows authenticated users (excluding teachers) to create a new announcement.
+
+        Args:
+            request (HttpRequest): Request with the announcement title and body.
+
+        Returns:
+            Response: Status code 200 (OK) if the announcement is created, 403 (FORBIDDEN) if the user is a teacher.
+        """
+        
+        user = request.user
+
+        if user.role == "teacher":
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        
+        
+        data = dict(request.data)
+        
+        if "title" not in data.keys():
+            return Response({"message": "Announcement title missing"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if "body" not in data.keys():
+            return Response({"message": "Announcement body missing"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        new_announcement = Announcement.objects.create(title=data["title"], body=data["body"], owner=user)
+        new_announcement.save()
+  
+        return Response(status=status.HTTP_200_OK)
+
+
+class DeleteAnnouncement(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def delete(self, request, announcement_id):
+        """
+        Delete an announcement by ID.
+
+        Args:
+            request: Request to delete an announcement.
+            announcement_id (int): The ID of the announcement to be deleted.
+
+        Returns:
+            Response: 
+            Status code 204 (No Content) if the announcement is successfully deleted.
+            Status code 404 (Not Found) if the announcement with the given ID is not found.
+            Status code 403 (Forbidden) if the user is not allowed to delete the announcement.
+        """
+        try:
+            announcement = Announcement.objects.get(id=announcement_id)
+
+            # Check if the user is the owner of the announcement or has permission to delete it.
+            if request.user == announcement.owner or request.user.role not in ["teacher", "student"]:
+                announcement.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response(
+                    {"message": "You don't have permission to delete this announcement."},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        except Announcement.DoesNotExist:
+            return Response(
+                {"message": "Announcement not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+
+
+
+# Poll views
 class GetPolls(APIView):
     permission_classes = (permissions.AllowAny,)  # Allow access to anyone.
 
@@ -450,7 +532,42 @@ class CreatePoll(APIView):
         else:
             return Response(poll_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        
+
+class DeletePoll(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def delete(self, request, poll_id):
+        """
+        Delete a poll by ID.
+
+        Args:
+            request: Request to delete a poll.
+            poll_id (int): The ID of the poll to be deleted.
+
+        Returns:
+            Response: 
+            Status code 204 (No Content) if the poll is successfully deleted.
+            Status code 404 (Not Found) if the poll with the given ID is not found.
+            Status code 403 (Forbidden) if the user is not allowed to delete the poll.
+        """
+        try:
+            poll = Poll.objects.get(id=poll_id)
+
+            # Check if the user is the owner of the poll or has permission to delete it.
+            if request.user == poll.owner or request.user.role not in ["teacher", "student"]:
+                poll.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response(
+                    {"message": "You don't have permission to delete this poll."},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        except Poll.DoesNotExist:
+            return Response(
+                {"message": "Poll not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+                       
 class UpdatePollOptionLikedStatus(APIView):
     permission_classes = (permissions.IsAuthenticated,)  # Requires authentication for the entire view.
 
@@ -509,3 +626,5 @@ class UpdatePollOptionLikedStatus(APIView):
         option.save()
         
         return Response({"message": "Liked status updated."}, status=status.HTTP_200_OK)
+
+
