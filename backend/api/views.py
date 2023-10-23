@@ -206,6 +206,8 @@ class CreateSuggestion(APIView):
         Returns:
             Response: Status code 200 (OK) if the suggestion is created, 403 (FORBIDDEN) if the user is a teacher.
         """
+        user = request.user
+        
         if user.role == "teacher":
             return Response(status=status.HTTP_403_FORBIDDEN)
         
@@ -215,11 +217,11 @@ class CreateSuggestion(APIView):
         
         suggestion_body = data["body"]
         
-        user = request.user
-
         
-  
-        new_suggestion = Suggestion.objects.create(body=suggestion_body, owner=user, liked_by=user)
+
+    
+        new_suggestion = Suggestion.objects.create(body=suggestion_body, owner=user)
+        new_suggestion.liked_by.add(user)
         new_suggestion.save()
   
         return Response(status=status.HTTP_200_OK)
@@ -390,7 +392,7 @@ class CreateAnnouncement(APIView):
         
         user = request.user
 
-        if user.role == "teacher":
+        if user.role in ["teacher", "student"]:
             return Response(status=status.HTTP_403_FORBIDDEN)
         
         
