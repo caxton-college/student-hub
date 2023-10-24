@@ -1,9 +1,8 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
-import 'main.dart';
+import 'package:frontend/main.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -18,26 +17,37 @@ class _AuthScreenState extends State<AuthScreen> {
   final _passwordController = TextEditingController();
   final _baseUrl = "http://127.0.0.1:8000/api/login";
 
-  Future<void> _loginUser() async {
-    final response = await http.post(
-      Uri.parse(_baseUrl),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        "Referer": "http://localhost:61998/#/"
-      },
-      body: jsonEncode(<String, String>{
-        "email": _emailController.text,
-        "password": _passwordController.text,
-      }),
-    );
+  Future<String?> _loginUser() async {
+    try {
+      final dio = Dio();
 
-    if (response.statusCode == 200) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const MainPage()),
+      final response = await dio.post(
+        _baseUrl,
+        options: Options(headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        }),
+        data: jsonEncode(<String, String>{
+          "email": _emailController.text,
+          "password": _passwordController.text,
+        }),
       );
-    } else {
-      // User was not authenticated
+
+      if (response.statusCode == 200) {
+        final cookies = response.headers["set-cookie"];
+        final csrfTokenCookie = cookies?.where((cookie) => cookie.startsWith("csrftoken=")).first;
+        final csrfToken = csrfTokenCookie?.split('=')?.last;
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MainPage()),
+        );
+        return csrfToken;
+      } else {
+        // User was not authenticated
+        return null;
+      }
+    } catch (e) {
+      // Handle error
+      return null;
     }
   }
 
@@ -97,3 +107,6 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 }
+
+
+
