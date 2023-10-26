@@ -11,8 +11,11 @@ dependencies:
     sdk: flutter
   shared_preferences: ^2.0.6
   http: ^0.13.3
-  dio : ^4.0.7
   cookie_jar: ^3.0.1
+  dio: ^5.3.3
+  dio_cookie_manager: ^2.1.4
+  sweet_cookie_jar: ^1.1.0
+  
 
 dev_dependencies:
   flutter_test:

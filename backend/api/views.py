@@ -1,10 +1,13 @@
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.contrib.auth import login, logout, authenticate
 
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
+
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect, csrf_exempt
+from django.utils.decorators import method_decorator
 
 from users.models import User
 from users.serialisers import UserRegisterSerialiser, UserSerialiser
@@ -56,7 +59,7 @@ class UserRegister(APIView):
             return Response(status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
+#@method_decorator(csrf_protect, name='dispatch')
 class UserLogin(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = (SessionAuthentication,)
@@ -71,7 +74,7 @@ class UserLogin(APIView):
         Returns:
             Response: Status code 200 if valid credentials, 400 if not
         """
-        data = request.data
+        data = self.request.data
         email = data.get('email', '')
         password = data.get('password', '')
 
@@ -82,7 +85,7 @@ class UserLogin(APIView):
 
         if user is not None:
             login(request, user)
-            return Response({"message": "Login successful."}, status=status.HTTP_200_OK)
+            return Response({"message": "Login successful. "}, status=status.HTTP_200_OK)
         else:
             try:
                 user = User.objects.get(email=email)
@@ -629,4 +632,11 @@ class UpdatePollOptionLikedStatus(APIView):
         
         return Response({"message": "Liked status updated."}, status=status.HTTP_200_OK)
 
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class GetCSRFToken(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+
+    def get(self, request, format=None):
+        return Response({'success': 'CSRF cookie set'})
 

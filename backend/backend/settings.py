@@ -34,7 +34,7 @@ DEBUG = True
 
 ip = 61998#socket.gethostbyname(socket.gethostname())
 
-CSRF_TRUSTED_ORIGINS = [f"http://{ip}", "http://localhost"]
+CSRF_TRUSTED_ORIGINS = [f"http://{ip}", "http://localhost", "http://localhost:59709"]
 
 ALLOWED_HOSTS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
@@ -62,8 +62,8 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-SESSION_COOKIE_DOMAIN = None
-CSRF_COOKIE_DOMAIN = None
+SESSION_COOKIE_DOMAIN = "127.0.0.1"
+CSRF_COOKIE_DOMAIN = "127.0.0.1"
 
 
 # Application definition
@@ -170,6 +170,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

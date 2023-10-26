@@ -1,11 +1,9 @@
-import 'dart:async';
 import 'dart:convert';
-
+import 'dart:html';
+import 'package:sweet_cookie_jar/sweet_cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
-import 'package:cookie_jar/cookie_jar.dart';
-import 'package:cookie_manager/cookie_manager.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -21,43 +19,44 @@ class _AuthScreenState extends State<AuthScreen> {
   final _baseUrl = "http://127.0.0.1:8000/api/login";
 
   Future<String?> _loginUser() async {
-  try {
-    final dio = Dio();
+    try {
+      final dio = Dio();
 
-    // Set the CookieStore to persistent
-    dio.interceptors.add(CookieManager(CookieStore.persistent())); // if this fails, use dio.interceptors.add(CookieManager(PersistentCookieJar()));
-
-    final response = await dio.post(
-      _baseUrl,
-      options: Options(headers: {
+      final cookie = await dio.get("http://127.0.0.1:8000/api/csrf", options: Options(headers: {
         'Content-Type': 'application/json; charset=UTF-8',
-      }),
-      data: jsonEncode(<String, String>{
-        "email": _emailController.text,
-        "password": _passwordController.text,
-      }),
-    );
+      }));
 
-    if (response.statusCode == 200) {
-      final cookies = response.headers["set-cookie"];
-      final csrfTokenCookie = cookies?.where((cookie) => cookie.startsWith("csrftoken=")).first;
-      final csrfToken = csrfTokenCookie?.split('=')?.last;
-        
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const MainPage()),
+      final response = await dio.post(
+        _baseUrl,
+        options: Options(headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        }),
+        data: jsonEncode(<String, String>{
+          "email": _emailController.text,
+          "password": _passwordController.text,
+        }),
       );
-      return csrfToken;
-    } else {
-      // User was not authenticated
+
+      if (response.statusCode == 200) {
+        final cookies = response.headers.map['set-cookie'];
+        print(response.requestOptions.headers);
+        final csrfTokenCookie = cookies?.where((cookie) => cookie.startsWith("csrftoken")).first;
+        final csrfToken = csrfTokenCookie?.split(';')?.last;
+        
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MainPage()),
+        );
+        return csrfToken;
+      } else {
+        // User was not authenticated
+        return null;
+      }
+    } catch (e) {
+      // Handle error
       return null;
     }
-  } catch (e) {
-    // Handle error
-    return null;
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -115,4 +114,3 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 }
-di
