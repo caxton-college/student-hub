@@ -84,6 +84,7 @@ class UserLogin(APIView):
         user = authenticate(request, email=email, password=password)
 
         if user is not None:
+            # Use Django's login function to establish a session.
             login(request, user)
             return Response({"message": "Login successful. "}, status=status.HTTP_200_OK)
         else:
@@ -92,6 +93,7 @@ class UserLogin(APIView):
                 return Response({"message": "Incorrect password."}, status=status.HTTP_400_BAD_REQUEST)
             except User.DoesNotExist:
                 return Response({"message": "User not found."}, status=status.HTTP_400_BAD_REQUEST)
+
 	
 
 class UserLogout(APIView):
