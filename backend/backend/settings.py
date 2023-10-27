@@ -31,9 +31,9 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ip = socket.gethostbyname(socket.gethostname())
-
-CSRF_TRUSTED_ORIGINS = [f"http://{ip}", "http://localhost"]
+IP = socket.gethostbyname(socket.gethostname())
+PORT = 3000
+CSRF_TRUSTED_ORIGINS = [f"http://{IP}", "http://localhost", f"http://{IP}:{PORT}", f"http://localhost:{PORT}"]
 
 ALLOWED_HOSTS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
