@@ -16,6 +16,7 @@ const client = axios.create({
 	baseURL: "http://192.168.1.64:8000"
 })
 
+let checkedUser = false;
 
 function App() {
 	const [user, setUser] = useState({
@@ -28,6 +29,31 @@ function App() {
 
     });
 	
+    function checkUser() {
+        if (!checkedUser) {
+            client.get(
+                "/api/user",
+                {withCredentials: true},
+            ).then(function(response) {
+                setUser({
+                    "loggedIn": true,
+                    "name": response.data.user.name,
+                    "surname": response.data.user.surname,
+                    "email": response.data.user.email,
+                    "role": response.data.user.role,
+                    "points": response.data.user.points,
+                });
+                checkedUser = true;
+            }).catch(function(error) {
+                checkedUser = true;
+
+            })
+        }
+        
+    }
+
+    checkUser();
+
 	return (
 		<>
 			<Navbar/>
