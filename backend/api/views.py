@@ -128,7 +128,11 @@ class UserView(APIView):
             Response: User information as serialized data and a status code of 200 (OK).
         """
         serialiser = UserSerialiser(request.user)
-        return Response({'user': serialiser.data}, status=status.HTTP_200_OK)
+        user_data = serialiser.data
+        user_data["name"] = serialiser.data["name"].capitalize()
+        user_data["surname"] = serialiser.data["surname"].capitalize()
+        
+        return Response({'user': user_data}, status=status.HTTP_200_OK)
 
 
 

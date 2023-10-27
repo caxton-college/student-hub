@@ -38,7 +38,6 @@ export default function Login({user, setUser, client}) {
 			<form onSubmit={handleLogIn} id='login-form'>
 				<h2>Login</h2> 
 				<input 
-				className='border'
 				type="text" 
 				id="email"
 				placeholder="email"
@@ -48,7 +47,6 @@ export default function Login({user, setUser, client}) {
 
 
 				<input 
-				className='border'
 				type="password" 
 				id="password"
 				placeholder="password"
