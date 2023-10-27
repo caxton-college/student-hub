@@ -157,17 +157,23 @@ class GetSuggestions(APIView):
         serialiser = SuggestionSerializer(suggestions, many=True)
         
         for i in range(len(serialiser.data)):
-            serialiser.data[i]["owner"] = User.objects.get(user_id=serialiser.data[i]["owner"]).name.capitalize()
+            owner = User.objects.get(user_id=serialiser.data[i]["owner"])
+            serialiser.data[i]["owner"] = f"{owner.name.capitalize()} {owner.surname.capitalize()}"
 
             if (user := request.user):  # Not the most efficient, just wanted to use the walrus operator :)
-                serialiser.data[i]["liked"] = user.user_id in serialiser.data[i]["liked_by"]
-                del serialiser.data[i]["liked_by"]
+                if user.is_authenticated:
+                    serialiser.data[i]["liked"] = user.user_id in serialiser.data[i]["liked_by"]
+                    del serialiser.data[i]["liked_by"]
+                
+            else:
+                serialiser.data[i]["liked"] = False
 
         return Response(serialiser.data, status=status.HTTP_200_OK)
 
 
 class GetUserSuggestions(APIView):
     permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
     
     def get(self, request: HttpRequest) -> Response:
         """

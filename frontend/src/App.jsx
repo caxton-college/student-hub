@@ -3,8 +3,10 @@ import { Route, Routes } from 'react-router-dom'
 import { useState, useEffect } from 'react';
 import axios from "axios";
 
-
+import Navbar from './pages/components/Navbar';
 import Profile from './pages/Profile';
+import Suggestions from './pages/Suggestions';
+
 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -28,14 +30,15 @@ function App() {
 	
 	return (
 		<>
-			
+			<Navbar/>
 			<Routes>
 				<Route path='/' element={<Profile user={user} setUser={setUser} client={client}/>}/>
+                <Route path='/suggestions' element={<Suggestions user={user} client={client}/>}/>
                 
 			</Routes>
             
 		</>
   	)
 }
-//<Route path='/annoucements' element={<Announcements user={user} client={client}/>}/>
+
 export default App
