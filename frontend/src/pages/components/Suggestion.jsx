@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import Like from './Like'
 
 export default function Suggestion({client, suggestion, user}) {
+    
+
     return (
         <>
 			<div>
@@ -14,7 +16,13 @@ export default function Suggestion({client, suggestion, user}) {
 
 				<div className='suggestion-options'>
 					{
-						<Like client={client} user={user} likes={suggestion.likes} liked={suggestion.liked} id={suggestion.id}/>
+						<Like 
+                        client={client} 
+                        user={user} 
+                        likes={suggestion.likes} 
+                        liked={suggestion.liked} 
+                        id={suggestion.id}
+                        />
 					}	
 					
 				</div>

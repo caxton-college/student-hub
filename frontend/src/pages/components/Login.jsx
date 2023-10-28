@@ -8,29 +8,39 @@ export default function Login({user, setUser, client}) {
 
 	function handleLogIn(e) {
         e.preventDefault();
-        client.post(
-            "/api/login",
-            {
-                email: email,
-                password: password
-            }
+        client.get(
+            "/api/get_csrf_token"
         ).then(function(response) {
-            client.get(
-				"/api/user"
-			).then(function(response) {
-				setUser({
-					"loggedIn": true,
-					"name": response.data.user.name,
-					"surname": response.data.user.surname,
-					"email": response.data.user.email,
-					"role": response.data.user.role,
-					"points": response.data.user.points,
-				});
-			})
-
-        }).catch(function(error) {
-            
-        });
+            client.post(
+                "/api/login",
+                {
+                    email: email,
+                    password: password
+                },
+                {
+                    headers: {
+                        "X-CSRFToken": response.data.csrfToken,
+                    }
+                },
+            ).then(function(response) {
+                client.get(
+                    "/api/user"
+                ).then(function(response) {
+                    setUser({
+                        "loggedIn": true,
+                        "name": response.data.user.name,
+                        "surname": response.data.user.surname,
+                        "email": response.data.user.email,
+                        "role": response.data.user.role,
+                        "points": response.data.user.points,
+                    });
+                })
+    
+            }).catch(function(error) {
+                
+            });
+        })
+        
     }
 
     return (

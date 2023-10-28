@@ -5,20 +5,27 @@ import { faHeart as solidHeart  } from '@fortawesome/free-solid-svg-icons'
 
 
 export default function Like({client, user, likes, liked, id}) {
-
+    
 	function updateLikes() {
-		client.post(
-			"/api/update_suggestion_likes",
-			{
-				suggestion_id: id,
-			},
-			{withCredentials: true},
-		).then(function(response) {
-			console.log(response);
-			
-			
-		}
-		)
+        client.get(
+            "/api/get_csrf_token"
+        ).then(function(response) {
+            client.post(
+                "/api/update_suggestion_likes",
+                {
+                    suggestion_id: id,
+                },
+                {
+                    headers: {
+                        "X-CSRFToken": response.data.csrfToken,
+                    }
+                },  
+            ).then(function(response) {
+                
+            }
+            )
+        })
+	
 	}
     return (
 		<>

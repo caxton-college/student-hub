@@ -7,6 +7,7 @@ export default function Suggestions({user, client}) {
 
 	const [suggestions, setSuggestions] = useState([]);
 	
+
 	function getSuggestions() {
 		if (suggestions.length === 0) {
 			client.get(

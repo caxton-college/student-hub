@@ -13,8 +13,10 @@ axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.withCredentials = true;
 
 const client = axios.create({
-	baseURL: "http://192.168.1.64:8000"
+	baseURL: "http://192.168.1.64:8000" 
 })
+
+//192.168.1.64
 
 let checkedUser = false;
 
@@ -32,22 +34,34 @@ function App() {
     function checkUser() {
         if (!checkedUser) {
             client.get(
-                "/api/user",
-                {withCredentials: true},
+                "/api/get_csrf_token"
             ).then(function(response) {
-                setUser({
-                    "loggedIn": true,
-                    "name": response.data.user.name,
-                    "surname": response.data.user.surname,
-                    "email": response.data.user.email,
-                    "role": response.data.user.role,
-                    "points": response.data.user.points,
-                });
-                checkedUser = true;
-            }).catch(function(error) {
-                checkedUser = true;
+                client.get(
+                    "/api/user",
+                    {
+                        headers: {
+                            "X-CSRFToken": response.data.csrfToken,
+                        }
+                        
+                    },
+                    {withCredentials: true},
+                ).then(function(response) {
+                    setUser({
+                        "loggedIn": true,
+                        "name": response.data.user.name,
+                        "surname": response.data.user.surname,
+                        "email": response.data.user.email,
+                        "role": response.data.user.role,
+                        "points": response.data.user.points,
+                    });
+                    checkedUser = true;
+                }).catch(function(error) {
+                    checkedUser = true;
+    
+                })
 
             })
+            
         }
         
     }

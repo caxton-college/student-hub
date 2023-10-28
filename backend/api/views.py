@@ -1,8 +1,11 @@
 from django.http import HttpRequest
 from django.contrib.auth import login, logout, authenticate
+from django.http import JsonResponse
+from django.middleware.csrf import get_token
 
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import permissions, status
 
@@ -14,6 +17,23 @@ from users.validations import custom_validation
 from feed.models import Announcement, Suggestion, Poll, PollOption
 from feed.serialisers import AnnouncementSerializer, SuggestionSerializer, PollSerializer, PollOptionSerializer
 
+
+
+class GetCSRFToken(APIView):
+    permission_classes = (permissions.AllowAny,)
+    
+    def get(self, request: HttpRequest) -> Response:
+        """
+        API index endpoint, check whether it is online.
+
+        Args:
+            request (HttpRequest): Nothing.
+
+        Returns:
+            Response: Response containing JSON with key "status".
+        """
+        csrf_token = get_token(request)
+        return JsonResponse({'csrfToken': csrf_token})
 
 
 # Index
