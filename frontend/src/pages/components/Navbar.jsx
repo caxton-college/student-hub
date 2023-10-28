@@ -4,21 +4,20 @@ import { faUser, faLightbulb, faNoteSticky} from '@fortawesome/free-regular-svg-
 
 function Navbar() {
     return (
-        <>
-            <div className="navbar">
-                <div id="navbar-items">
-                    <Link to="/announcements" className="nav-link">
-                        <FontAwesomeIcon icon={faNoteSticky} style={{color: "black"}} size="2xl"/>
-                    </Link>
-                    <Link to="/suggestions" className="nav-link">
-                        <FontAwesomeIcon icon={faLightbulb} style={{color: "black"}} size="2xl"/>
-                    </Link>
-                    <Link to="/" className="nav-link">
-                        <FontAwesomeIcon icon={faUser} style={{color: "black"}} size="2xl"/>
-                    </Link>
-                </div>
-            </div>  
-        </>
+        <div className="navbar">
+            <div className="header-navbar-content">
+                <Link to="/announcements" className="nav-link">
+                    <FontAwesomeIcon icon={faNoteSticky} size="2xl" />
+                </Link>
+                <Link to="/suggestions" className="nav-link">
+                    <FontAwesomeIcon icon={faLightbulb} size="2xl" />
+                </Link>
+                <Link to="/" className="nav-link">
+                    <FontAwesomeIcon icon={faUser} size="2xl" />
+                </Link>
+            </div>
+            
+        </div>
     )
 }
 

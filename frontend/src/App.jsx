@@ -6,7 +6,7 @@ import axios from "axios";
 import Navbar from './pages/components/Navbar';
 import Profile from './pages/Profile';
 import Suggestions from './pages/Suggestions';
-
+import Header from './pages/components/Header';
 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -19,7 +19,7 @@ const client = axios.create({
 //192.168.1.64
 
 let checkedUser = false;
-
+document.documentElement.setAttribute('data-theme', "light");
 function App() {
 	const [user, setUser] = useState({
         "loggedIn": false,
@@ -70,12 +70,13 @@ function App() {
 
 	return (
 		<>
-			<Navbar/>
+			<Header/> 
 			<Routes>
 				<Route path='/' element={<Profile user={user} setUser={setUser} client={client}/>}/>
                 <Route path='/suggestions' element={<Suggestions user={user} client={client}/>}/>
                 
 			</Routes>
+            <Navbar/>   
             
 		</>
   	)

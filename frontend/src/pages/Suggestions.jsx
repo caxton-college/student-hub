@@ -1,12 +1,12 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useReducer } from 'react';
 
 import Suggestion from './components/Suggestion';
-
+import CreateSuggestion from './components/CreateSuggestion';
 export default function Suggestions({user, client}) {
 
 	const [suggestions, setSuggestions] = useState([]);
-	
+	const [, forceRender] = useReducer(x => x + 1, 0);
 
 	function getSuggestions() {
 		if (suggestions.length === 0) {
@@ -24,13 +24,18 @@ export default function Suggestions({user, client}) {
 	
 	
 	return (
-		<>
-			<h1>Suggestions</h1>
+		<div className='suggestions'>
 			{
 				suggestions.map(suggestion => (
 					<Suggestion client={client} suggestion={suggestion} user={user} key={suggestion.id}/>
 				))
 			}
-		</>
+            {
+                user.loggedIn ? (
+                    <CreateSuggestion client={client} user={user}></CreateSuggestion>
+                ) : null
+            }
+            
+		</div>
 	)
 }

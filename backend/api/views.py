@@ -323,9 +323,8 @@ class UpdateSuggestionLikes(APIView):
         
         suggestion = Suggestion.objects.get(id=suggestion_id)
         serialiser = SuggestionSerializer(suggestion)
-        
-        
-        
+        liked_data = {}
+            
         if user.user_id in serialiser.data["liked_by"]:
             suggestion.liked_by.remove(user.user_id)
             suggestion.likes -= 1
@@ -335,8 +334,21 @@ class UpdateSuggestionLikes(APIView):
             suggestion.liked_by.add(user.user_id)
             suggestion.likes += 1
             suggestion.save()
-            
-        return Response(status=status.HTTP_200_OK)
+        
+        serialiser = SuggestionSerializer(suggestion)
+          
+        if (user := request.user):  # Not the most efficient, just wanted to use the walrus operator :)
+            if user.is_authenticated:
+                
+                liked_data["liked"] = user.user_id in serialiser.data["liked_by"]
+    
+                
+            else:
+                serialiser.data["liked"] = False
+        
+        liked_data["likes"] = serialiser.data["likes"]
+        
+        return Response(liked_data, status=status.HTTP_200_OK)
 	
 
 class UpdateSuggestionPin(APIView):
@@ -368,12 +380,10 @@ class UpdateSuggestionPin(APIView):
         suggestion_id = data["suggestion_id"]
         
         suggestion = Suggestion.objects.get(id=suggestion_id)
-        
-        
   
         suggestion.pinned = not suggestion.pinned
         suggestion.save()
-        return Response(status=status.HTTP_200_OK)
+        return Response({"pinned": suggestion.pinned} ,status=status.HTTP_200_OK)
 
 
 
