@@ -44,9 +44,10 @@ export default function CreateSuggestion({ client, user }) {
             </div>
             {showPrompt ? (
                 <div id='create-suggestion-prompt'>
-                    <form onSubmit={handleSuggestionCreation}>
-                        <input type="text" id='body' value={body} onChange={(e) => setBody(e.target.value)} />
-                        <button type='submit'>Submit</button>
+                    <form id='create-suggestion-form' onSubmit={handleSuggestionCreation}>
+                        <textarea name="body" value={body} onInput={(e) => setBody(e.target.value)} rows="6" class="input-text" id="body" required autocomplete="off"></textarea>
+                        <label for="body"><span>Suggestion</span></label>
+                        <input type="submit" value="Collaborate!"/>
                     </form>
                 </div>
             ) : null}
