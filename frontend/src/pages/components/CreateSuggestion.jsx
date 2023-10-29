@@ -36,17 +36,27 @@ export default function CreateSuggestion({ client, user }) {
     return (
         <>
             <div id='create-suggestion-toggle' className={showPrompt ? 'close' : 'open'}>
+                <h5>Collaborate</h5>
                 <FontAwesomeIcon
                     icon={showPrompt ? faCircleXmark : faCirclePlus}
-                    size='xl'
+                    size='2xl'
                     onClick={() => setShowPrompt(!showPrompt)}
                 />
+                
             </div>
             {showPrompt ? (
                 <div id='create-suggestion-prompt'>
                     <form id='create-suggestion-form' onSubmit={handleSuggestionCreation}>
-                        <textarea name="body" value={body} onInput={(e) => setBody(e.target.value)} rows="6" class="input-text" id="body" required autocomplete="off"></textarea>
-                        <label for="body"><span>Suggestion</span></label>
+                        <textarea 
+                        name="body" 
+                        value={body} 
+                        onInput={(e) => setBody(e.target.value)} 
+                        rows="6" 
+                        className="input-text" 
+                        id="body" required 
+                        autoComplete="off"
+                        placeholder='Share your brilliant idea...'></textarea>
+                        <label htmlFor="body"><span>Suggestion</span></label>
                         <input type="submit" value="Collaborate!"/>
                     </form>
                 </div>

@@ -15,6 +15,6 @@ export default function Logout({ client, setUser }) {
 		});
 	}
     return (
-        <button onClick={handleLogout}><h4>Logout</h4></button>
+        <button id="logout-button" onClick={handleLogout}><h4>Logout</h4></button>
     )
 }

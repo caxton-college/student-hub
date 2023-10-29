@@ -43,12 +43,23 @@ export default function Pin({ client, user, pinned, id }) {
         updatePin();
     };
 
-    return (
-        <FontAwesomeIcon
-            onClick={handleClick}
-            icon={faThumbtack}
-            className={pinClass}
-            size="xl"
-        />
-    );
+    if (user.role === 3 | user.role === 4) {
+        return (
+            <FontAwesomeIcon
+                onClick={handleClick}
+                icon={faThumbtack}
+                className={pinClass}
+                size="xl"
+            />
+        );
+    } else if (pinClass === "pinned") {
+        return (
+            <FontAwesomeIcon
+                icon={faThumbtack}
+                className={pinClass}
+                size="xl"
+            />
+        );
+    }
+    
 }

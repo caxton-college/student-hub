@@ -17,9 +17,9 @@ const Header = () => {
     return (
         <div className="header">
         <div className="header-navbar-content">
-            <h3>{pageName}</h3>
-            
+        <img src = "/logo-caxton.png" alt="Logo" height={"75px"}/>
             <div className="toggle-dark-mode" onClick={toggleDarkMode}>
+            
                 <FontAwesomeIcon icon={isDarkMode ? faMoon : faSun} size="xl" />
             </div>
         </div>

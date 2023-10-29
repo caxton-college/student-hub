@@ -8,21 +8,22 @@
 }
 
 
+
 :root[data-theme="light"] {
-    --text: #150c05;
-    --background: #ffffff;
-    --primary: #d66b24;
-    --secondary: #C9E4F8;
-    --accent: #7b41d2;
+    --text: #04292f;
+    --background: #F2FCFD;
+    --primary: #2f75ee;
+    --secondary: #FABDB8;
+    --accent: #c18010;
   }
-:root[data-theme="dark"] {
-    --text: #faf1ea;
-    --background: #000000;
-    --primary: #672dbe;
-    --secondary: #072236;
-    --accent: #db7029;
+  :root[data-theme="dark"] {
+    --text: #d0f5fb;
+    --background: #020C0D;
+    --primary: #1157d0;
+    --secondary: #5a1207;
+    --accent: #efae3e;
 }
-  
+
 
 body {
     font-size: 25px;
@@ -33,6 +34,7 @@ body {
 }
 
 .border {
+    
     border-style: solid;
     border-radius: 5px;
 }
@@ -49,6 +51,9 @@ body {
     padding: 10px;
 
 }
+
+
+
   
   .nav-link {
     text-decoration: none;
@@ -76,10 +81,11 @@ body {
 .suggestion {
     display: grid;
     padding-left: 10px;
-    
-    width: 90vw;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;    width: 90vw;
     height: 250px;
     grid-template-columns: 4fr 1fr;
+    border-color: var(--primary);
+    
     
 }
 
@@ -103,36 +109,44 @@ body {
 }
 
 #create-suggestion-toggle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
     position: fixed;
-    bottom: 100px;
-    right: 50px;
+    top: 0%;
+    text-align: center;
     z-index: 999; /* Ensures it stays on top of other elements */
 }
+
 
 #create-suggestion-prompt {
     position: fixed;
     width: 80%;
     height: 50%;
     background-color: var(--background);
-    border: solid var(--text) 3px;
+    border: solid var(--primary) 3px;
+    border-radius: 5px;
     top: 50%; /* Adjust this value based on your design */
     left: 50%; /* Adjust this value based on your design */
     transform: translate(-50%, -50%); /* Centers the prompt */
 }
 
 .open {
-    color: var(--accent);
+    color: var(--primary);
 }
 
 .close {
-    color: var(--primary);
+    color: var(--accent);
 }
 
 
 
 /* Define the styles for pinned and unpinned states */
 .pinned {
-    color: var(--accent);
+    color: var(--primary);
+   
 }
 
 .pinned:hover {
@@ -146,7 +160,7 @@ body {
 }
 
 .unpinned:hover{
-    color: var(--accent);
+    color: var(--primary);
 }
 
 /* Bounce animation */
@@ -191,12 +205,12 @@ body {
     width: 100%;
     height: 6%;
     background-color: var(--background);
-    border-bottom: 2px solid var(--text);
+    border-bottom: 2px solid var(--primary);
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 10px;
-    z-index: 1000;
+    z-index: 500;
 }
 
 .header-navbar-content {
@@ -214,7 +228,7 @@ body {
     width: 100%;
     height: 8vh;
     background-color: var(--background);
-    border-top: 2px solid var(--text);
+    border-top: 2px solid var(--primary);
     display: flex;
     justify-content: space-between;
     justify-content: center;
@@ -227,9 +241,9 @@ display: flex;
 }
 
 .nav-link {
-margin: 0 15px;
-text-decoration: none;
-color: var(--text);
+    margin: 0 15px;
+    text-decoration: none;
+    color: var(--text);
 }
 
 
@@ -384,5 +398,61 @@ input.input-text:invalid ~ input[type="submit"], textarea.input-text:invalid ~ i
 input[type="submit"] {
     background-color: var(--primary);
     border-radius: 5px;
+}
+
+
+
+#profile-page {
+    display: grid;
+    height: 80vh;
+    grid-template-rows: 1fr 3fr 1fr;
+    place-items: center;
+    padding-top: 5%;
+}
+
+
+
+button {
+    background-color: var(--background);
+    font-family: inherit;
+    border: none;
+    border-radius: 5px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+#logout-button {
+    background-color: var(--secondary);
+    width: 25%;
+    
+    
+}
+
+#user-suggestions {
+    overflow-y: scroll;
+    height: 100%;
+    width: 80%;
+    display: grid;
+    gap: 10px;
+    padding: 50px;
+    border: var(--primary) solid 3px;
+    border-radius: 5px;
+}
+
+
+
+#profile-header {
+    width: 100%;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#points {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    color: var(--accent);
 }
 
