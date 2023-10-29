@@ -41,7 +41,7 @@ export default function Like({ client, user, likes, liked, id }) {
     };
 
     const icon = stateLiked ? solidHeart : faHeart;
-    const colour = stateLiked ? "red" : "grey";
+    const colour = stateLiked ? "#B13F3E" : "#cbcbe2";
 
     return (
         <div className='suggestion-likes'>

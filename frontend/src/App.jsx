@@ -70,12 +70,13 @@ function App() {
 
 	return (
 		<>
-			<Header/> 
-			<Routes>
+			
+            
+            <Routes>
 				<Route path='/' element={<Profile user={user} setUser={setUser} client={client}/>}/>
                 <Route path='/suggestions' element={<Suggestions user={user} client={client}/>}/>
-                
 			</Routes>
+            
             <Navbar/>   
             
 		</>

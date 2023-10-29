@@ -8,7 +8,7 @@ export default function Suggestion({client, suggestion, user}) {
 
     return (
         <>
-			<div className='suggestion border'>
+			<div className='suggestion shadow'>
 				<div className='suggestion-body'>
 					<p>{suggestion.body}</p>
 				</div>

@@ -10,19 +10,19 @@
 
 
 :root[data-theme="light"] {
-    --text: #04292f;
-    --background: #F2FCFD;
-    --primary: #2f75ee;
-    --secondary: #FABDB8;
-    --accent: #c18010;
-  }
-  :root[data-theme="dark"] {
-    --text: #d0f5fb;
-    --background: #020C0D;
-    --primary: #1157d0;
-    --secondary: #5a1207;
-    --accent: #efae3e;
+    --text: #0d0d17;
+    --background: #f9f9fa;
+    --primary: #3e3e6f;
+    --secondary: #cbcbe2;
+    --accent: #B13F3E;
 }
+:root[data-theme="dark"] {
+    --text: #e8e8f2;
+    --background: #050506;
+    --primary: #9090c1;
+    --secondary: #1d1d34;
+    --accent: #6f6fae;
+  }
 
 
 body {
@@ -30,24 +30,28 @@ body {
     font-family: 'JetBrains Mono', monospace;
     background-color: var(--background);
     color: var(--text);
-    margin: 0;
+    
 }
 
-.border {
-    
-    border-style: solid;
-    border-radius: 5px;
+
+#root {
+    display: grid;
+    height: 100vh;
+    grid-template-rows: 5fr 1fr;
+}
+
+.shadow {
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
 }
 
 .navbar {
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 7%;
+    height: 10%;
     display: flex;
     justify-content: space-around; /* Adjust to space the icons evenly */
     align-items: center;
-    background-color: var(--background); /* Change as needed */
     padding: 10px;
 
 }
@@ -55,10 +59,10 @@ body {
 
 
   
-  .nav-link {
+.nav-link {
     text-decoration: none;
     color: var(--text);
-  }
+ }
   
   /* Additional styling for the icons, adjust as needed */
   .nav-link:hover {
@@ -70,24 +74,53 @@ body {
     color: var(--accent);
 }
 .suggestions{
-    margin-top: 8%;
-    margin-bottom: 8%;
-    gap: 15px;
+    
+    gap: 25px;
     display: grid;
     width: 100vw;
     place-items: center;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    
+    
+    
+    
+}
+
+#content {
+    display: grid;
+    
+    place-items: center;
+}
+
+.clickable {
+    transition: all 0.2s ease;
+}
+
+.selected-tab {
+    color: var(--primary) !important;
 }
 
 .suggestion {
     display: grid;
-    padding-left: 10px;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;    width: 90vw;
-    height: 250px;
+    padding-left: 25px;
+    padding-top: 5px;
+   
+    width: 85vw;
+    height: 25vh;
     grid-template-columns: 4fr 1fr;
-    border-color: var(--primary);
+    border-radius: 30px;
+    transition: all 0.2s ease;
+    z-index: 10;
     
     
 }
+
+
+
+.suggestion:hover {
+    transform: scale(1.01);
+  }
 
 .suggestion-options {
     display: flex;
@@ -115,7 +148,8 @@ body {
     justify-content: center;
     gap: 5px;
     position: fixed;
-    top: 0%;
+    right: 2%;
+    bottom: 15%;
     text-align: center;
     z-index: 999; /* Ensures it stays on top of other elements */
 }
@@ -126,8 +160,9 @@ body {
     width: 80%;
     height: 50%;
     background-color: var(--background);
-    border: solid var(--primary) 3px;
-    border-radius: 5px;
+    z-index: 999;
+    border-radius: 35px;
+    
     top: 50%; /* Adjust this value based on your design */
     left: 50%; /* Adjust this value based on your design */
     transform: translate(-50%, -50%); /* Centers the prompt */
@@ -150,12 +185,12 @@ body {
 }
 
 .pinned:hover {
-    color: grey;
+    color: var(--secondary);
 }
 
 .unpinned {
     
-    color: grey;
+    color: var(--secondary);
     transition: all 0.3s ease-in-out;
 }
 
@@ -198,20 +233,7 @@ body {
 }
 
 
-/* Header Component */
-.header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 6%;
-    background-color: var(--background);
-    border-bottom: 2px solid var(--primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    z-index: 500;
-}
+
 
 .header-navbar-content {
     width: 80%;
@@ -221,20 +243,32 @@ body {
     align-items: center;
 }
 
+#navbar-container {
+    display: grid;
+
+    width: 100vw;
+    place-items: center;
+    background-color: transparent;
+}
+
 /* Navbar Component */
 .navbar {
     position: fixed;
-    bottom: 0;
-    width: 100%;
+    
+    bottom: 2%;
+    width: 90vw;
     height: 8vh;
     background-color: var(--background);
-    border-top: 2px solid var(--primary);
+    border-radius: 100px;
     display: flex;
     justify-content: space-between;
     justify-content: center;
     padding: 10px;
     z-index: 500;
 }
+
+
+
 
 #navbar-items {
 display: flex;
@@ -243,7 +277,7 @@ display: flex;
 .nav-link {
     margin: 0 15px;
     text-decoration: none;
-    color: var(--text);
+    color: var(--secondary);
 }
 
 
@@ -254,6 +288,7 @@ display: flex;
 #create-suggestion-form {
     height: 100%;
     display: grid;
+    
     place-items: center;
     text-align: left;
 }
@@ -359,6 +394,7 @@ input[type="submit"] {
     background: var(--background);
     -webkit-transition: opacity 0.2s ease, background 0.2s ease;
     transition: opacity 0.2s ease, background 0.2s ease;
+    color: var(--background);
     display: block;
     opacity: 0;
     margin: 10px 0 0 0;
@@ -404,10 +440,10 @@ input[type="submit"] {
 
 #profile-page {
     display: grid;
-    height: 80vh;
+    height: 100%;
     grid-template-rows: 1fr 3fr 1fr;
     place-items: center;
-    padding-top: 5%;
+    
 }
 
 

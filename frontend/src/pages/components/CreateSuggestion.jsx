@@ -36,7 +36,6 @@ export default function CreateSuggestion({ client, user }) {
     return (
         <>
             <div id='create-suggestion-toggle' className={showPrompt ? 'close' : 'open'}>
-                <h5>Collaborate</h5>
                 <FontAwesomeIcon
                     icon={showPrompt ? faCircleXmark : faCirclePlus}
                     size='2xl'
@@ -45,7 +44,7 @@ export default function CreateSuggestion({ client, user }) {
                 
             </div>
             {showPrompt ? (
-                <div id='create-suggestion-prompt'>
+                <div id='create-suggestion-prompt' className='shadow'>
                     <form id='create-suggestion-form' onSubmit={handleSuggestionCreation}>
                         <textarea 
                         name="body" 
