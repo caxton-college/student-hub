@@ -74,17 +74,14 @@ body {
 .toggle-dark-mode:hover {
     color: var(--accent);
 }
-.suggestions{
+.content{
     
     gap: 25px;
     display: grid;
     width: 100vw;
     place-items: center;
     padding-top: 3%;
-    padding-bottom: 3%;
-    
-    
-    
+    padding-bottom: 3%;  
     
 }
 
@@ -119,6 +116,20 @@ body {
     
 }
 
+.announcement {
+    display: grid;
+    padding-left: 25px;
+    padding-top: 5px;
+    grid-template-rows: 1fr 3fr;
+    width: 85vw;
+    height:50vh;
+    
+    border-radius: 35px;
+    transition: all 0.2s ease;
+    z-index: 10;
+    
+    
+}
 
 
 .suggestion:hover {

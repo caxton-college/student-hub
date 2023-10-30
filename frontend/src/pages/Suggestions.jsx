@@ -24,7 +24,7 @@ export default function Suggestions({user, client}) {
 	
 	
 	return (
-		<div className='suggestions'>
+		<div className='content'>
 			{
 				suggestions.map(suggestion => (
 					<Suggestion client={client} suggestion={suggestion} user={user} key={suggestion.id}/>

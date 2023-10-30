@@ -6,6 +6,7 @@ import axios from "axios";
 import Navbar from './pages/components/Navbar';
 import Profile from './pages/Profile';
 import Suggestions from './pages/Suggestions';
+import Announcements from './pages/Announcements';
 import Header from './pages/components/Header';
 
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -13,7 +14,7 @@ axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.withCredentials = true;
 
 const client = axios.create({
-	baseURL: "http://192.168.1.64:8000" 
+	baseURL: "http://172.16.34.154:8000" 
 })
 
 //192.168.1.64
@@ -75,6 +76,8 @@ function App() {
             <Routes>
 				<Route path='/' element={<Profile user={user} setUser={setUser} client={client}/>}/>
                 <Route path='/suggestions' element={<Suggestions user={user} client={client}/>}/>
+                <Route path='/announcements' element={<Announcements user={user} client={client}/>}/>
+
 			</Routes>
             
             <Navbar/>   
