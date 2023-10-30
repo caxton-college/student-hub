@@ -130,7 +130,9 @@ body {
     
     
 }
-
+.announcement:hover {
+    transform: scale(1.01);
+  }
 
 .suggestion:hover {
     transform: scale(1.01);
@@ -155,7 +157,7 @@ body {
     flex-direction: row;
 }
 
-#create-suggestion-toggle {
+.create-toggle {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -169,14 +171,15 @@ body {
 }
 
 
-#create-suggestion-prompt {
+.create-prompt {
     position: fixed;
     width: 80%;
     height: 50%;
     background-color: var(--background);
     z-index: 999;
     border-radius: 35px;
-    
+    padding-top: 15px;
+    padding-bottom: 25px;
     top: 50%; /* Adjust this value based on your design */
     left: 50%; /* Adjust this value based on your design */
     transform: translate(-50%, -50%); /* Centers the prompt */
@@ -307,6 +310,17 @@ display: flex;
     text-align: left;
 }
 
+
+
+#create-announcement-form {
+    padding-top: 10px;
+   
+    height: 100%;
+    display: grid;
+    
+    place-items: center;
+    text-align: left;
+}
 
 input,
 span,

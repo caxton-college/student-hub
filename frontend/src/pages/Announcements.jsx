@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useReducer } from 'react';
 
 
-import CreateSuggestion from './components/CreateSuggestion';
+import CreateAnnouncement from './components/CreateAnnouncement';
 import Announcement from './components/Announcement';
 
 export default function Announcements({user, client}) {
@@ -32,6 +32,11 @@ export default function Announcements({user, client}) {
                     <Announcement announcement={announcement} key={announcement.id}></Announcement>
 				))
 			}
+            {
+                user.role === 3 ? (
+                    <CreateAnnouncement client={client} user={user}></CreateAnnouncement>
+                ) : null
+            }
             
             
 		</div>

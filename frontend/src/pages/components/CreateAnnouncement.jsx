@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
-export default function CreateSuggestion({ client, user }) {
+export default function CreateAnnouncement({ client, user }) {
+    
     const [csrfToken, setCsrfToken] = useState('');
+    const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
     const [showPrompt, setShowPrompt] = useState(false);
 
@@ -22,14 +24,16 @@ export default function CreateSuggestion({ client, user }) {
         // Post request using the fetched CSRF token
         e.preventDefault();
         client.post(
-            '/api/create_suggestion',
-            { body: body },
+            '/api/create_announcement',
+            { 
+                body: body, 
+                title: title},
             { headers: { 'X-CSRFToken': csrfToken } }
         ).then(response => {
             setShowPrompt(false);
             window.location.reload();
         }).catch(error => {
-            console.error('Error creating suggestion:', error);
+            console.error('Error creating announcement:', error);
         });
     };
 
@@ -45,7 +49,18 @@ export default function CreateSuggestion({ client, user }) {
             </div>
             {showPrompt ? (
                 <div className='shadow create-prompt'>
-                    <form id='create-suggestion-form' onSubmit={handleSuggestionCreation}>
+                    <form id='create-announcement-form' onSubmit={handleSuggestionCreation}>
+                    <textarea 
+                        name="title" 
+                        value={title} 
+                        onInput={(e) => setTitle(e.target.value)} 
+                        rows="1" 
+                        className="input-text" 
+                        id="title" 
+                        required 
+                        autoComplete="off"
+                        placeholder='Announcement title'></textarea>
+                        <label htmlFor="title"><span>Title</span></label>
                         <textarea 
                         name="body" 
                         value={body} 
@@ -54,9 +69,9 @@ export default function CreateSuggestion({ client, user }) {
                         className="input-text" 
                         id="body" required 
                         autoComplete="off"
-                        placeholder='Share your brilliant idea...'></textarea>
-                        <label htmlFor="body"><span>Suggestion</span></label>
-                        <input type="submit" value="Collaborate!"/>
+                        placeholder='Announcement body'></textarea>
+                        <label htmlFor="body"><span>Body</span></label>
+                        <input type="submit" value="Share"/>
                     </form>
                 </div>
             ) : null}
