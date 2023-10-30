@@ -6,19 +6,19 @@ import { useState } from "react";
 
 
 function Navbar() {
-    const [selected, setSelected] = useState("profile");
+    const [selected, setSelected] = useState(window.location.pathname);
 
     return (
         <div id="navbar-container">
         <div className="navbar shadow">
             <div className="header-navbar-content">
-                <Link to="/announcements" onClick={(e) => setSelected("announcements")} className={selected === "announcements" ? "selected-tab" : "nav-link"}>
+                <Link to="/announcements" onClick={(e) => setSelected("/announcements")} className={selected === "/announcements" ? "selected-tab" : "nav-link"}>
                     <FontAwesomeIcon icon={faNoteSticky} size="2xl" />
                 </Link>
-                <Link to="/suggestions" onClick={(e) => setSelected("suggestions")} className={selected === "suggestions" ? "selected-tab" : "nav-link"}>
+                <Link to="/suggestions" onClick={(e) => setSelected("/suggestions")} className={selected === "/suggestions" ? "selected-tab" : "nav-link"}>
                     <FontAwesomeIcon icon={faLightbulb} size="2xl" />
                 </Link>
-                <Link to="/" onClick={(e) => setSelected("profile")} className={selected === "profile" ? "selected-tab" : "nav-link"}>
+                <Link to="/" onClick={(e) => setSelected("/profile")} className={selected === "profile" ? "/selected-tab" : "nav-link"}>
                     <FontAwesomeIcon icon={faUser} size="2xl" />
                 </Link>
             </div>

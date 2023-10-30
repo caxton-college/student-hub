@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlus, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
-export default function CreateAnnouncement({ client, user }) {
+export default function CreateAnnouncement({ 
+    client, 
+    user, 
+    showPollPrompt, 
+    setShowPollPrompt, 
+    showAnnouncementPrompt, 
+    setShowAnnouncementPrompt
+}) {
     
     const [csrfToken, setCsrfToken] = useState('');
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
-    const [showPrompt, setShowPrompt] = useState(false);
 
     useEffect(() => {
         // Fetch the CSRF token on component mount
@@ -30,24 +36,30 @@ export default function CreateAnnouncement({ client, user }) {
                 title: title},
             { headers: { 'X-CSRFToken': csrfToken } }
         ).then(response => {
-            setShowPrompt(false);
+            setShowAnnouncementPrompt(false);
             window.location.reload();
         }).catch(error => {
             console.error('Error creating announcement:', error);
         });
     };
 
+    function handlePromtToggle() {
+        setShowPollPrompt(false);
+        setShowAnnouncementPrompt(!showAnnouncementPrompt);
+
+    }
+
     return (
         <>
-            <div className={showPrompt ? 'close create-toggle' : 'open create-toggle'}>
+            <div className={showAnnouncementPrompt ? 'close create-toggle' : 'open create-toggle'}>
                 <FontAwesomeIcon
-                    icon={showPrompt ? faCircleXmark : faCirclePlus}
+                    icon={showAnnouncementPrompt ? faCircleXmark : faCircleInfo}
                     size='2xl'
-                    onClick={() => setShowPrompt(!showPrompt)}
+                    onClick={handlePromtToggle}
                 />
                 
             </div>
-            {showPrompt ? (
+            {showAnnouncementPrompt ? (
                 <div className='shadow create-prompt'>
                     <form id='create-announcement-form' onSubmit={handleSuggestionCreation}>
                     <textarea 

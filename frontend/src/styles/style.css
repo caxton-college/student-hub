@@ -171,6 +171,19 @@ body {
 }
 
 
+
+.create-poll-toggle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    position: fixed;
+    left: 2%;
+    bottom: 15%;
+    text-align: center;
+    z-index: 999; /* Ensures it stays on top of other elements */
+}
 .create-prompt {
     position: fixed;
     width: 80%;
@@ -179,6 +192,7 @@ body {
     z-index: 999;
     border-radius: 35px;
     padding-top: 15px;
+    overflow-y: hidden;
     padding-bottom: 25px;
     top: 50%; /* Adjust this value based on your design */
     left: 50%; /* Adjust this value based on your design */
@@ -321,6 +335,19 @@ display: flex;
     place-items: center;
     text-align: left;
 }
+
+
+
+#create-poll-form {
+    padding-top: 10px;
+   
+    height: 100%;
+    display: grid;
+    
+    place-items: center;
+    text-align: left;
+}
+
 
 input,
 span,
