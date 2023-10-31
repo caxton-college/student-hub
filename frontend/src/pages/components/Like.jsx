@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 
-export default function Like({ client, user, likes, liked, id }) {
+export default function Like({ client, user, likes, liked, id, type }) {
     const [csrfToken, setCsrfToken] = useState('');
     const [stateLiked, setLiked] = useState(liked);
     const [stateLikes, setLikes] = useState(likes);
@@ -22,8 +22,8 @@ export default function Like({ client, user, likes, liked, id }) {
 
     const updateLikes = () => {
         client.post(
-            '/api/update_suggestion_likes',
-            { suggestion_id: id },
+            `/api/update_${type}_likes`,
+            { id : id },
             { headers: { 'X-CSRFToken': csrfToken } }
         ).then(response => {
             setLiked(response.data.liked);

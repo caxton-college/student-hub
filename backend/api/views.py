@@ -316,10 +316,10 @@ class UpdateSuggestionLikes(APIView):
         
         data = dict(request.data)
         
-        if "suggestion_id" not in data.keys():
+        if "id" not in data.keys():
             return Response({"message": "suggestion_id missing"}, status=status.HTTP_400_BAD_REQUEST)
         
-        suggestion_id = data["suggestion_id"]
+        suggestion_id = data["id"]
         
         suggestion = Suggestion.objects.get(id=suggestion_id)
         serialiser = SuggestionSerializer(suggestion)
@@ -524,7 +524,7 @@ class GetPolls(APIView):
                 'poll': poll_serializer.data,
                 'options': options_data
             })
-
+      
         return Response(poll_data, status=status.HTTP_200_OK)
 		
 class CreatePoll(APIView):
@@ -629,7 +629,7 @@ class UpdatePollOptionLikedStatus(APIView):
         
         
         data = request.data
-        option_id = data.get('option_id', None)
+        option_id = data.get('id', None)
 
         if not option_id:
             return Response({"message": "Option ID is required."}, status=status.HTTP_400_BAD_REQUEST)
@@ -646,7 +646,6 @@ class UpdatePollOptionLikedStatus(APIView):
 
         # Un-like other poll options in the same poll
         other_options = PollOption.objects.filter(poll=option.poll).exclude(id=option_id)
-
         for other_option in other_options:
             other_option_data = PollOptionSerializer(other_option).data
             if user.user_id in other_option_data["liked_by"]:

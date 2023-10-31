@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleInfo, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo, faCirclePlus, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
 export default function CreateAnnouncement({ 
     client, 
@@ -53,7 +53,7 @@ export default function CreateAnnouncement({
         <>
             <div className={showAnnouncementPrompt ? 'close create-toggle' : 'open create-toggle'}>
                 <FontAwesomeIcon
-                    icon={showAnnouncementPrompt ? faCircleXmark : faCircleInfo}
+                    icon={showAnnouncementPrompt ? faCircleXmark : faCirclePlus}
                     size='2xl'
                     onClick={handlePromtToggle}
                 />

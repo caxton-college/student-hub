@@ -27,6 +27,7 @@ export default function Suggestion({client, suggestion, user}) {
                     likes={suggestion.likes} 
                     liked={suggestion.liked} 
                     id={suggestion.id}
+                    type={"suggestion"}
                     />
                     	
 				</div>

@@ -7,6 +7,7 @@ import Navbar from './pages/components/Navbar';
 import Profile from './pages/Profile';
 import Suggestions from './pages/Suggestions';
 import Announcements from './pages/Announcements';
+import Polls from './pages/Polls';
 import Header from './pages/components/Header';
 
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -77,7 +78,7 @@ function App() {
 				<Route path='/' element={<Profile user={user} setUser={setUser} client={client}/>}/>
                 <Route path='/suggestions' element={<Suggestions user={user} client={client}/>}/>
                 <Route path='/announcements' element={<Announcements user={user} client={client}/>}/>
-
+                <Route path='/polls' element={<Polls user={user} client={client}/>}/>
 			</Routes>
             
             <Navbar/>   

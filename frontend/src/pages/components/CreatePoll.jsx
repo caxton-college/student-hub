@@ -7,16 +7,12 @@ import PollOptionInput from './PollOptionInput';
 export default function CreatePoll({ 
     client, 
     user, 
-    showPollPrompt, 
-    setShowPollPrompt, 
-    showAnnouncementPrompt, 
-    setShowAnnouncementPrompt
 }) {
     
     const [csrfToken, setCsrfToken] = useState('');
     const [question, setQuestion] = useState('');
     const [options, setOptions] = useState(["f", "g"]);
-
+    const [showPollPrompt, setShowPollPrompt] = useState(false);
     useEffect(() => {
         // Fetch the CSRF token on component mount
         client.get('/api/get_csrf_token')
@@ -48,7 +44,6 @@ export default function CreatePoll({
 
     function handlePromtToggle() {
         setShowPollPrompt(!showPollPrompt);
-        setShowAnnouncementPrompt(false);
 
     }
 
@@ -59,9 +54,9 @@ export default function CreatePoll({
 
     return (
         <>
-            <div className={showPollPrompt ? 'close create-poll-toggle' : 'open create-poll-toggle'}>
+            <div className={showPollPrompt ? 'close create-toggle' : 'open create-poll-toggle'}>
                 <FontAwesomeIcon
-                    icon={showPollPrompt ? faCircleXmark : faCircleQuestion}
+                    icon={showPollPrompt ? faCircleXmark : faCirclePlus}
                     size='2xl'
                     onClick={handlePromtToggle}
                 />

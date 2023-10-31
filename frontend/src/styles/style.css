@@ -179,7 +179,7 @@ body {
     justify-content: center;
     gap: 5px;
     position: fixed;
-    left: 2%;
+    right: 2%;
     bottom: 15%;
     text-align: center;
     z-index: 999; /* Ensures it stays on top of other elements */
