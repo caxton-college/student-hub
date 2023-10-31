@@ -148,7 +148,7 @@ body {
     
 }
 
-.suggestion-likes {
+.likes {
     display: flex;
     width: 100%;
     justify-content: center;
@@ -381,6 +381,26 @@ display: flex;
 
 .poll-option-input {
     width: 80%;
+}
+
+.poll-option {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    place-items: center;
+    width: 100%;
+}
+
+.poll {
+    height: fit-content;
+    width: 80%;
+    border-radius: 35px;
+    padding-left: 25px;
+    padding-top: 5px;
+    
+}
+
+.option-body {
+    width: 100%;
 }
 
 input,

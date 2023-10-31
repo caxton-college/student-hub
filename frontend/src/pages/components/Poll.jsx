@@ -9,6 +9,7 @@ export default function Poll({ client, user, pollData }) {
             {
                 pollData.options.map((option) => {
                     return (
+                        
                         <PollOption
                         client={client}
                         user={user}

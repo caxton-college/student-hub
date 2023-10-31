@@ -4,6 +4,7 @@ import Like from './Like'
 export default function PollOption({client, user, option}) {
     return (
         <div className='poll-option'>
+            <p className='option-body'>{option.body}</p>
             <Like
             client={client}
             user={user}

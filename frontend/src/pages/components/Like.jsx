@@ -29,6 +29,8 @@ export default function Like({ client, user, likes, liked, id, type }) {
             setLiked(response.data.liked);
             setLikes(response.data.likes);
             setClicked(true);
+            window.location.reload();
+            
 
             // Remove the beat animation after 500ms
             setTimeout(() => {
@@ -44,7 +46,7 @@ export default function Like({ client, user, likes, liked, id, type }) {
     const colour = stateLiked ? "#B13F3E" : "#cbcbe2";
 
     return (
-        <div className='suggestion-likes'>
+        <div className='likes'>
             <h5>{stateLikes}</h5>
             <FontAwesomeIcon
                 onClick={updateLikes}
