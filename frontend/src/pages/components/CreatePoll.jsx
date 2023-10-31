@@ -15,7 +15,7 @@ export default function CreatePoll({
     
     const [csrfToken, setCsrfToken] = useState('');
     const [question, setQuestion] = useState('');
-    const [options, setOptions] = useState(["hola", "adios"]);
+    const [options, setOptions] = useState(["f", "g"]);
 
     useEffect(() => {
         // Fetch the CSRF token on component mount
@@ -52,7 +52,10 @@ export default function CreatePoll({
 
     }
 
-
+    function handleOptionAddition() {
+        setOptions([...options, ""]);
+    }
+    
 
     return (
         <>
@@ -66,38 +69,44 @@ export default function CreatePoll({
             </div>
             {showPollPrompt ? (
                 <div className='shadow create-prompt'>
-                    <form id='create-poll-form' onSubmit={handleSuggestionCreation}>
-                    <textarea 
-                        name="question" 
-                        value={question} 
-                        onInput={(e) => setQuestion(e.target.value)} 
-                        rows="1" 
-                        className="input-text" 
-                        id="question" 
-                        required 
-                        autoComplete="off"
-                        placeholder='Poll question'>
-
-                        </textarea>
-                        <label htmlFor="question"><span>Question</span></label>
-                        {
-                            options.map((option, index) => {
+                    <form id='create-poll-form' onSubmit={handleSuggestionCreation} key={"create-poll-form"}>
+                            <textarea 
+                                name="question" 
+                                value={question} 
+                                onInput={(e) => setQuestion(e.target.value)} 
+                                rows="1" 
+                                className="input-text" 
+                                id="question" 
+                                required 
+                                autoComplete="off"
+                                placeholder='Poll question'
+                                key={`create-poll-question`}>
                                 
-                                return (
-                                    <PollOptionInput
-                                    index={index}
-                                    option={option}
-                                    options={options}
-                                    setOptions={setOptions}
-                                    key={index}>
-                                    </PollOptionInput>
-                                )
-                            })
-
-                        }
-
-
-                        <input type="submit" value="Post"/>
+                            </textarea>
+                            <label htmlFor="question" key={"quesiton-lable"}><span>Question</span></label>
+                    
+                        
+                            {
+                                options.map((option, index) => {
+                                    
+                                    return (
+                                        <>
+                                            <PollOptionInput
+                                            index={index}
+                                            current_option={option}
+                                            options={options}
+                                            setOptions={setOptions}
+                                            key={`create-option-${index}`}>
+                                            </PollOptionInput>
+                                            
+                                        </>
+                                        
+                                    )
+                                })
+                            }
+                       
+                        <FontAwesomeIcon icon={faCirclePlus} onClick={handleOptionAddition}></FontAwesomeIcon>
+                        <input type="submit" key={"submit-poll"} value="Post"/>
 
                     </form>
                 </div>

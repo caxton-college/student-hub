@@ -192,7 +192,7 @@ body {
     z-index: 999;
     border-radius: 35px;
     padding-top: 15px;
-    overflow-y: hidden;
+   
     padding-bottom: 25px;
     top: 50%; /* Adjust this value based on your design */
     left: 50%; /* Adjust this value based on your design */
@@ -339,15 +339,49 @@ display: flex;
 
 
 #create-poll-form {
-    padding-top: 10px;
-   
-    height: 100%;
+    gap: 25px;
     display: grid;
-    
+    width: 100%;
     place-items: center;
-    text-align: left;
+    padding-top: 3%;
+    padding-bottom: 3%;  
+    
 }
 
+.create-poll-question {
+    display: grid;
+    place-items: center;
+    height: 100px;
+    width: 100%;
+}
+
+.create-poll-option {
+    display: grid;
+    place-items: center;
+    height: 100px;
+    width: 95%;
+}
+
+.create-poll-options {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    
+     /* Set to 25% to match the 1fr 4fr structure */
+    width: 100%;
+}
+
+.poll-option-input-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+}
+
+.poll-option-input {
+    width: 80%;
+}
 
 input,
 span,
