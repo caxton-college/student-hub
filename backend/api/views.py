@@ -322,18 +322,37 @@ class UpdateSuggestionLikes(APIView):
         suggestion_id = data["id"]
         
         suggestion = Suggestion.objects.get(id=suggestion_id)
+        suggestion_owner = suggestion.owner
+        
         serialiser = SuggestionSerializer(suggestion)
         liked_data = {}
             
         if user.user_id in serialiser.data["liked_by"]:
             suggestion.liked_by.remove(user.user_id)
             suggestion.likes -= 1
+            
             suggestion.save()
+            user.likes -= 1
+            user.points -= 1
+            user.save()
+            
+            if user != suggestion_owner:
+                suggestion_owner.points += 5
+
+                suggestion_owner.save()
             
         else:
             suggestion.liked_by.add(user.user_id)
             suggestion.likes += 1
             suggestion.save()
+            user.likes += 1
+            user.points += 1
+            user.save()
+            
+            if user != suggestion_owner:
+                suggestion_owner.points += 5
+            
+                suggestion_owner.save()
         
         serialiser = SuggestionSerializer(suggestion)
           
@@ -515,11 +534,16 @@ class GetPolls(APIView):
             options_data = PollOptionSerializer(options, many=True).data
 
             # If the user is authenticated, add "liked" key to options
-            if user:
+            if user.is_authenticated:
                 for option in options_data:
                     option["liked"] = user.user_id in option["liked_by"]
                     del option["liked_by"]
-
+            else:
+                for option in options_data:
+                    option["liked"] = False
+                    del option["liked_by"]
+                    
+                    
             poll_data.append({
                 'poll': poll_serializer.data,
                 'options': options_data
@@ -624,6 +648,10 @@ class UpdatePollOptionLikedStatus(APIView):
             Response: Status code 200 (OK) if liked status is updated, 400 (Bad Request) if not.
         """
         user = request.user
+        
+        if not user.is_authenticated:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
         if user.role == "teacher":
             return Response(status=status.HTTP_403_FORBIDDEN)
         
@@ -640,9 +668,9 @@ class UpdatePollOptionLikedStatus(APIView):
         except PollOption.DoesNotExist:
             return Response({"message": "Poll option not found."}, status=status.HTTP_400_BAD_REQUEST)
 
-        if option.poll.owner == user:
+        """if option.poll.owner == user:
             # Return an error message if the user tries to like their own poll option.
-            return Response({"message": "You cannot like your own poll option."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "You cannot like your own poll option."}, status=status.HTTP_400_BAD_REQUEST)"""
 
         # Un-like other poll options in the same poll
         other_options = PollOption.objects.filter(poll=option.poll).exclude(id=option_id)

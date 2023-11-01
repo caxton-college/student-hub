@@ -1,91 +1,77 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom'
-import { useState, useEffect } from 'react';
-import axios from "axios";
-
+import React, { useState, useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import axios from 'axios';
 import Navbar from './pages/components/Navbar';
 import Profile from './pages/Profile';
 import Suggestions from './pages/Suggestions';
 import Announcements from './pages/Announcements';
 import Polls from './pages/Polls';
-import Header from './pages/components/Header';
 
-axios.defaults.xsrfCookieName = "csrftoken";
-axios.defaults.xsrfHeaderName = "X-CSRFToken";
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
 const client = axios.create({
-	baseURL: "http://172.16.34.154:8000" 
-})
+	baseURL: 'http://192.168.1.64:8000',
+});
 
-//192.168.1.64
+document.documentElement.setAttribute('data-theme', 'light');
 
-
-let checkedUser = false;
-document.documentElement.setAttribute('data-theme', "light");
 function App() {
 	const [user, setUser] = useState({
-        "loggedIn": false,
-        "name": "",
-        "surname": "",
-        "email": "",
-        "role": 0,
-        "points": 0,
+		loggedIn: false,
+		name: '',
+		surname: '',
+		email: '',
+		role: 0,
+		points: 0,
+		likes: 0,
+	});
 
-    });
-	
-    function checkUser() {
-        if (!checkedUser) {
-            client.get(
-                "/api/get_csrf_token"
-            ).then(function(response) {
-                client.get(
-                    "/api/user",
-                    {
-                        headers: {
-                            "X-CSRFToken": response.data.csrfToken,
-                        }
-                        
-                    },
-                    {withCredentials: true},
-                ).then(function(response) {
-                    setUser({
-                        "loggedIn": true,
-                        "name": response.data.user.name,
-                        "surname": response.data.user.surname,
-                        "email": response.data.user.email,
-                        "role": response.data.user.role,
-                        "points": response.data.user.points,
-                    });
-                    checkedUser = true;
-                }).catch(function(error) {
-                    checkedUser = true;
-    
-                })
+	useEffect(() => {
+		checkUser();
+	}, []); // Empty dependency array ensures it runs only once on mount
 
-            })
-            
-        }
-        
-    }
-
-    checkUser();
+	const checkUser = () => {
+		
+			client.get('/api/get_csrf_token').then(function (response) {
+				client.get('/api/user', {
+					headers: {
+						'X-CSRFToken': response.data.csrfToken,
+					},
+				}).then(
+					function (response) {
+						setUser({
+							loggedIn: true,
+							name: response.data.user.name,
+							surname: response.data.user.surname,
+							email: response.data.user.email,
+							role: response.data.user.role,
+							points: response.data.user.points,
+							likes: response.data.user.likes,
+						});
+						checkedUser = true;
+					},
+				).catch(
+					function (error) {
+						checkedUser = true;
+					},
+				);
+			});
+		
+	};
 
 	return (
 		<>
-			
-            
-            <Routes>
-				<Route path='/' element={<Profile user={user} setUser={setUser} client={client}/>}/>
-                <Route path='/suggestions' element={<Suggestions user={user} client={client}/>}/>
-                <Route path='/announcements' element={<Announcements user={user} client={client}/>}/>
-                <Route path='/polls' element={<Polls user={user} client={client}/>}/>
+			<Routes>
+				<Route path="/" element={<Profile user={user} setUser={setUser} client={client} />} />
+				<Route path="/suggestions" element={<Suggestions user={user} client={client} checkUser={checkUser}/>} />
+				<Route path="/announcements" element={<Announcements user={user} client={client} />} />
+				<Route path="/polls" element={<Polls user={user} client={client} />} />
 			</Routes>
-            
-            <Navbar/>   
-            
+			<Navbar />
 		</>
-  	)
+	);
 }
 
-export default App
+export default App;

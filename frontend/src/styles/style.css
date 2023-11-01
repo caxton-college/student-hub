@@ -549,10 +549,8 @@ input[type="submit"] {
 
 #profile-page {
     display: grid;
-    
-    grid-template-rows: 1fr;
     place-items: center;
-    
+    text-transform: uppercase;
 }
 
 
@@ -565,6 +563,15 @@ input[type="submit"] {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+#interactions {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 35px;
 }
 
 .submit {
@@ -589,7 +596,7 @@ input[type="submit"] {
 
 .login-field {
     background-color: var(--background);
-    width: 87%;
+    width: 83%;
 }
 
 button {
@@ -603,10 +610,10 @@ button {
 }
 
 #logout-button {
-    background-color: var(--secondary);
+    background-color: var(--primary);
+    color: var(--background);
+    border-radius: 35px;
     width: 25%;
-    
-    
 }
 
 #user-suggestions {
@@ -631,8 +638,14 @@ button {
 }
 
 #points {
+    position: absolute;
+    top: 5%;
+    right: 5%;
     display: flex;
+    border-radius: 35px;
+    width: 15%;
     gap: 10px;
+    justify-content: center;
     align-items: center;
     color: var(--accent);
 }

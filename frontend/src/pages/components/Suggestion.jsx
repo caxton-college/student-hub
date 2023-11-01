@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Like from './Like'
 import Pin from './Pin'
 
-export default function Suggestion({client, suggestion, user}) {
+export default function Suggestion({client, suggestion, user, checkUser}) {
     
 
     return (
@@ -28,6 +28,7 @@ export default function Suggestion({client, suggestion, user}) {
                     liked={suggestion.liked} 
                     id={suggestion.id}
                     type={"suggestion"}
+                    checkUser={checkUser}
                     />
                     	
 				</div>

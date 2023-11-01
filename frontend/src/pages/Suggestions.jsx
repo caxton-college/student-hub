@@ -3,7 +3,7 @@ import { useState, useReducer } from 'react';
 
 import Suggestion from './components/Suggestion';
 import CreateSuggestion from './components/CreateSuggestion';
-export default function Suggestions({user, client}) {
+export default function Suggestions({user, client, checkUser}) {
 
 	const [suggestions, setSuggestions] = useState([]);
 	const [, forceRender] = useReducer(x => x + 1, 0);
@@ -27,7 +27,7 @@ export default function Suggestions({user, client}) {
 		<div className='content'>
 			{
 				suggestions.map(suggestion => (
-					<Suggestion client={client} suggestion={suggestion} user={user} key={suggestion.id}/>
+					<Suggestion client={client} suggestion={suggestion} user={user} key={suggestion.id} checkUser={checkUser}/>
 				))
 			}
             {

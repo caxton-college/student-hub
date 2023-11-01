@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 
-export default function Like({ client, user, likes, liked, id, type }) {
+export default function Like({ client, user, likes, liked, id, type, checkUser }) {
     const [csrfToken, setCsrfToken] = useState('');
     const [stateLiked, setLiked] = useState(liked);
     const [stateLikes, setLikes] = useState(likes);
@@ -21,6 +21,7 @@ export default function Like({ client, user, likes, liked, id, type }) {
     }, []);
 
     const updateLikes = () => {
+        
         client.post(
             `/api/update_${type}_likes`,
             { id : id },
@@ -29,7 +30,14 @@ export default function Like({ client, user, likes, liked, id, type }) {
             setLiked(response.data.liked);
             setLikes(response.data.likes);
             setClicked(true);
-            window.location.reload();
+
+            if (type ==="poll") {
+                window.location.reload();
+            }
+            
+            if (type === "suggestion"){
+                checkUser();
+            }
             
 
             // Remove the beat animation after 500ms

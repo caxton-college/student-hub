@@ -70,7 +70,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 	is_active = models.BooleanField(default=True)  # Added 'is_active' field for user activation
 	is_staff = models.BooleanField(default=False) 
 	points = models.PositiveSmallIntegerField(default=0)
-	
+	likes = models.PositiveIntegerField(default=0)
+ 
 	objects = UserManager()
  
 	def __str__(self):

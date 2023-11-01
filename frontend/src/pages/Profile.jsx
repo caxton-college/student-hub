@@ -1,53 +1,60 @@
-import React from 'react'
-import { useState, useReducer } from 'react'
-import Login from './components/Login'
-import Logout from './components/Logout'
-import axios  from 'axios'
+import React, { useState, useReducer, useEffect } from 'react';
+import Login from './components/Login';
+import Logout from './components/Logout';
+import { faHeart, faCoins, faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoins } from '@fortawesome/free-solid-svg-icons'
-import Suggestion from './components/Suggestion';
-import CreateSuggestion from './components/CreateSuggestion';
-export default function Profile({user, setUser, client}) {
-    const [suggestions, setSuggestions] = useState([]);
-	const [, forceRender] = useReducer(x => x + 1, 0);
 
-	function getSuggestions() {
-		if (suggestions.length === 0) {
-			client.get(
-				"api/user_suggestions"
-			).then(function(response) {
-				setSuggestions(response.data);
-				
-			})
-		}
-	}
-	
-	
-	getSuggestions();
+export default function Profile({ user, setUser, client }) {
+    const [suggestions, setSuggestions] = useState([]);
+
+    useEffect(() => {
+        getSuggestions();
+    }, []); // Empty dependency array ensures it runs once on mount
+
+    function getSuggestions() {
+        if (suggestions.length === 0) {
+            client.get("api/user_suggestions").then(function (response) {
+                setSuggestions(response.data);
+            });
+        }
+    }
+
     return (
         <div id='profile-page'>
             {
-                user.loggedIn  ? (
+                user.loggedIn ? (
                     <>
-                        <div id='profile-header'>
-                            <h4>{`${user.name} ${user.surname}`}</h4>
-                            <div id='points'>{user.points}<FontAwesomeIcon icon={faCoins} /></div>
+                        <h2>WELCOME {user.name}!</h2>
+                        <div id='points' className='shadow'>
+                            <h3>{user.points}</h3>
+                            <FontAwesomeIcon icon={faCoins}></FontAwesomeIcon>
                         </div>
-                        
-                        <div></div>
-                        
-                        <Logout setUser={setUser} client={client}/>
+                        <div id='interactions' className='shadow'>
+                            <div className='likes'>
+                                <h3>{suggestions.length}</h3>
+                                <FontAwesomeIcon
+                                    icon={faLightbulb}
+                                    style={{ color: "#3e3e6f" }}
+                                    size="xl"
+                                ></FontAwesomeIcon>
+                            </div>
+
+                            <div className='likes'>
+                                <h3>{user.likes}</h3>
+                                <FontAwesomeIcon
+                                    icon={faHeart}
+                                    style={{ color: "#B13F3E" }}
+                                    size="xl">
+                                </FontAwesomeIcon>
+                            </div>
+                        </div>
+
+                        <Logout setUser={setUser} client={client} />
                     </>
-                    
-                    
                 ) : (
-                    <Login user={user} setUser={setUser} client={client}/>
+                    <Login user={user} setUser={setUser} client={client} />
                 )
             }
-            
-            
-
         </div>
-        
-    )
+    );
 }
