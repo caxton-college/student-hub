@@ -450,8 +450,8 @@ display: flex;
 .poll {
     height: fit-content;
     width: 80%;
-    margin-top: 10%;
-    margin-bottom: 10%;
+    margin-top: 15%;
+    margin-bottom: 15%;
     border-radius: 35px;
     padding-left: 25px;
     padding-top: 5px;
@@ -645,7 +645,7 @@ input[type="submit"] {
 .login-field-container {
     display: flex;
     flex-direction: row;
-    
+    background-color: var(--background);
     align-items: center;
     padding-top: 25px;
     padding-bottom: 25px;
