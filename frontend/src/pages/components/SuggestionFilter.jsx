@@ -1,0 +1,30 @@
+import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFire, faHourglass } from '@fortawesome/free-solid-svg-icons'
+
+export default function SuggestionFilter({ order, handleSetOrder }) {
+
+    return (
+        <div id='suggestion-sort' className='shadow'>
+                <div 
+                    className={`sort-option ${order === "popular" ? "selected-tab" : "unselected-tab"}`}
+                    onClick={(e) => handleSetOrder("popular")}
+                    >
+                        <FontAwesomeIcon
+                        icon={faFire}>    
+                        </FontAwesomeIcon>
+                    
+                </div>
+
+                <div 
+                    className={`sort-option ${order === "new" ? "selected-tab" : "unselected-tab"}`}
+                    onClick={(e) => handleSetOrder("new")}
+                    >
+                        <FontAwesomeIcon
+                        icon={faHourglass}>    
+                        </FontAwesomeIcon>
+                    
+                </div>
+            </div>
+    )
+}

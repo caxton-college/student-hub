@@ -27,7 +27,10 @@ export default function Profile({ user, setUser, client }) {
                         <h2>WELCOME {user.name}!</h2>
                         <div id='points' className='shadow'>
                             <h3>{user.points}</h3>
-                            <FontAwesomeIcon icon={faCoins}></FontAwesomeIcon>
+                            <FontAwesomeIcon 
+                            icon={faCoins} 
+                            style={{ color: "#eeb825" }}> 
+                            </FontAwesomeIcon>
                         </div>
                         <div id='interactions' className='shadow'>
                             <div className='likes'>

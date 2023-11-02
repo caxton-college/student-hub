@@ -59,7 +59,7 @@ export default function Like({ client, user, likes, liked, id, type, checkUser }
             <FontAwesomeIcon
                 onClick={updateLikes}
                 icon={icon}
-                className={clicked ? 'beat' : ''}
+                className={clicked ? 'beat' : 'like'}
                 style={{ color: colour }}
                 size='xl'
                 key={id}

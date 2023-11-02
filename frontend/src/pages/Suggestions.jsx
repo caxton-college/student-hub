@@ -3,15 +3,24 @@ import { useState, useReducer } from 'react';
 
 import Suggestion from './components/Suggestion';
 import CreateSuggestion from './components/CreateSuggestion';
-export default function Suggestions({user, client, checkUser}) {
+import SuggestionFilter from './components/SuggestionFilter';
+
+
+export default function Suggestions({user, client, checkUser, which}) {
 
 	const [suggestions, setSuggestions] = useState([]);
-	const [, forceRender] = useReducer(x => x + 1, 0);
+    const [order, setOrder] = useState(which);
 
-	function getSuggestions() {
-		if (suggestions.length === 0) {
+    function handleSetOrder(newOrder){
+        setOrder(newOrder);
+        getSuggestions(true, newOrder);
+        
+    }
+
+	function getSuggestions(force=false, newOrder="new") {
+		if (suggestions.length === 0 | force) {
 			client.get(
-				"api/suggestions"
+				`api/${newOrder}_suggestions`
 			).then(function(response) {
 				setSuggestions(response.data);
 				
@@ -25,6 +34,9 @@ export default function Suggestions({user, client, checkUser}) {
 	
 	return (
 		<div className='content'>
+            
+            <SuggestionFilter order={order} handleSetOrder={handleSetOrder}></SuggestionFilter>
+
 			{
 				suggestions.map(suggestion => (
 					<Suggestion client={client} suggestion={suggestion} user={user} key={suggestion.id} checkUser={checkUser}/>

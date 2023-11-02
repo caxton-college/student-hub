@@ -50,13 +50,9 @@ function App() {
 							points: response.data.user.points,
 							likes: response.data.user.likes,
 						});
-						checkedUser = true;
+						
 					},
-				).catch(
-					function (error) {
-						checkedUser = true;
-					},
-				);
+				)
 			});
 		
 	};
@@ -65,7 +61,7 @@ function App() {
 		<>
 			<Routes>
 				<Route path="/" element={<Profile user={user} setUser={setUser} client={client} />} />
-				<Route path="/suggestions" element={<Suggestions user={user} client={client} checkUser={checkUser}/>} />
+				<Route path="/suggestions" element={<Suggestions user={user} client={client} checkUser={checkUser} which={"popular"}/>}/>
 				<Route path="/announcements" element={<Announcements user={user} client={client} />} />
 				<Route path="/polls" element={<Polls user={user} client={client} />} />
 			</Routes>

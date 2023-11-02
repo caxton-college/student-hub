@@ -158,14 +158,15 @@ class UserView(APIView):
 
 
 # Suggestion views
-class GetSuggestions(APIView):
+class GetPopularSuggestions(APIView):
     permission_classes = (permissions.AllowAny,)
     
     def get(self, request: HttpRequest) -> Response:
         """
         Retrieve a list of suggestions.
 
-        This endpoint allows users to retrieve a list of suggestions. It includes information about the owner of each suggestion and whether the authenticated user has liked each suggestion.
+        This endpoint allows users to retrieve a list of suggestions. Ordered by popularity.
+        It includes information about the owner of each suggestion and whether the authenticated user has liked each suggestion.
 
         Args:
             request (HttpRequest): Request from the user.
@@ -173,7 +174,7 @@ class GetSuggestions(APIView):
         Returns:
             Response: A list of suggestions as serialized data and a status code of 200 (OK).
         """
-        suggestions = Suggestion.objects.all()
+        suggestions = Suggestion.objects.all().order_by("-likes").order_by("-pinned")
         serialiser = SuggestionSerializer(suggestions, many=True)
         
         for i in range(len(serialiser.data)):
@@ -189,6 +190,41 @@ class GetSuggestions(APIView):
                 serialiser.data[i]["liked"] = False
 
         return Response(serialiser.data, status=status.HTTP_200_OK)
+
+class GetNewSuggestions(APIView):
+    permission_classes = (permissions.AllowAny,)
+    
+    def get(self, request: HttpRequest) -> Response:
+        """
+        Retrieve a list of suggestions.
+
+        This endpoint allows users to retrieve a list of suggestions. Ordered from newest to oldest. 
+        It includes information about the owner of each suggestion and whether the authenticated user has liked each suggestion.
+
+        Args:
+            request (HttpRequest): Request from the user.
+
+        Returns:
+            Response: A list of suggestions as serialized data and a status code of 200 (OK).
+        """
+        suggestions = Suggestion.objects.all().order_by("-date_created")
+        
+        serialiser = SuggestionSerializer(suggestions, many=True)
+        
+        for i in range(len(serialiser.data)):
+            owner = User.objects.get(user_id=serialiser.data[i]["owner"])
+            serialiser.data[i]["owner"] = f"{owner.name.capitalize()} {owner.surname.capitalize()}"
+
+            if (user := request.user):  # Not the most efficient, just wanted to use the walrus operator :)
+                if user.is_authenticated:
+                    serialiser.data[i]["liked"] = user.user_id in serialiser.data[i]["liked_by"]
+                    del serialiser.data[i]["liked_by"]
+                
+            else:
+                serialiser.data[i]["liked"] = False
+
+        return Response(serialiser.data, status=status.HTTP_200_OK)
+
 
 
 class GetUserSuggestions(APIView):
