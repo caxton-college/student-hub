@@ -6,13 +6,16 @@ export default function SuggestionFilter({ order, handleSetOrder }) {
 
     return (
         <div id='suggestion-sort' className='shadow'>
+                
                 <div 
                     className={`sort-option ${order === "popular" ? "selected-tab" : "unselected-tab"}`}
                     onClick={(e) => handleSetOrder("popular")}
                     >
                         <FontAwesomeIcon
-                        icon={faFire}>    
+                        icon={faFire}
+                        size='xl'>    
                         </FontAwesomeIcon>
+                        <p>Popular</p>
                     
                 </div>
 
@@ -21,8 +24,10 @@ export default function SuggestionFilter({ order, handleSetOrder }) {
                     onClick={(e) => handleSetOrder("new")}
                     >
                         <FontAwesomeIcon
-                        icon={faHourglass}>    
+                        icon={faHourglass}
+                        size='xl'>    
                         </FontAwesomeIcon>
+                        <p>Recent</p>
                     
                 </div>
             </div>

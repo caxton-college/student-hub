@@ -11,7 +11,7 @@ export default function CreatePoll({
     
     const [csrfToken, setCsrfToken] = useState('');
     const [question, setQuestion] = useState('');
-    const [options, setOptions] = useState(["f", "g"]);
+    const [options, setOptions] = useState(["", ""]);
     const [showPollPrompt, setShowPollPrompt] = useState(false);
     useEffect(() => {
         // Fetch the CSRF token on component mount

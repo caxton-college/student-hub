@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './pages/components/Navbar';
+
 import Profile from './pages/Profile';
 import Suggestions from './pages/Suggestions';
 import Announcements from './pages/Announcements';
@@ -59,6 +60,7 @@ function App() {
 
 	return (
 		<>
+          
 			<Routes>
 				<Route path="/" element={<Profile user={user} setUser={setUser} client={client} />} />
 				<Route path="/suggestions" element={<Suggestions user={user} client={client} checkUser={checkUser} which={"popular"}/>}/>

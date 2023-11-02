@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 
-const Header = () => {
+const Header = ({page}) => {
     const [isDarkMode, setDarkMode] = useState(false);
     const [theme, setTheme] = useState('light'); 
     const pageName = "Student Hub";
@@ -15,14 +15,15 @@ const Header = () => {
     };
 
     return (
-        <div className="header">
-        <div className="header-navbar-content">
-        <img src = "/logo-caxton.png" alt="Logo" height={"75px"}/>
-            <div className="toggle-dark-mode" onClick={toggleDarkMode}>
-            
-                <FontAwesomeIcon icon={isDarkMode ? faMoon : faSun} size="xl" />
+        <div id="header" className='shadow'>
+            <div className="header-navbar-content">
+                <img src = "/logo-caxton.png" alt="Logo" height={"75px"}/>
+                <h3>{page}</h3>
+                <div className="toggle-dark-mode" onClick={toggleDarkMode}>
+                
+                    <FontAwesomeIcon icon={isDarkMode ? faMoon : faSun} size="xl" />
+                </div>
             </div>
-        </div>
         </div>
     );
 };

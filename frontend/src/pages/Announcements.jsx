@@ -5,7 +5,7 @@ import { useState, useReducer } from 'react';
 import CreateAnnouncement from './components/CreateAnnouncement';
 
 import Announcement from './components/Announcement';
-
+import Header from './components/Header';
 export default function Announcements({user, client}) {
 
 	const [announcements, setAnnouncements] = useState([]);
@@ -33,6 +33,7 @@ export default function Announcements({user, client}) {
 	
 	return (
 		<div className='content'>
+            <Header page={"Announcements"}></Header>
 			{
 				announcements.map(announcement => (
                     <Announcement announcement={announcement} key={announcement.id}></Announcement>

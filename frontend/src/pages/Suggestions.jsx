@@ -4,7 +4,7 @@ import { useState, useReducer } from 'react';
 import Suggestion from './components/Suggestion';
 import CreateSuggestion from './components/CreateSuggestion';
 import SuggestionFilter from './components/SuggestionFilter';
-
+import Header from "./components/Header";
 
 export default function Suggestions({user, client, checkUser, which}) {
 
@@ -33,8 +33,9 @@ export default function Suggestions({user, client, checkUser, which}) {
 	
 	
 	return (
+        
 		<div className='content'>
-            
+            <Header page={"Suggestions"}/>
             <SuggestionFilter order={order} handleSetOrder={handleSetOrder}></SuggestionFilter>
 
 			{

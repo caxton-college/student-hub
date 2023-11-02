@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import CreatePoll from './components/CreatePoll';
 import Poll from './components/Poll';
-
+import Header from './components/Header';
 
 export default function Polls({ client, user}) {
 	const [polls, setPolls] = useState([]);
@@ -23,6 +23,7 @@ export default function Polls({ client, user}) {
 
     return (
 		<div className='content'>
+            <Header page={"Polls"}/>
 			{
 				polls.map((pollData) => {
 					return (
