@@ -10,6 +10,7 @@ export default function Like({ client, user, likes, liked, id, type, checkUser }
     const [clicked, setClicked] = useState(false);
 
     useEffect(() => {
+        
         // Fetch the CSRF token on component mount
         client.get('/api/get_csrf_token')
             .then(response => {
