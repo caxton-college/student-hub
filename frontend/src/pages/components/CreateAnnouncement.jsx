@@ -5,8 +5,6 @@ import { faCircleInfo, faCirclePlus, faCircleXmark } from '@fortawesome/free-sol
 export default function CreateAnnouncement({ 
     client, 
     user, 
-    showPollPrompt, 
-    setShowPollPrompt, 
     showAnnouncementPrompt, 
     setShowAnnouncementPrompt
 }) {
@@ -44,7 +42,6 @@ export default function CreateAnnouncement({
     };
 
     function handlePromtToggle() {
-        setShowPollPrompt(false);
         setShowAnnouncementPrompt(!showAnnouncementPrompt);
 
     }

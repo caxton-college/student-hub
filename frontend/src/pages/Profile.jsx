@@ -4,19 +4,11 @@ import Logout from './components/Logout';
 import { faHeart, faCoins, faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default function Profile({ user, setUser, client }) {
-    const [suggestions, setSuggestions] = useState([]);
-
-    useEffect(() => {
-        getSuggestions();
-    }, []); // Empty dependency array ensures it runs once on mount
-
-    function getSuggestions() {
-        if (suggestions.length === 0) {
-            client.get("api/user_suggestions").then(function (response) {
-                setSuggestions(response.data);
-            });
-        }
+export default function Profile({ user, checkUser, setUser, client, userSuggestions }) {
+    
+    let numSuggestions = 0;
+    if (userSuggestions) {
+        numSuggestions = userSuggestions.length;
     }
 
     return (
@@ -34,7 +26,8 @@ export default function Profile({ user, setUser, client }) {
                         </div>
                         <div id='interactions' className='shadow'>
                             <div className='likes'>
-                                <h3>{suggestions.length}</h3>
+                                
+                                <h3>{numSuggestions}</h3>
                                 <FontAwesomeIcon
                                     icon={faLightbulb}
                                     style={{ color: "#3e3e6f" }}
@@ -55,7 +48,7 @@ export default function Profile({ user, setUser, client }) {
                         <Logout setUser={setUser} client={client} />
                     </>
                 ) : (
-                    <Login user={user} setUser={setUser} client={client} />
+                    <Login user={user} checkUser={checkUser} client={client} />
                 )
             }
         </div>

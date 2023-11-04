@@ -13,7 +13,8 @@ export default function Poll({ client, user, pollData }) {
                         <PollOption
                         client={client}
                         user={user}
-                        option={option}>
+                        option={option}
+                        key={option.id}>
 
                         </PollOption>
                     )

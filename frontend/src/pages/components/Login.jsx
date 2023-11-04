@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faEnvelope, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 
-export default function Login({user, setUser, client}) {
+export default function Login({user, setUser, client, checkUser}) {
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -28,18 +28,7 @@ export default function Login({user, setUser, client}) {
                     }
                 },
             ).then(function(response) {
-                client.get(
-                    "/api/user"
-                ).then(function(response) {
-                    setUser({
-                        "loggedIn": true,
-                        "name": response.data.user.name,
-                        "surname": response.data.user.surname,
-                        "email": response.data.user.email,
-                        "role": response.data.user.role,
-                        "points": response.data.user.points,
-                    });
-                })
+                checkUser();
     
             }).catch(function(error) {
                 

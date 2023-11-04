@@ -87,7 +87,7 @@ body {
     
     width: 100vw;
     place-items: center;
-    padding-top: 3%;
+    padding-top: 0%;
     padding-bottom: 3%;  
     
 }
@@ -313,8 +313,9 @@ body {
     place-self: center;
     
     width: 100%;
+    margin-top: 50px;
     margin-bottom: 50px;
-    
+
     place-items: center;
   
     background-color: var(--background);

@@ -5,20 +5,8 @@ import CreatePoll from './components/CreatePoll';
 import Poll from './components/Poll';
 import Header from './components/Header';
 
-export default function Polls({ client, user}) {
-	const [polls, setPolls] = useState([]);
-
-	function getPolls() {
-		if (polls.length === 0) {
-			client.get(
-				"api/polls"
-			).then(function(response) {
-				setPolls(response.data);
-			})
-		}
-	}
-
-	getPolls();
+export default function Polls({ client, user, polls}) {
+	
 	
 
     return (

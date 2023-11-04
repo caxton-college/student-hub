@@ -6,9 +6,9 @@ import CreateSuggestion from './components/CreateSuggestion';
 import SuggestionFilter from './components/SuggestionFilter';
 import Header from "./components/Header";
 
-export default function Suggestions({user, client, checkUser, which}) {
+export default function Suggestions({user, client, checkUser, which, suggestions, getSuggestions}) {
 
-	const [suggestions, setSuggestions] = useState([]);
+	
     const [order, setOrder] = useState(which);
 
     function handleSetOrder(newOrder){
@@ -17,16 +17,7 @@ export default function Suggestions({user, client, checkUser, which}) {
         
     }
 
-	function getSuggestions(force=false, newOrder="new") {
-		if (suggestions.length === 0 | force) {
-			client.get(
-				`api/${newOrder}_suggestions`
-			).then(function(response) {
-				setSuggestions(response.data);
-				
-			})
-		}
-	}
+	
 	
 	
 	getSuggestions();

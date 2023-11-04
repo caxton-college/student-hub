@@ -6,29 +6,19 @@ import CreateAnnouncement from './components/CreateAnnouncement';
 
 import Announcement from './components/Announcement';
 import Header from './components/Header';
-export default function Announcements({user, client}) {
+export default function Announcements({user, client, announcements}) {
 
-	const [announcements, setAnnouncements] = useState([]);
-	const [showPollPrompt, setShowPollPrompt] = useState(false);
+	
+	
 	const [showAnnouncementPrompt, setShowAnnouncementPrompt] = useState(false);
 
-	const [, forceRender] = useReducer(x => x + 1, 0);
+
 
 	
 
-	function getAnnouncements() {
-		if (announcements.length === 0) {
-			client.get(
-				"api/announcements"
-			).then(function(response) {
-				setAnnouncements(response.data);
-				
-			})
-		}
-	}
 	
 	
-	getAnnouncements();
+	
 	
 	
 	return (
@@ -46,10 +36,7 @@ export default function Announcements({user, client}) {
 						client={client} 
 						user={user} 
 						showAnnouncementPrompt={showAnnouncementPrompt}
-						setShowAnnouncementPrompt={setShowAnnouncementPrompt}
-						showPollPrompt={showPollPrompt}
-						setShowPollPrompt={setShowPollPrompt}>
-
+						setShowAnnouncementPrompt={setShowAnnouncementPrompt}>
 						</CreateAnnouncement>
 					</>
                 ) : null
