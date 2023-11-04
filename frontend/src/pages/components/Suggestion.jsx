@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import Like from './Like'
+import SuggestionLike from './SuggestionLike'
 import Pin from './Pin'
 
 export default function Suggestion({client, suggestion, user, checkUser}) {
@@ -21,13 +21,12 @@ export default function Suggestion({client, suggestion, user, checkUser}) {
                     pinned={suggestion.pinned}
                     id={suggestion.id}>
                     </Pin>
-                    <Like 
+                    <SuggestionLike 
                     client={client} 
                     user={user} 
                     likes={suggestion.likes} 
                     liked={suggestion.liked} 
                     id={suggestion.id}
-                    type={"suggestion"}
                     checkUser={checkUser}
                     />
                     	

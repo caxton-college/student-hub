@@ -84,10 +84,10 @@ body {
     
     gap: 25px;
     display: grid;
-    
+    padding-top: 50px;
     width: 100vw;
     place-items: center;
-    padding-top: 0%;
+  
     padding-bottom: 3%;  
     
 }
@@ -308,12 +308,12 @@ body {
 }
 
 
-#header {
+.header {
     display: grid;
     place-self: center;
     
     width: 100%;
-    margin-top: 50px;
+    
     margin-bottom: 50px;
 
     place-items: center;
@@ -449,10 +449,9 @@ display: flex;
 }
 
 .poll {
-    height: fit-content;
+    height: 500px;
     width: 80%;
-    margin-top: 15%;
-    margin-bottom: 15%;
+    height: 50vh;
     border-radius: 35px;
     padding-left: 25px;
     padding-top: 5px;
@@ -611,9 +610,11 @@ input[type="submit"] {
 #profile-page {
     display: grid;
     place-items: center;
-    text-transform: uppercase;
-}
 
+}
+#profile-page .header {
+    margin-top: -50px !important;
+}
 
 #login-form {
     
@@ -694,7 +695,7 @@ button {
 
 #points {
     position: absolute;
-    top: 5%;
+    top: 15%;
     right: 5%;
     display: flex;
     border-radius: 35px;

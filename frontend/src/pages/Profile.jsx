@@ -1,6 +1,7 @@
 import React, { useState, useReducer, useEffect } from 'react';
 import Login from './components/Login';
 import Logout from './components/Logout';
+import Header from './components/Header';
 import { faHeart, faCoins, faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -12,7 +13,10 @@ export default function Profile({ user, checkUser, setUser, client, userSuggesti
     }
 
     return (
-        <div id='profile-page'>
+        
+            
+            <div id='profile-page'>
+            <Header page={"Profile"}></Header>
             {
                 user.loggedIn ? (
                     <>
@@ -52,5 +56,7 @@ export default function Profile({ user, checkUser, setUser, client, userSuggesti
                 )
             }
         </div>
+        
+        
     );
 }

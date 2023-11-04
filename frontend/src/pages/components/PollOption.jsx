@@ -1,17 +1,17 @@
 import React from 'react'
-import Like from './Like'
+import PollLike from './PollLike'
 
-export default function PollOption({client, user, option}) {
+export default function PollOption({client, user, option, optionsLikeData, setOptionsLikeData}) {
+    
     return (
         <div className='poll-option'>
             <p className='option-body'>{option.body}</p>
-            <Like
+            <PollLike
             client={client}
             user={user}
-            liked={option.liked}
-            likes={option.likes}
             id={option.id}
-            type={"poll"}></Like>
+            optionsLikeData={optionsLikeData}
+            setOptionsLikeData={setOptionsLikeData}></PollLike>
 
         </div>
     )
