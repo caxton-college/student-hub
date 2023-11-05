@@ -310,7 +310,8 @@ body {
     place-self: center;
     
     width: 100%;
-    
+    margin: 0;
+    padding: 0;
     margin-bottom: 50px;
 
     place-items: center;
@@ -602,16 +603,23 @@ input[type="submit"] {
     border-radius: 5px;
 }
 
+#profile-content {
+    display: grid;
+    place-items: center;
+    width: 100vw;
+    height: 100%;
+    
 
+}
 
 #profile-page {
     display: grid;
     place-items: center;
+    grid-template-rows: auto 1fr;
+    
 
 }
-#profile-page .header {
-    margin-top: -50px !important;
-}
+
 
 #login-form {
     

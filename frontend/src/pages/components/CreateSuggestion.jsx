@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+
+import { toast } from 'react-toastify';
 
 export default function CreateSuggestion({ client, user }) {
     
     const [body, setBody] = useState('');
     const [showPrompt, setShowPrompt] = useState(false);
-
-    
     
 
     const handleSuggestionCreation = (e) => {
@@ -19,9 +20,32 @@ export default function CreateSuggestion({ client, user }) {
            
         ).then(response => {
             setShowPrompt(false);
-            window.location.reload();
+            //window.location.reload();
+            toast.success('Suggestion Created!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
+
+
+            
         }).catch(error => {
             console.error('Error creating suggestion:', error);
+            toast.error('Something went wrong...', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
         });
     };
 

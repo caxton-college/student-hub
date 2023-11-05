@@ -17,7 +17,7 @@ export default function Suggestions({
     setSuggestionsLikeData
     }) {
 
-	
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
     const [order, setOrder] = useState(which);
 
     function handleSetOrder(newOrder){
@@ -52,7 +52,11 @@ export default function Suggestions({
 			}
             {
                 user.loggedIn ? (
-                    <CreateSuggestion client={client} user={user}></CreateSuggestion>
+                    <CreateSuggestion 
+                    client={client} 
+                    user={user} 
+                    getSuggestions={getSuggestions}
+                    forceUpdate={forceUpdate}></CreateSuggestion>
                 ) : null
             }
             

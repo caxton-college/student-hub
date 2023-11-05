@@ -1,6 +1,7 @@
 import React from 'react'
-
 import { useNavigate } from "react-router-dom";
+
+import { toast } from 'react-toastify';
 
 export default function Logout({ client, setUser }) {
     
@@ -11,7 +12,16 @@ export default function Logout({ client, setUser }) {
 		  	{withCredentials: true}
 		).then(function(response) {
 			setUser({"loggedIn": false});
-			
+			toast.info('Logged out', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
 		});
 	}
     return (

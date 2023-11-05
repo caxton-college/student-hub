@@ -1,6 +1,9 @@
 import React, { useState, useEffect, isValidElement } from 'react';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleQuestion, faCircleXmark, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+
+import { toast } from 'react-toastify';
 
 import PollOptionInput from './PollOptionInput';
 
@@ -27,9 +30,29 @@ export default function CreatePoll({
             
         ).then(response => {
             setShowPollPrompt(false);
-            window.location.reload();
+            toast.success('Poll Created!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
+         
         }).catch(error => {
             console.error('Error creating poll:', error);
+            toast.success('Something went wrong...', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
         });
     };
 

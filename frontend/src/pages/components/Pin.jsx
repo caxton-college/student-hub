@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
+
+import { toast } from 'react-toastify';
 
 export default function Pin({ client, user, pinned, id }) {
     
@@ -15,6 +18,18 @@ export default function Pin({ client, user, pinned, id }) {
             { suggestion_id: id },
         ).then(response => {
             setPinned(response.data.pinned);
+
+            toast.info('Pin updated', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+
         }).catch(error => {
             // Handle errors if the request fails
             console.error('Error updating likes:', error);

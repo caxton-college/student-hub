@@ -3,6 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './pages/components/Navbar';
 
+import { ToastContainer, toast } from 'react-toastify';
+
+
 import Profile from './pages/Profile';
 import Suggestions from './pages/Suggestions';
 import Announcements from './pages/Announcements';
@@ -99,10 +102,10 @@ function App() {
 	
     function getUserSuggestions() {
        
-        client.get("api/user_suggestions")
-        .then(function (response) {
+        client.get(
+            "api/user_suggestions"
+            ).then(function (response) {
             setUserSuggestions(response.data);
-            
         });
 
 
@@ -150,7 +153,6 @@ function App() {
         getSuggestions();
         getAnnouncements();
         getPolls();
-        
         getUserSuggestions();
        
         
@@ -159,7 +161,7 @@ function App() {
 
 	return (
 		<>
-          
+            
 			<Routes>
 				<Route path="/" element={
                     <Profile 
@@ -203,6 +205,18 @@ function App() {
                 }/>
 			</Routes>
 			<Navbar />
+            <ToastContainer
+                position="top-right"
+                autoClose={300000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme={document.documentElement.getAttribute('data-theme')}
+            />
 		</>
 	);
 }

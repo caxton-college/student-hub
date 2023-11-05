@@ -7,20 +7,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function Profile({ user, checkUser, setUser, client, userSuggestions }) {
     
-    let numSuggestions = 0;
-    if (userSuggestions) {
-        numSuggestions = userSuggestions.length;
-    }
+    let numSuggestions = userSuggestions ? userSuggestions.length : 0;
+
 
     return (
         
             
             <div id='profile-page'>
             <Header page={"Profile"}></Header>
+
+            <div id='profile-content'>
             {
                 user.loggedIn ? (
                     <>
-                        <h2>WELCOME {user.name}!</h2>
+                        <h2 style={{textTransform: 'uppercase'}}>WELCOME {user.name}!</h2>
                         <div id='points' className='shadow'>
                             <h3>{user.points}</h3>
                             <FontAwesomeIcon 
@@ -57,6 +57,8 @@ export default function Profile({ user, checkUser, setUser, client, userSuggesti
                     <Login user={user} checkUser={checkUser} client={client} />
                 )
             }
+            </div>
+            
         </div>
         
         

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
-
+import { toast } from 'react-toastify';
 export default function SuggestionLike({ 
     client, 
     user, 
@@ -33,6 +33,16 @@ export default function SuggestionLike({
             setClicked(true);
             checkUser();
             
+            toast.info('Like updated', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
 
             // Remove the beat animation after 500ms
             setTimeout(() => {

@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 
+import { toast } from 'react-toastify';
+
 export default function PollLike({ 
     client, 
     user, 
@@ -44,15 +46,36 @@ export default function PollLike({
             setOptionsLikeData(response.data);
             setClicked(true);
             checkUser();
-        
+            
+            toast.info('Like updated', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
 
             // Remove the beat animation after 500ms
             setTimeout(() => {
                 setClicked(false);
             }, 500);
+            
         }).catch(error => {
             // Handle errors if the request fails
             console.error('Error updating likes:', error);
+            toast.error(error.response.data.message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         });
     };
 

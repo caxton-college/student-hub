@@ -706,9 +706,9 @@ class UpdatePollOptionLikedStatus(APIView):
             return Response({"message": "Poll option not found."}, status=status.HTTP_400_BAD_REQUEST)
 
         
-        """if option.poll.owner == user:
+        if option.poll.owner == user:
             # Return an error message if the user tries to like their own poll option.
-            return Response({"message": "You cannot like your own poll option."}, status=status.HTTP_400_BAD_REQUEST)"""
+            return Response({"message": "You cannot like your own poll option."}, status=status.HTTP_400_BAD_REQUEST)
 
         options_liked_data: dict[int, dict[str, int | bool]] = {}
         

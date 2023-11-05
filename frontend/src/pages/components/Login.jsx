@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { toast } from 'react-toastify';
 
 import { faLock, faEnvelope, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
@@ -13,27 +14,39 @@ export default function Login({user, setUser, client, checkUser}) {
 
 	function handleLogIn(e) {
         e.preventDefault();
-        client.get(
-            "/api/get_csrf_token"
+        
+       
+        client.post(
+            "/api/login",
+            {
+                email: email,
+                password: password
+            },
         ).then(function(response) {
-            client.post(
-                "/api/login",
-                {
-                    email: email,
-                    password: password
-                },
-                {
-                    headers: {
-                        "X-CSRFToken": response.data.csrfToken,
-                    }
-                },
-            ).then(function(response) {
-                checkUser();
-    
-            }).catch(function(error) {
-                
+            checkUser();
+            toast.success('Login Successful!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+
+        }).catch(function(error) {
+            
+            toast.error(error.response.data.message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
             });
         })
+           
         
     }
 
