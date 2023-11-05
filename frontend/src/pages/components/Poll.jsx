@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import PollOption from './PollOption';
 
-export default function Poll({ client, user, pollData }) {
-    const [optionsLikeData, setOptionsLikeData] = useState({});
+export default function Poll({ 
+    client, 
+    user, 
+    pollData, 
+    checkUser,
+    index,
+    pollsOptionsLikeData, 
+    setPollsOptionsLikeData }) {
+    
     const [dataReady, setDataReady] = useState(false);
-
+    const [optionsLikeData, setOptionsLikeData] = useState();
+   
     useEffect(() => {
-        if (pollData && pollData.options) {
+        if (pollData && pollData.options && pollsOptionsLikeData) {
             let newData = {};
             for (let i = 0; i < pollData.options.length; i++) {
                 newData[pollData.options[i].id] = {
-                    likes: pollData.options[i].likes,
-                    liked: pollData.options[i].liked
+                    likes: pollsOptionsLikeData[index][pollData.options[i].id].likes,
+                    liked: pollsOptionsLikeData[index][pollData.options[i].id].liked
                 };
             }
             setOptionsLikeData(newData);
@@ -35,6 +43,11 @@ export default function Poll({ client, user, pollData }) {
                     key={option.id}
                     optionsLikeData={optionsLikeData}
                     setOptionsLikeData={setOptionsLikeData}
+                    index={index}
+                    pollsOptionsLikeData={pollsOptionsLikeData}
+                    setPollsOptionsLikeData={setPollsOptionsLikeData}  
+                    checkUser={checkUser}
+                    
                 />
             ))}
         </div>

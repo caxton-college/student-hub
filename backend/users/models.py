@@ -64,6 +64,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 	role = models.IntegerField(Role.choices, default=1)
 	
  
+ 
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = ['name', 'surname', 'role']
 	

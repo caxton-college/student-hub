@@ -9,20 +9,11 @@ export default function CreatePoll({
     user, 
 }) {
     
-    const [csrfToken, setCsrfToken] = useState('');
+    
     const [question, setQuestion] = useState('');
     const [options, setOptions] = useState(["", ""]);
     const [showPollPrompt, setShowPollPrompt] = useState(false);
-    useEffect(() => {
-        // Fetch the CSRF token on component mount
-        client.get('/api/get_csrf_token')
-            .then(response => {
-                setCsrfToken(response.data.csrfToken);
-            })
-            .catch(error => {
-                console.error('Error fetching CSRF token:', error);
-            });
-    }, []);
+    
 
     const handleSuggestionCreation = (e) => {
         // Post request using the fetched CSRF token
@@ -33,7 +24,7 @@ export default function CreatePoll({
                 question: question, 
                 poll_options: options
             },
-            { headers: { 'X-CSRFToken': csrfToken } }
+            
         ).then(response => {
             setShowPollPrompt(false);
             window.location.reload();
@@ -51,61 +42,63 @@ export default function CreatePoll({
         setOptions([...options, ""]);
     }
     
-
-    return (
-        <>
-            <div className={showPollPrompt ? 'close create-toggle' : 'open create-poll-toggle'}>
-                <FontAwesomeIcon
-                    icon={showPollPrompt ? faCircleXmark : faCirclePlus}
-                    size='2xl'
-                    onClick={handlePromtToggle}
-                />
-                
-            </div>
-            {showPollPrompt ? (
-                <div className='shadow create-prompt'>
-                    <form id='create-poll-form' onSubmit={handleSuggestionCreation} key={"create-poll-form"}>
-                            <textarea 
-                                name="question" 
-                                value={question} 
-                                onInput={(e) => setQuestion(e.target.value)} 
-                                rows="1" 
-                                className="input-text" 
-                                id="question" 
-                                required 
-                                autoComplete="off"
-                                placeholder='Poll question'
-                                key={`create-poll-question`}>
-                                
-                            </textarea>
-                            <label htmlFor="question" key={"quesiton-lable"}><span>Question</span></label>
+    if (user.role === 3 | user.role === 4) {
+        return (
+            <>
+                <div className={showPollPrompt ? 'close create-toggle' : 'open create-poll-toggle'}>
+                    <FontAwesomeIcon
+                        icon={showPollPrompt ? faCircleXmark : faCirclePlus}
+                        size='2xl'
+                        onClick={handlePromtToggle}
+                    />
                     
-                        
-                            {
-                                options.map((option, index) => {
-                                    
-                                    return (
-                                        <>
-                                            <PollOptionInput
-                                            index={index}
-                                            current_option={option}
-                                            options={options}
-                                            setOptions={setOptions}
-                                            key={`create-option-${index}`}>
-                                            </PollOptionInput>
-                                            
-                                        </>
-                                        
-                                    )
-                                })
-                            }
-                       
-                        <FontAwesomeIcon icon={faCirclePlus} onClick={handleOptionAddition}></FontAwesomeIcon>
-                        <input type="submit" key={"submit-poll"} value="Post"/>
-
-                    </form>
                 </div>
-            ) : null}
-        </>
-    );
+                {showPollPrompt ? (
+                    <div className='shadow create-prompt'>
+                        <form id='create-poll-form' onSubmit={handleSuggestionCreation} key={"create-poll-form"}>
+                                <textarea 
+                                    name="question" 
+                                    value={question} 
+                                    onInput={(e) => setQuestion(e.target.value)} 
+                                    rows="1" 
+                                    className="input-text" 
+                                    id="question" 
+                                    required 
+                                    autoComplete="off"
+                                    placeholder='Poll question'
+                                    key={`create-poll-question`}>
+                                    
+                                </textarea>
+                                <label htmlFor="question" key={"quesiton-lable"}><span>Question</span></label>
+                        
+                            
+                                {
+                                    options.map((option, index) => {
+                                        
+                                        return (
+                                            <>
+                                                <PollOptionInput
+                                                index={index}
+                                                current_option={option}
+                                                options={options}
+                                                setOptions={setOptions}
+                                                key={`create-option-${index}`}>
+                                                </PollOptionInput>
+                                                
+                                            </>
+                                            
+                                        )
+                                    })
+                                }
+                           
+                            <FontAwesomeIcon icon={faCirclePlus} onClick={handleOptionAddition}></FontAwesomeIcon>
+                            <input type="submit" key={"submit-poll"} value="Post"/>
+    
+                        </form>
+                    </div>
+                ) : null}
+            </>
+        );
+    }
+    
 }

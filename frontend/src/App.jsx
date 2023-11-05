@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './pages/components/Navbar';
@@ -38,6 +38,7 @@ function App() {
     const [announcements, setAnnouncements] = useState([]);
     const [polls, setPolls] = useState([]);
 	const [userSuggestions, setUserSuggestions] = useState([]);
+    const [pollsOptionsLikeData, setPollsOptionsLikeData] = useState({});
 
 	const checkUser = () => {	
         client.get('/api/user', {
@@ -88,6 +89,7 @@ function App() {
 				"api/polls"
 			).then(function(response) {
 				setPolls(response.data);
+                getPollsOptionsLikeData(response.data);
 			})
 		}
 	}
@@ -106,6 +108,29 @@ function App() {
         
     }
 
+
+    function getPollsOptionsLikeData(pollsData) {
+        let newPollsOptionsLikeData = {};
+       
+        let i = 0;
+        pollsData.forEach(poll => {
+            let optionsLikeData = {};
+            
+            poll.options.forEach(option => {
+                let optionLikeData = {}
+                optionLikeData["likes"] = option.likes;
+                optionLikeData["liked"] = option.liked
+
+                optionsLikeData[option.id] = optionLikeData;
+            })
+            newPollsOptionsLikeData[i] = optionsLikeData;
+            i++;
+        })
+        setPollsOptionsLikeData(newPollsOptionsLikeData);
+        
+    }
+
+
     useEffect(() => {
 		checkUser();
         getSuggestions();
@@ -113,6 +138,7 @@ function App() {
         getPolls();
         
         getUserSuggestions();
+       
         
             
 	}, []);
@@ -142,16 +168,23 @@ function App() {
                 }/>
 
 				<Route path="/announcements" element={
-                <Announcements 
-                user={user} 
-                client={client} 
-                announcements={announcements}/>
-                } />
+                    <Announcements 
+                        user={user} 
+                        client={client} 
+                        announcements={announcements}
+                    />
+                }/>
 				<Route path="/polls" element={
-                <Polls 
-                user={user} 
-                client={client} 
-                polls={polls}/>} />
+                    <Polls 
+                        user={user} 
+                        client={client} 
+                        polls={polls}
+                        checkUser={checkUser}
+                        pollsOptionsLikeData={pollsOptionsLikeData}
+                        setPollsOptionsLikeData={setPollsOptionsLikeData}
+                    />
+                    
+                }/>
 			</Routes>
 			<Navbar />
 		</>

@@ -5,7 +5,7 @@ import CreatePoll from './components/CreatePoll';
 import Poll from './components/Poll';
 import Header from './components/Header';
 
-export default function Polls({ client, user, polls}) {
+export default function Polls({ client, user, polls, checkUser, pollsOptionsLikeData, setPollsOptionsLikeData}) {
 	
 	
 
@@ -13,9 +13,18 @@ export default function Polls({ client, user, polls}) {
 		<div className='content'>
             <Header page={"Polls"}/>
 			{
-				polls.map((pollData) => {
+				polls.map((pollData, index) => {
 					return (
-						<Poll client={client} user={user} pollData={pollData} key={pollData.poll.id}></Poll>
+						<Poll 
+                            client={client} 
+                            user={user} 
+                            pollData={pollData} 
+                            key={pollData.poll.id} 
+                            checkUser={checkUser}
+                            index={index}
+                            pollsOptionsLikeData={pollsOptionsLikeData}
+                            setPollsOptionsLikeData={setPollsOptionsLikeData}>
+                        </Poll>
 					)
 				})
 				

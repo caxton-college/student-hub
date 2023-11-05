@@ -3,7 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 
-export default function PollLike({ client, user, id, optionsLikeData, setOptionsLikeData }) {
+export default function PollLike({ 
+    client, 
+    user, 
+    id, 
+    optionsLikeData, 
+    setOptionsLikeData, 
+    index,
+    pollsOptionsLikeData,
+    setPollsOptionsLikeData,
+    checkUser }) {
     
 
     const [stateLiked, setLiked] = useState();
@@ -26,10 +35,16 @@ export default function PollLike({ client, user, id, optionsLikeData, setOptions
             { id : id },
             
         ).then(response => {
-            setOptionsLikeData(response.data)
+            let newPollsOptionsLikeData = pollsOptionsLikeData;
+            
+            newPollsOptionsLikeData[index] = response.data;
+           
+            setPollsOptionsLikeData(newPollsOptionsLikeData)
+
+            setOptionsLikeData(response.data);
             setClicked(true);
-            
-            
+            checkUser();
+        
 
             // Remove the beat animation after 500ms
             setTimeout(() => {
