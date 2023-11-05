@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import SuggestionLike from './SuggestionLike'
 import Pin from './Pin'
 
-export default function Suggestion({client, suggestion, user, checkUser}) {
+export default function Suggestion({client, suggestion, user, checkUser, suggestionsLikeData, setSuggestionsLikeData}) {
     
 
     return (
@@ -23,11 +23,11 @@ export default function Suggestion({client, suggestion, user, checkUser}) {
                     </Pin>
                     <SuggestionLike 
                     client={client} 
-                    user={user} 
-                    likes={suggestion.likes} 
-                    liked={suggestion.liked} 
+                    user={user}
                     id={suggestion.id}
                     checkUser={checkUser}
+                    suggestionsLikeData={suggestionsLikeData}
+                    setSuggestionsLikeData={setSuggestionsLikeData}
                     />
                     	
 				</div>

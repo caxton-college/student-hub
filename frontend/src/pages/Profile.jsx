@@ -28,15 +28,17 @@ export default function Profile({ user, checkUser, setUser, client, userSuggesti
                             style={{ color: "#eeb825" }}> 
                             </FontAwesomeIcon>
                         </div>
-                        <div id='interactions' className='shadow'>
+                        <div id='interactions-box' className='shadow'>
+                        
                             <div className='likes'>
                                 
                                 <h3>{numSuggestions}</h3>
                                 <FontAwesomeIcon
                                     icon={faLightbulb}
                                     style={{ color: "#3e3e6f" }}
-                                    size="xl"
-                                ></FontAwesomeIcon>
+                                    size="xl">
+
+                                </FontAwesomeIcon>
                             </div>
 
                             <div className='likes'>

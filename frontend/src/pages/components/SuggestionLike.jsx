@@ -3,10 +3,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 
-export default function SuggestionLike({ client, user, likes, liked, id, checkUser }) {
+export default function SuggestionLike({ 
+    client, 
+    user, 
+    id, 
+    checkUser,
+    suggestionsLikeData, 
+    setSuggestionsLikeData 
+}) {
     
-    const [stateLiked, setLiked] = useState(liked);
-    const [stateLikes, setLikes] = useState(likes);
+    const [stateLiked, setLiked] = useState(suggestionsLikeData[id].liked);
+    const [stateLikes, setLikes] = useState(suggestionsLikeData[id].likes);
     const [clicked, setClicked] = useState(false);
 
 
@@ -20,6 +27,9 @@ export default function SuggestionLike({ client, user, likes, liked, id, checkUs
         ).then(response => {
             setLiked(response.data.liked);
             setLikes(response.data.likes);
+            let newSuggestionsLikeData = suggestionsLikeData;
+            newSuggestionsLikeData[id] = response.data;
+            setSuggestionsLikeData(newSuggestionsLikeData);
             setClicked(true);
             checkUser();
             

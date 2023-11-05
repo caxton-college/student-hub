@@ -38,6 +38,7 @@ function App() {
     const [announcements, setAnnouncements] = useState([]);
     const [polls, setPolls] = useState([]);
 	const [userSuggestions, setUserSuggestions] = useState([]);
+    const [suggestionsLikeData, setSuggestionsLikeData] = useState({});
     const [pollsOptionsLikeData, setPollsOptionsLikeData] = useState({});
 
 	const checkUser = () => {	
@@ -66,6 +67,7 @@ function App() {
 				`api/${newOrder}_suggestions`
 			).then(function(response) {
 				setSuggestions(response.data);
+                getSuggestionLikeData(response.data);
 				
 			})
 		}
@@ -99,7 +101,6 @@ function App() {
        
         client.get("api/user_suggestions")
         .then(function (response) {
-            
             setUserSuggestions(response.data);
             
         });
@@ -130,6 +131,19 @@ function App() {
         
     }
 
+    function getSuggestionLikeData(suggestionData) {
+        
+        let newSuggestionLikeData = {}
+        suggestionData.forEach((suggestion) => {
+            newSuggestionLikeData[suggestion.id] = {
+                liked: suggestion.liked,
+                likes: suggestion.likes
+            }
+        }) 
+            
+        
+        setSuggestionsLikeData(newSuggestionLikeData);
+    }
 
     useEffect(() => {
 		checkUser();
@@ -164,6 +178,8 @@ function App() {
                         which={"new"}
                         suggestions={suggestions}
                         getSuggestions={getSuggestions}
+                        suggestionsLikeData={suggestionsLikeData}
+                        setSuggestionsLikeData={setSuggestionsLikeData}
                     />
                 }/>
 

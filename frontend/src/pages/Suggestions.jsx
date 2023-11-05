@@ -6,7 +6,16 @@ import CreateSuggestion from './components/CreateSuggestion';
 import SuggestionFilter from './components/SuggestionFilter';
 import Header from "./components/Header";
 
-export default function Suggestions({user, client, checkUser, which, suggestions, getSuggestions}) {
+export default function Suggestions({
+    user, 
+    client, 
+    checkUser,
+    which, 
+    suggestions, 
+    getSuggestions,
+    suggestionsLikeData,
+    setSuggestionsLikeData
+    }) {
 
 	
     const [order, setOrder] = useState(which);
@@ -20,7 +29,7 @@ export default function Suggestions({user, client, checkUser, which, suggestions
 	
 	
 	
-	getSuggestions();
+	
 	
 	
 	return (
@@ -31,7 +40,14 @@ export default function Suggestions({user, client, checkUser, which, suggestions
 
 			{
 				suggestions.map(suggestion => (
-					<Suggestion client={client} suggestion={suggestion} user={user} key={suggestion.id} checkUser={checkUser}/>
+					<Suggestion 
+                    client={client} 
+                    suggestion={suggestion} 
+                    user={user} 
+                    key={suggestion.id} 
+                    checkUser={checkUser}
+                    suggestionsLikeData={suggestionsLikeData}
+                    setSuggestionsLikeData={setSuggestionsLikeData}/>
 				))
 			}
             {

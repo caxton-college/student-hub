@@ -259,9 +259,6 @@ body {
    
 }
 
-.pinned:hover {
-    color: var(--secondary);
-}
 
 .unpinned {
     
@@ -627,7 +624,7 @@ input[type="submit"] {
     align-items: center;
 }
 
-#interactions {
+#interactions-box {
     display: flex;
     flex-direction: row;
     width: 50%;
