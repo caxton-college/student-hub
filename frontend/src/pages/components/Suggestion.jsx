@@ -5,6 +5,7 @@ import Pin from './Pin'
 
 export default function Suggestion({client, suggestion, user, checkUser, suggestionsLikeData, setSuggestionsLikeData}) {
     
+    
 
     return (
         <>
@@ -19,7 +20,9 @@ export default function Suggestion({client, suggestion, user, checkUser, suggest
                     client={client}
                     user={user}
                     pinned={suggestion.pinned}
-                    id={suggestion.id}>
+                    id={suggestion.id}
+                    suggestionsLikeData={suggestionsLikeData}
+                    setSuggestionsLikeData={setSuggestionsLikeData}>
                     </Pin>
                     <SuggestionLike 
                     client={client} 

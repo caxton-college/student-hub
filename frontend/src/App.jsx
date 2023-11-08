@@ -16,8 +16,10 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
 const client = axios.create({
-	baseURL: 'http://192.168.1.64:8000',
+	baseURL: 'http://172.16.35.147:8000',
 });
+
+
 // Fetch the CSRF token on component mount
 client.get('/api/get_csrf_token')
 .then(response => {
@@ -140,7 +142,8 @@ function App() {
         suggestionData.forEach((suggestion) => {
             newSuggestionLikeData[suggestion.id] = {
                 liked: suggestion.liked,
-                likes: suggestion.likes
+                likes: suggestion.likes,
+                pinned: suggestion.pinned
             }
         }) 
             

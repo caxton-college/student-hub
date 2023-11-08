@@ -5,11 +5,16 @@ import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
 
 import { toast } from 'react-toastify';
 
-export default function Pin({ client, user, pinned, id }) {
+export default function Pin({ 
+    client, 
+    user, 
+    id,
+    suggestionsLikeData, 
+    setSuggestionsLikeData
+}) {
     
-    const [statePinned, setPinned] = useState(pinned);
+    const [statePinned, setPinned] = useState(suggestionsLikeData[id].pinned);
 
-    
 
     const updatePin = () => {
         // Post request using the fetched CSRF token
@@ -18,6 +23,10 @@ export default function Pin({ client, user, pinned, id }) {
             { suggestion_id: id },
         ).then(response => {
             setPinned(response.data.pinned);
+            
+            let newSuggestionsLikeData = suggestionsLikeData;
+            newSuggestionsLikeData[id].pinned = response.data.pinned;
+            setSuggestionsLikeData(newSuggestionsLikeData);
 
             toast.info('Pin updated', {
                 position: "top-right",
