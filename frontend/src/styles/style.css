@@ -111,6 +111,7 @@ body {
 }
 
 .suggestion {
+    position: relative;
     display: grid;
     padding-left: 25px;
     padding-top: 5px;
@@ -157,6 +158,14 @@ body {
     align-items: center;
     
 }
+
+.delete-suggestion {
+    position: absolute;
+    top: 10%;
+    right: 3%;
+    font-size: 23px;
+}
+
 #suggestion-sort {
     background-color: var(--background);
     border-radius: 35px;

@@ -114,7 +114,12 @@ export default function CreatePoll({
                                     })
                                 }
                            
-                            <FontAwesomeIcon icon={faCirclePlus} onClick={handleOptionAddition}></FontAwesomeIcon>
+                            <FontAwesomeIcon 
+                            icon={faCirclePlus} 
+                            onClick={handleOptionAddition} 
+                            style={{ color: "#eeb825" }}
+                            size='xl'>
+                            </FontAwesomeIcon>
                             <input type="submit" key={"submit-poll"} value="Post"/>
     
                         </form>

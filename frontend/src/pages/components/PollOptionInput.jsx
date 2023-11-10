@@ -40,6 +40,8 @@ export default function PollOptionInput({ index, current_option, options, setOpt
             <FontAwesomeIcon 
                 onClick={handleOptionDeletion}
                 icon={faCircleXmark}
+                className='close'
+                size='l'
             />
             </div>
 

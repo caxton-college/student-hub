@@ -11,7 +11,7 @@ export default function Suggestions({
     client, 
     checkUser,
     which, 
-    suggestions, 
+    suggestions,
     getSuggestions,
     suggestionsLikeData,
     setSuggestionsLikeData
@@ -47,18 +47,22 @@ export default function Suggestions({
                     key={suggestion.id} 
                     checkUser={checkUser}
                     suggestionsLikeData={suggestionsLikeData}
-                    setSuggestionsLikeData={setSuggestionsLikeData}/>
+                    setSuggestionsLikeData={setSuggestionsLikeData}
+                    getSuggestions={getSuggestions}
+                    order={order}/>
 				))
 			}
-            {
-                user.loggedIn ? (
-                    <CreateSuggestion 
-                    client={client} 
-                    user={user} 
-                    getSuggestions={getSuggestions}
-                    forceUpdate={forceUpdate}></CreateSuggestion>
-                ) : null
-            }
+            
+               
+            <CreateSuggestion 
+            client={client} 
+            user={user} 
+            getSuggestions={getSuggestions}
+            forceUpdate={forceUpdate}
+            order={order}>
+            </CreateSuggestion>
+               
+            
             
 		</div>
 	)

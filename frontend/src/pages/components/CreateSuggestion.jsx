@@ -5,7 +5,7 @@ import { faCirclePlus, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { toast } from 'react-toastify';
 
-export default function CreateSuggestion({ client, user }) {
+export default function CreateSuggestion({ client, user, getSuggestions, order }) {
     
     const [body, setBody] = useState('');
     const [showPrompt, setShowPrompt] = useState(false);
@@ -20,7 +20,9 @@ export default function CreateSuggestion({ client, user }) {
            
         ).then(response => {
             setShowPrompt(false);
-            //window.location.reload();
+            getSuggestions(true, order);
+            setBody("");
+
             toast.success('Suggestion Created!', {
                 position: "top-right",
                 autoClose: 3000,
@@ -49,33 +51,36 @@ export default function CreateSuggestion({ client, user }) {
         });
     };
 
-    return (
-        <>
-            <div className={showPrompt ? 'close create-toggle' : 'open create-toggle'}>
-                <FontAwesomeIcon
-                    icon={showPrompt ? faCircleXmark : faCirclePlus}
-                    size='2xl'
-                    onClick={() => setShowPrompt(!showPrompt)}
-                />
-                
-            </div>
-            {showPrompt ? (
-                <div className='shadow create-prompt'>
-                    <form id='create-suggestion-form' onSubmit={handleSuggestionCreation}>
-                        <textarea 
-                        name="body" 
-                        value={body} 
-                        onInput={(e) => setBody(e.target.value)} 
-                        rows="6" 
-                        className="input-text" 
-                        id="body" required 
-                        autoComplete="off"
-                        placeholder='Share your brilliant idea...'></textarea>
-                        <label htmlFor="body"><span>Suggestion</span></label>
-                        <input type="submit" value="Collaborate!"/>
-                    </form>
+    if (user.loggedIn) {
+        return (
+            <>
+                <div className={showPrompt ? 'close create-toggle' : 'open create-toggle'}>
+                    <FontAwesomeIcon
+                        icon={showPrompt ? faCircleXmark : faCirclePlus}
+                        size='2xl'
+                        onClick={() => setShowPrompt(!showPrompt)}
+                    />
+                    
                 </div>
-            ) : null}
-        </>
-    );
+                {showPrompt ? (
+                    <div className='shadow create-prompt'>
+                        <form id='create-suggestion-form' onSubmit={handleSuggestionCreation}>
+                            <textarea 
+                            name="body" 
+                            value={body} 
+                            onInput={(e) => setBody(e.target.value)} 
+                            rows="6" 
+                            className="input-text" 
+                            id="body" required 
+                            autoComplete="off"
+                            placeholder='Share your brilliant idea...'></textarea>
+                            <label htmlFor="body"><span>Suggestion</span></label>
+                            <input type="submit" value="Collaborate!"/>
+                        </form>
+                    </div>
+                ) : null}
+            </>
+        );
+    }
+    
 }
