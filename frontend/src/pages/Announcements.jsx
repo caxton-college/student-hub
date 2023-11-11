@@ -22,8 +22,10 @@ export default function Announcements({user, client, announcements}) {
 	
 	
 	return (
-		<div className='content'>
-            <Header page={"Announcements"}></Header>
+        <>
+        <Header page={"Announcements"}></Header>
+        <div className='content'>
+            
 			{
 				announcements.map(announcement => (
                     <Announcement announcement={announcement} key={announcement.id}></Announcement>
@@ -44,5 +46,7 @@ export default function Announcements({user, client, announcements}) {
             
             
 		</div>
+        </>
+		
 	)
 }

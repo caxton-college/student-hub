@@ -48,9 +48,18 @@ export default function SuggestionLike({
             setTimeout(() => {
                 setClicked(false);
             }, 500);
+
         }).catch(error => {
-            // Handle errors if the request fails
-            console.error('Error updating likes:', error);
+            toast.error(error.response.data.message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         });
     };
 

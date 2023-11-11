@@ -10,8 +10,10 @@ export default function Polls({ client, user, polls, checkUser, pollsOptionsLike
 	
 
     return (
+        <>
+        <Header page={"Polls"}/>
 		<div className='content'>
-            <Header page={"Polls"}/>
+            
 			{
 				polls.map((pollData, index) => {
 					return (
@@ -31,6 +33,8 @@ export default function Polls({ client, user, polls, checkUser, pollsOptionsLike
 			}
 			
 		    <CreatePoll client={client} user={user}></CreatePoll>
-		</div>
+		</div>        
+        </>
+        
     )
 }

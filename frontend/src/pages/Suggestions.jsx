@@ -33,37 +33,40 @@ export default function Suggestions({
 	
 	
 	return (
-        
-		<div className='content'>
+        <>
             <Header page={"Suggestions"}/>
-            <SuggestionFilter order={order} handleSetOrder={handleSetOrder}></SuggestionFilter>
+            <div className='content'>
+            
+                <SuggestionFilter order={order} handleSetOrder={handleSetOrder}></SuggestionFilter>
 
-			{
-				suggestions.map(suggestion => (
-					<Suggestion 
-                    client={client} 
-                    suggestion={suggestion} 
-                    user={user} 
-                    key={suggestion.id} 
-                    checkUser={checkUser}
-                    suggestionsLikeData={suggestionsLikeData}
-                    setSuggestionsLikeData={setSuggestionsLikeData}
-                    getSuggestions={getSuggestions}
-                    order={order}/>
-				))
-			}
-            
-               
-            <CreateSuggestion 
-            client={client} 
-            user={user} 
-            getSuggestions={getSuggestions}
-            forceUpdate={forceUpdate}
-            order={order}>
-            </CreateSuggestion>
-               
-            
-            
-		</div>
+                {
+                    suggestions.map(suggestion => (
+                        <Suggestion 
+                        client={client} 
+                        suggestion={suggestion} 
+                        user={user} 
+                        key={suggestion.id} 
+                        checkUser={checkUser}
+                        suggestionsLikeData={suggestionsLikeData}
+                        setSuggestionsLikeData={setSuggestionsLikeData}
+                        getSuggestions={getSuggestions}
+                        order={order}/>
+                    ))
+                }
+                
+                
+                <CreateSuggestion 
+                client={client} 
+                user={user} 
+                getSuggestions={getSuggestions}
+                forceUpdate={forceUpdate}
+                order={order}>
+                </CreateSuggestion>
+                
+                
+                
+            </div>
+        </>
+		
 	)
 }

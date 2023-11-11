@@ -42,9 +42,41 @@ body {
 
 #root {
     display: grid;
-    
     height: 100vh;
-    grid-template-rows: 6fr 1fr;
+    overflow: hidden;
+    grid-template-rows: auto 5fr 1fr; /* Use "auto" for the header row and 1fr for the content row */
+}
+
+.content {
+    gap: 25px;
+    display: grid;
+    height: 100%;
+    width: 100vw;
+    padding-top: 1%;
+    
+    place-items: start center;
+    padding-bottom: 3%;
+    grid-template-rows: auto 1fr; /* Use "auto" for the header row and 1fr for the content row */
+    
+}
+
+
+.header {
+    display: grid;
+    place-self: center;
+    width: 100%;
+    
+    margin-bottom: 0px;
+    place-items: center;
+    background-color: var(--background);
+}
+
+.header-navbar-content {
+    width: 80%;
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
 }
 
 .shadow {
@@ -73,24 +105,14 @@ body {
   
   /* Additional styling for the icons, adjust as needed */
 .nav-link:hover {
-    color: var(--primary); /* Change as needed */
+    color: var(--primary); 
   }
   
 
 .toggle-dark-mode:hover {
     color: var(--points);
 }
-.content{
-    
-    gap: 25px;
-    display: grid;
-    padding-top: 50px;
-    width: 100vw;
-    place-items: center;
-  
-    padding-bottom: 3%;  
-    
-}
+
 
 
 
@@ -111,6 +133,7 @@ body {
 }
 
 .suggestion {
+
     position: relative;
     display: grid;
     padding-left: 25px;
@@ -171,8 +194,8 @@ body {
     border-radius: 35px;
     width: 40%;
    
-    margin-bottom: 2%;
-    padding-top: 2%;
+    
+    padding-top: 1.5%;
     height: 100px;
     display: flex;
     flex-direction: row;
@@ -314,29 +337,7 @@ body {
 }
 
 
-.header {
-    display: grid;
-    place-self: center;
-    
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    margin-bottom: 50px;
 
-    place-items: center;
-  
-    background-color: var(--background);
-    overflow: hidden;
-  
-}
-
-.header-navbar-content {
-    width: 80%;
-    display: flex;
-
-    justify-content: space-between;
-    align-items: center;
-}
 
 #navbar-container {
     display: grid;
@@ -625,7 +626,7 @@ input[type="submit"] {
     display: grid;
     place-items: center;
     grid-template-rows: auto 1fr;
-    
+    height: 80vh;
 
 }
 

@@ -283,11 +283,8 @@ class CreateSuggestion(APIView):
         
         suggestion_body = data["body"]
         
-        
-
-    
         new_suggestion = Suggestion.objects.create(body=suggestion_body, owner=user)
-        new_suggestion.liked_by.add(user)
+       
         new_suggestion.save()
   
         return Response(status=status.HTTP_200_OK)
@@ -359,6 +356,10 @@ class UpdateSuggestionLikes(APIView):
         
         suggestion = Suggestion.objects.get(id=suggestion_id)
         suggestion_owner = suggestion.owner
+        
+        if user == suggestion_owner:
+            return Response({"message": "Can't like your own suggestion!"}, status=status.HTTP_403_FORBIDDEN)
+ 
         
         serialiser = SuggestionSerializer(suggestion)
         liked_data = {}
@@ -708,7 +709,7 @@ class UpdatePollOptionLikedStatus(APIView):
         
         if option.poll.owner == user:
             # Return an error message if the user tries to like their own poll option.
-            return Response({"message": "You cannot like your own poll option."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "Can't like your own poll!"}, status=status.HTTP_400_BAD_REQUEST)
 
         options_liked_data: dict[int, dict[str, int | bool]] = {}
         
