@@ -22,7 +22,7 @@ function Navbar() {
                 <Link to="/suggestions" onClick={(e) => setSelected("/suggestions")} className={selected === "/suggestions" ? "selected-tab" : "nav-link"}>
                     <FontAwesomeIcon icon={faLightbulb} size="2xl" />
                 </Link>
-                <Link to="/" onClick={(e) => setSelected("/profile")} className={selected === "profile" ? "/selected-tab" : "nav-link"}>
+                <Link to="/" onClick={(e) => setSelected("/profile")} className={selected === "/profile" ? "selected-tab" : "nav-link"}>
                     <FontAwesomeIcon icon={faUser} size="2xl" />
                 </Link>
             </div>

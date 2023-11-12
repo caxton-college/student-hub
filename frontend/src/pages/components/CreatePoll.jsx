@@ -9,7 +9,8 @@ import PollOptionInput from './PollOptionInput';
 
 export default function CreatePoll({ 
     client, 
-    user, 
+    user,
+    getPolls
 }) {
     
     
@@ -30,6 +31,7 @@ export default function CreatePoll({
             
         ).then(response => {
             setShowPollPrompt(false);
+            getPolls(true);
             toast.success('Poll Created!', {
                 position: "top-right",
                 autoClose: 3000,

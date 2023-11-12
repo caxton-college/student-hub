@@ -358,7 +358,7 @@ class UpdateSuggestionLikes(APIView):
         suggestion_owner = suggestion.owner
         
         if user == suggestion_owner:
-            return Response({"message": "Can't like your own suggestion!"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"message": "Can't like your own suggestion!"}, status=status.HTTP_400_BAD_REQUEST)
  
         
         serialiser = SuggestionSerializer(suggestion)
@@ -639,35 +639,36 @@ class CreatePoll(APIView):
 class DeletePoll(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
-    def delete(self, request, poll_id):
+    def post(self, request):
         """
-        Delete a poll by ID.
+        Delete a suggestion by ID.
 
         Args:
-            request: Request to delete a poll.
-            poll_id (int): The ID of the poll to be deleted.
+            request: Request to delete a suggestion.
 
         Returns:
-            Response: 
-            Status code 204 (No Content) if the poll is successfully deleted.
-            Status code 404 (Not Found) if the poll with the given ID is not found.
-            Status code 403 (Forbidden) if the user is not allowed to delete the poll.
+            Response:
+            Status code 200 (No Content) if the suggestion is successfully deleted.
+            Status code 404 (Not Found) if the suggestion with the given ID is not found.
+            Status code 403 (Forbidden) if the user is not allowed to delete the suggestion.
         """
         try:
-            poll = Poll.objects.get(id=poll_id)
+            data = dict(request.data)
+            
+            poll = Poll.objects.get(id=data["poll_id"])
 
-            # Check if the user is the owner of the poll or has permission to delete it.
+            # Check if the user is the owner of the suggestion or has permission to delete it.
             if request.user == poll.owner or request.user.role not in ["teacher", "student"]:
                 poll.delete()
-                return Response(status=status.HTTP_204_NO_CONTENT)
+                return Response({"message": "Poll deleted"}, status=status.HTTP_204_NO_CONTENT)
             else:
                 return Response(
-                    {"message": "You don't have permission to delete this poll."},
+                    {"message": "You don't have permission to delete this suggestion."},
                     status=status.HTTP_403_FORBIDDEN
                 )
         except Poll.DoesNotExist:
             return Response(
-                {"message": "Poll not found."},
+                {"message": "Suggestion not found."},
                 status=status.HTTP_404_NOT_FOUND
             )
                        

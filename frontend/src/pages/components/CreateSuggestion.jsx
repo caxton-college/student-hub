@@ -9,7 +9,23 @@ export default function CreateSuggestion({ client, user, getSuggestions, order }
     
     const [body, setBody] = useState('');
     const [showPrompt, setShowPrompt] = useState(false);
+    const [csrfToken, setCsrfToken] = useState('');
     
+    useEffect(() => {
+        
+    
+        // Fetch the CSRF token on component mount
+        client.get('/api/get_csrf_token')
+        .then(response => {
+            setCsrfToken(response.data.csrfToken);
+        })
+        .catch(error => {
+            console.error('Error fetching CSRF token:', error);
+        });
+        
+	}, []);
+
+
 
     const handleSuggestionCreation = (e) => {
         // Post request using the fetched CSRF token
@@ -17,6 +33,7 @@ export default function CreateSuggestion({ client, user, getSuggestions, order }
         client.post(
             '/api/create_suggestion',
             { body: body },
+            { headers: { 'X-CSRFToken': csrfToken } }
            
         ).then(response => {
             setShowPrompt(false);

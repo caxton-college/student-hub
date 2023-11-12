@@ -3,16 +3,16 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
-export default function DeleteSuggestion({ client, user, id, getSuggestions, order }) {
-
-    function deleteSuggestion() {
+export default function DeletePoll({ client, user, id, getPolls }) {
+    console.log(id)
+    function deletePoll() {
         client.post(
-            `/api/delete_suggestion`,
+            `/api/delete_poll`,
         {
-            suggestion_id: id
+            poll_id: id
         }
         ).then(function (response) {
-            getSuggestions(true);
+            getPolls(true);
         })
         
     }
@@ -21,7 +21,7 @@ export default function DeleteSuggestion({ client, user, id, getSuggestions, ord
         return (
             <div className='delete'>
                 <FontAwesomeIcon 
-                onClick={deleteSuggestion}
+                onClick={deletePoll}
                 icon={faXmark}
                 className='close'
                 size='xl'

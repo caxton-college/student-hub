@@ -182,11 +182,12 @@ body {
     
 }
 
-.delete-suggestion {
+.delete {
     position: absolute;
     top: 10%;
     right: 3%;
     font-size: 23px;
+    cursor: pointer;
 }
 
 #suggestion-sort {
@@ -457,6 +458,7 @@ display: flex;
 }
 
 .poll {
+    position: relative;
     height: 500px;
     width: 80%;
     height: 50vh;

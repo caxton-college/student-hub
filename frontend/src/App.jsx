@@ -90,8 +90,8 @@ function App() {
 	}
     
 
-	function getPolls() {
-		if (polls.length === 0) {
+	function getPolls(force) {
+		if (polls.length === 0 | force) {
 			client.get(
 				"api/polls"
 			).then(function(response) {
@@ -201,6 +201,7 @@ function App() {
                         client={client} 
                         polls={polls}
                         checkUser={checkUser}
+                        getPolls={getPolls}
                         pollsOptionsLikeData={pollsOptionsLikeData}
                         setPollsOptionsLikeData={setPollsOptionsLikeData}
                     />

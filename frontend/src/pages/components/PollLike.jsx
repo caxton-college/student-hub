@@ -73,9 +73,7 @@ export default function PollLike({
                 setClicked(false);
             }, 500);
             
-        }).catch(error => {
-            // Handle errors if the request fails
-            console.error('Error updating likes:', error);
+        }).catch(error => {   
             toast.error(error.response.data.message, {
                 position: "top-right",
                 autoClose: 3000,
