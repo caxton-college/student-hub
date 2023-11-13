@@ -150,6 +150,7 @@ body {
 }
 
 .announcement {
+    position: relative;
     display: grid;
     padding-left: 25px;
     padding-top: 5px;

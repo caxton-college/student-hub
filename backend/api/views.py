@@ -509,38 +509,38 @@ class CreateAnnouncement(APIView):
 class DeleteAnnouncement(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
-    def delete(self, request, announcement_id):
+    def post(self, request):
         """
-        Delete an announcement by ID.
+        Delete a suggestion by ID.
 
         Args:
-            request: Request to delete an announcement.
-            announcement_id (int): The ID of the announcement to be deleted.
+            request: Request to delete a suggestion.
 
         Returns:
-            Response: 
-            Status code 204 (No Content) if the announcement is successfully deleted.
-            Status code 404 (Not Found) if the announcement with the given ID is not found.
-            Status code 403 (Forbidden) if the user is not allowed to delete the announcement.
+            Response:
+            Status code 200 (No Content) if the suggestion is successfully deleted.
+            Status code 404 (Not Found) if the suggestion with the given ID is not found.
+            Status code 403 (Forbidden) if the user is not allowed to delete the suggestion.
         """
         try:
-            announcement = Announcement.objects.get(id=announcement_id)
+            data = dict(request.data)
+            
+            announcement = Announcement.objects.get(id=data["announcement_id"])
 
-            # Check if the user is the owner of the announcement or has permission to delete it.
+            # Check if the user is the owner of the suggestion or has permission to delete it.
             if request.user == announcement.owner or request.user.role not in ["teacher", "student"]:
                 announcement.delete()
-                return Response(status=status.HTTP_204_NO_CONTENT)
+                return Response({"message": "Announcement deleted"}, status=status.HTTP_204_NO_CONTENT)
             else:
                 return Response(
                     {"message": "You don't have permission to delete this announcement."},
                     status=status.HTTP_403_FORBIDDEN
                 )
-        except Announcement.DoesNotExist:
+        except Poll.DoesNotExist:
             return Response(
                 {"message": "Announcement not found."},
                 status=status.HTTP_404_NOT_FOUND
             )
-
 
 
 

@@ -16,7 +16,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
 const client = axios.create({
-	baseURL: 'http://192.168.1.64:8000',
+	baseURL: 'http://172.16.35.7:8000',
 });
 
 
@@ -78,8 +78,8 @@ function App() {
 		}
 	}
 
-    function getAnnouncements() {
-		if (announcements.length === 0) {
+    function getAnnouncements(force) {
+		if (announcements.length === 0 | force) {
 			client.get(
 				"api/announcements"
 			).then(function(response) {
@@ -193,6 +193,7 @@ function App() {
                         user={user} 
                         client={client} 
                         announcements={announcements}
+                        getAnnouncements={getAnnouncements}
                     />
                 }/>
 				<Route path="/polls" element={

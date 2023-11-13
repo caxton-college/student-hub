@@ -5,18 +5,18 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { toast } from 'react-toastify';
 
-export default function DeleteSuggestion({ client, user, id, getSuggestions, order }) {
+export default function DeleteAnnouncement({ client, user, id, getAnnouncements }) {
 
-    function deleteSuggestion() {
+    function deleteAnnouncement() {
         client.post(
-            `/api/delete_suggestion`,
+            `/api/delete_announcement`,
         {
-            suggestion_id: id
+            announcement_id: id
         }
         ).then(function (response) {
-            getSuggestions(true);
-
-            toast.success('Suggestion deleted.', {
+            getAnnouncements(true);
+            
+            toast.success('Announcement deleted.', {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -35,7 +35,7 @@ export default function DeleteSuggestion({ client, user, id, getSuggestions, ord
         return (
             <div className='delete'>
                 <FontAwesomeIcon 
-                onClick={deleteSuggestion}
+                onClick={deleteAnnouncement}
                 icon={faXmark}
                 className='close'
                 size='xl'

@@ -6,7 +6,7 @@ import CreateAnnouncement from './components/CreateAnnouncement';
 
 import Announcement from './components/Announcement';
 import Header from './components/Header';
-export default function Announcements({user, client, announcements}) {
+export default function Announcements({user, client, announcements, getAnnouncements}) {
 
 	
 	
@@ -28,7 +28,12 @@ export default function Announcements({user, client, announcements}) {
             
 			{
 				announcements.map(announcement => (
-                    <Announcement announcement={announcement} key={announcement.id}></Announcement>
+                    <Announcement 
+					announcement={announcement}
+					client={client}
+					user={user}
+					getAnnouncements={getAnnouncements} 
+					key={announcement.id}></Announcement>
 				))
 			}
             {
