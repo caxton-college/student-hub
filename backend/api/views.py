@@ -152,6 +152,8 @@ class UserView(APIView):
         user_data["name"] = serialiser.data["name"].capitalize()
         user_data["surname"] = serialiser.data["surname"].capitalize()
         
+        user_data["user_suggestions"] = len(Suggestion.objects.all().filter(owner=request.user))
+        
         return Response({'user': user_data}, status=status.HTTP_200_OK)
 
 
@@ -436,9 +438,23 @@ class UpdateSuggestionPin(APIView):
         suggestion_id = data["suggestion_id"]
         
         suggestion = Suggestion.objects.get(id=suggestion_id)
-  
+        suggestion_owner = suggestion.owner
+        
+        if not suggestion.pinned:
+            suggestion_owner.points += 10
+        
+        elif suggestion.pinned:
+            suggestion_owner.points -= 10
+        
+        suggestion_owner.save()
+        
         suggestion.pinned = not suggestion.pinned
         suggestion.save()
+        
+        
+        
+        
+        
         return Response({"pinned": suggestion.pinned} ,status=status.HTTP_200_OK)
 
 

@@ -38,6 +38,7 @@ function App() {
 		role: 0,
 		points: 0,
 		likes: 0,
+        userSuggestions: 0,
 	});
     const [suggestions, setSuggestions] = useState([]);
     const [announcements, setAnnouncements] = useState([]);
@@ -59,6 +60,7 @@ function App() {
                     role: response.data.user.role,
                     points: response.data.user.points,
                     likes: response.data.user.likes,
+                    userSuggestions: response.data.user.user_suggestions
                 });
                 
             },

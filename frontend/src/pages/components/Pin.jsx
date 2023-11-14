@@ -9,6 +9,7 @@ export default function Pin({
     client, 
     user, 
     id,
+    checkUser,
     suggestionsLikeData, 
     setSuggestionsLikeData
 }) {
@@ -27,7 +28,7 @@ export default function Pin({
             let newSuggestionsLikeData = suggestionsLikeData;
             newSuggestionsLikeData[id].pinned = response.data.pinned;
             setSuggestionsLikeData(newSuggestionsLikeData);
-
+            checkUser();
             toast.info('Pin updated', {
                 position: "top-right",
                 autoClose: 3000,
@@ -38,6 +39,7 @@ export default function Pin({
                 progress: undefined,
                 theme: "light",
             });
+            
 
         }).catch(error => {
             // Handle errors if the request fails

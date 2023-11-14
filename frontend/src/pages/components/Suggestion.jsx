@@ -21,6 +21,7 @@ export default function Suggestion({client, suggestion, user, checkUser, suggest
                 client={client}
                 user={user} 
                 id={suggestion.id}
+                checkUser={checkUser}
                 getSuggestions={getSuggestions}
                 order={order}>
                 </DeleteSuggestion>
@@ -32,6 +33,7 @@ export default function Suggestion({client, suggestion, user, checkUser, suggest
                 user={user}
                 pinned={suggestion.pinned}
                 id={suggestion.id}
+                checkUser={checkUser}
                 suggestionsLikeData={suggestionsLikeData}
                 setSuggestionsLikeData={setSuggestionsLikeData}>
                 </Pin>

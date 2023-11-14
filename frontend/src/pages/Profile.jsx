@@ -5,9 +5,8 @@ import Header from './components/Header';
 import { faHeart, faCoins, faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default function Profile({ user, checkUser, setUser, client, userSuggestions }) {
+export default function Profile({ user, checkUser, setUser, client }) {
     
-    let numSuggestions = userSuggestions ? userSuggestions.length : 0;
 
 
     return (
@@ -32,7 +31,7 @@ export default function Profile({ user, checkUser, setUser, client, userSuggesti
                         
                             <div className='likes'>
                                 
-                                <h3>{numSuggestions}</h3>
+                                <h3>{user.userSuggestions}</h3>
                                 <FontAwesomeIcon
                                     icon={faLightbulb}
                                     style={{ color: "#3e3e6f" }}

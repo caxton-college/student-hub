@@ -5,7 +5,7 @@ import { faCirclePlus, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { toast } from 'react-toastify';
 
-export default function CreateSuggestion({ client, user, getSuggestions, order }) {
+export default function CreateSuggestion({ client, user, getSuggestions, order, checkUser }) {
     
     const [body, setBody] = useState('');
     const [showPrompt, setShowPrompt] = useState(false);
@@ -39,7 +39,7 @@ export default function CreateSuggestion({ client, user, getSuggestions, order }
             setShowPrompt(false);
             getSuggestions(true, order);
             setBody("");
-
+            checkUser();
             toast.success('Suggestion Created!', {
                 position: "top-right",
                 autoClose: 3000,

@@ -16,9 +16,9 @@ class Announcement(models.Model):
     
 class Suggestion(models.Model):
     body = models.CharField(max_length=250)
-    likes = models.PositiveSmallIntegerField(default=1)
+    likes = models.PositiveSmallIntegerField(default=0)
     pinned = models.BooleanField(default=False)
-    liked_by = models.ManyToManyField('users.User', related_name='liked_suggestions')
+    liked_by = models.ManyToManyField('users.User', related_name='liked_suggestions', blank=True)
     date_created = models.DateField(auto_now=True)
     owner = models.ForeignKey('users.User', related_name='suggestions', on_delete=models.CASCADE)
     

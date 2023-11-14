@@ -25,11 +25,6 @@ export default function Suggestions({
         getSuggestions(true, newOrder);
         
     }
-
-	
-	
-	
-	
 	
 	
 	return (
@@ -60,6 +55,7 @@ export default function Suggestions({
                 user={user} 
                 getSuggestions={getSuggestions}
                 forceUpdate={forceUpdate}
+                checkUser={checkUser}
                 order={order}>
                 </CreateSuggestion>
                 

@@ -5,7 +5,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { toast } from 'react-toastify';
 
-export default function DeleteSuggestion({ client, user, id, getSuggestions, order }) {
+export default function DeleteSuggestion({ client, user, id, getSuggestions, checkUser }) {
 
     function deleteSuggestion() {
         client.post(
@@ -26,6 +26,7 @@ export default function DeleteSuggestion({ client, user, id, getSuggestions, ord
                 progress: undefined,
                 theme: "light",
             });
+            checkUser();
 
         })
         
