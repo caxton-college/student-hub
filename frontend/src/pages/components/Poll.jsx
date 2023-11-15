@@ -32,18 +32,18 @@ export default function Poll({
         // Return a placeholder or loading state until data is ready
         return <div>Loading...</div>;
     }
-    console.log(pollData)
     return (
         <div className='poll shadow'>
 
             <h3>{pollData.poll.question}</h3>
-            <DeletePoll
-            client={client}
-            user={user}
-            id={pollData.poll.id}
-            getPolls={getPolls}>
 
+            <DeletePoll
+                client={client}
+                user={user}
+                id={pollData.poll.id}
+                getPolls={getPolls}>
             </DeletePoll>
+            
             {pollData.options.map((option, index) => (
                 <PollOption
                     client={client}
@@ -55,8 +55,7 @@ export default function Poll({
                     index={index}
                     pollsOptionsLikeData={pollsOptionsLikeData}
                     setPollsOptionsLikeData={setPollsOptionsLikeData}  
-                    checkUser={checkUser}
-                    
+                    checkUser={checkUser}  
                 />
             ))}
         </div>

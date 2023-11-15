@@ -6,7 +6,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 
 export default function DeletePoll({ client, user, id, getPolls }) {
-    console.log(id)
+
     function deletePoll() {
         client.post(
             `/api/delete_poll`,

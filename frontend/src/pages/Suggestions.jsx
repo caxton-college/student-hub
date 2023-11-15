@@ -15,6 +15,7 @@ export default function Suggestions({
     getSuggestions,
     suggestionsLikeData,
     setSuggestionsLikeData
+
 }) {
 
     const [, forceUpdate] = useReducer(x => x + 1, 0);

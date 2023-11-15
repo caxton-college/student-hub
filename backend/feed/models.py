@@ -19,7 +19,7 @@ class Suggestion(models.Model):
     likes = models.PositiveSmallIntegerField(default=0)
     pinned = models.BooleanField(default=False)
     liked_by = models.ManyToManyField('users.User', related_name='liked_suggestions', blank=True)
-    date_created = models.DateField(auto_now=True)
+    date_created = models.DateTimeField(auto_now=True)
     owner = models.ForeignKey('users.User', related_name='suggestions', on_delete=models.CASCADE)
     
     class Meta:
@@ -32,7 +32,7 @@ class Suggestion(models.Model):
 
 class Poll(models.Model):
     question = models.CharField(max_length=100)
-    date_created = models.DateField(auto_now=True)
+    date_created = models.DateTimeField(auto_now=True)
     owner = models.ForeignKey('users.User', related_name='poll', on_delete=models.CASCADE)
     
     class Meta:
@@ -43,7 +43,7 @@ class Poll(models.Model):
 
 class PollOption(models.Model):
     body = models.CharField(max_length=100)
-    date_created = models.DateField(auto_now=True)
+    date_created = models.DateTimeField(auto_now=True)
     likes = models.PositiveSmallIntegerField(default=0)
     liked_by = models.ManyToManyField('users.User', related_name='liked_polloptions', blank=True)
     poll = models.ForeignKey('Poll', related_name='polloption', on_delete=models.CASCADE)

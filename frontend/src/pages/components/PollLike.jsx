@@ -87,6 +87,19 @@ export default function PollLike({
         });
     };
 
+    function mustLogIn() {
+        toast.warning("Must be logged in to do that!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
+
     const icon = stateLiked ? solidHeart : faHeart;
     const colour = stateLiked ? "#B13F3E" : "#cbcbe2";
 
@@ -106,6 +119,7 @@ export default function PollLike({
                     <FontAwesomeIcon
                         icon={solidHeart}
                         className={"like"}
+                        onClick={mustLogIn}
                         style={{ color: "#B13F3E" }}
                         size='xl'/>
                 )
