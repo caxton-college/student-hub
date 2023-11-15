@@ -13,6 +13,7 @@ from users.models import User
 from users.serialisers import UserRegisterSerialiser, UserSerialiser
 from users.validations import custom_validation
 
+from datetime import datetime, timedelta
 
 from feed.models import Announcement, Suggestion, Poll, PollOption
 from feed.serialisers import AnnouncementSerializer, SuggestionSerializer, PollSerializer, PollOptionSerializer
@@ -176,7 +177,7 @@ class GetPopularSuggestions(APIView):
         Returns:
             Response: A list of suggestions as serialized data and a status code of 200 (OK).
         """
-        suggestions = Suggestion.objects.all().order_by("-likes").order_by("-pinned")
+        suggestions = Suggestion.objects.all().filter(date_created__gte=datetime.now()-timedelta(days=30)).order_by("-likes").order_by("-pinned")
         serialiser = SuggestionSerializer(suggestions, many=True)
         
         for i in range(len(serialiser.data)):
@@ -209,7 +210,7 @@ class GetNewSuggestions(APIView):
         Returns:
             Response: A list of suggestions as serialized data and a status code of 200 (OK).
         """
-        suggestions = Suggestion.objects.all().order_by("-date_created")
+        suggestions = Suggestion.objects.all().filter(date_created__gte=datetime.now()-timedelta(days=30)).order_by("-date_created")
         
         serialiser = SuggestionSerializer(suggestions, many=True)
         
@@ -476,7 +477,7 @@ class GetAnnouncements(APIView):
         Returns:
             Response: A list of announcements as serialized data and a status code of 200 (OK).
         """
-        announcements = Announcement.objects.all()
+        announcements = Announcement.objects.all().filter(date_created__gte=datetime.now()-timedelta(days=30))
         serialiser = AnnouncementSerializer(announcements, many=True)
         
         for i in range(len(serialiser.data)):
@@ -574,7 +575,7 @@ class GetPolls(APIView):
         Returns:
             Response: A list of polls with their options and a status code of 200 (OK).
         """
-        polls = Poll.objects.all()
+        polls = Poll.objects.all().filter(date_created__gte=datetime.now()-timedelta(days=30))
         poll_data = []
 
         # Get the authenticated user (if any)

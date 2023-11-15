@@ -158,7 +158,7 @@ function App() {
         getSuggestions();
         getAnnouncements();
         getPolls();
-        getUserSuggestions();
+        //getUserSuggestions();
        
         
             
