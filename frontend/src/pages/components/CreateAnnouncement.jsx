@@ -42,7 +42,7 @@ export default function CreateAnnouncement({
             getAnnouncements(true); 
             setTitle("");
             setBody("");
-            toast.success('Poll Created!', {
+            toast.success('Announcement Created!', {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
