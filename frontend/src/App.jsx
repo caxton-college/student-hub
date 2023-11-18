@@ -46,6 +46,7 @@ function App() {
 	const [userSuggestions, setUserSuggestions] = useState([]);
     const [suggestionsLikeData, setSuggestionsLikeData] = useState({});
     const [pollsOptionsLikeData, setPollsOptionsLikeData] = useState({});
+    const [theme, setTheme] = useState('light'); 
 
 	const checkUser = () => {	
         client.get('/api/user', {
@@ -174,7 +175,11 @@ function App() {
                         checkUser={checkUser} 
                         client={client} 
                         userSuggestions={userSuggestions}
-                        setUser={setUser}/>}
+                        setUser={setUser}
+                        theme={theme}
+                        setTheme={setTheme}/>
+                    }
+                        
                         
                     />
 				<Route path="/suggestions" element={
@@ -187,6 +192,8 @@ function App() {
                         getSuggestions={getSuggestions}
                         suggestionsLikeData={suggestionsLikeData}
                         setSuggestionsLikeData={setSuggestionsLikeData}
+                        theme={theme}
+                        setTheme={setTheme}
                     />
                 }/>
 
@@ -196,6 +203,8 @@ function App() {
                         client={client} 
                         announcements={announcements}
                         getAnnouncements={getAnnouncements}
+                        theme={theme}
+                        setTheme={setTheme}
                     />
                 }/>
 				<Route path="/polls" element={
@@ -207,6 +216,8 @@ function App() {
                         getPolls={getPolls}
                         pollsOptionsLikeData={pollsOptionsLikeData}
                         setPollsOptionsLikeData={setPollsOptionsLikeData}
+                        theme={theme}
+                        setTheme={setTheme}
                     />
                     
                 }/>

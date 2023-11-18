@@ -12,7 +12,7 @@ function Navbar() {
     return (
         <div id="navbar-container">
         <div className="navbar shadow">
-            <div className="header-navbar-content">
+            <div className=" navbar-content">
                 <Link to="/announcements" onClick={(e) => setSelected("/announcements")} className={selected === "/announcements" ? "selected-tab" : "nav-link"}>
                     <FontAwesomeIcon icon={faNoteSticky} size="2xl" />
                 </Link>

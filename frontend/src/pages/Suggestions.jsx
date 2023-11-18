@@ -14,7 +14,9 @@ export default function Suggestions({
     suggestions,
     getSuggestions,
     suggestionsLikeData,
-    setSuggestionsLikeData
+    setSuggestionsLikeData,
+    theme,
+    setTheme
 
 }) {
 
@@ -30,7 +32,10 @@ export default function Suggestions({
 	
 	return (
         <>
-            <Header page={"Suggestions"}/>
+            <Header 
+            page={"Suggestions"}
+            theme={theme}
+            setTheme={setTheme}/>
             <div className='content'>
             
                 <SuggestionFilter order={order} handleSetOrder={handleSetOrder}></SuggestionFilter>

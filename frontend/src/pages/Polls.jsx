@@ -5,13 +5,16 @@ import CreatePoll from './components/CreatePoll';
 import Poll from './components/Poll';
 import Header from './components/Header';
 
-export default function Polls({ client, user, polls, checkUser, getPolls, pollsOptionsLikeData, setPollsOptionsLikeData}) {
+export default function Polls({ client, user, polls, checkUser, getPolls, pollsOptionsLikeData, setPollsOptionsLikeData, theme, setTheme}) {
 	
 	
 
     return (
         <>
-        <Header page={"Polls"}/>
+        <Header 
+        page={"Polls"}
+        theme={theme}
+        setTheme={setTheme}/>
 		<div className='content'>
             
 			{

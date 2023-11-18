@@ -6,7 +6,7 @@ import CreateAnnouncement from './components/CreateAnnouncement';
 
 import Announcement from './components/Announcement';
 import Header from './components/Header';
-export default function Announcements({user, client, announcements, getAnnouncements}) {
+export default function Announcements({user, client, announcements, getAnnouncements, theme, setTheme}) {
 
 	
 	
@@ -23,7 +23,11 @@ export default function Announcements({user, client, announcements, getAnnouncem
 	
 	return (
         <>
-        <Header page={"Announcements"}></Header>
+        <Header 
+        page={"Announcements"}
+        theme={theme}
+        setTheme={setTheme}/>
+        
         <div className='content'>
             
 			{

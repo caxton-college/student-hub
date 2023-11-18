@@ -5,15 +5,18 @@ import Header from './components/Header';
 import { faHeart, faCoins, faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default function Profile({ user, checkUser, setUser, client }) {
+export default function Profile({ user, checkUser, setUser, client, theme, setTheme }) {
     
-
+    let colour = theme === "light" ? "#3e3e6f" : "#d8d8ee";
 
     return (
         
             
             <div id='profile-page'>
-            <Header page={"Profile"}></Header>
+            <Header 
+            page={"Profile"}
+            theme={theme}
+            setTheme={setTheme}/>
 
             <div id='profile-content'>
             {
@@ -34,7 +37,7 @@ export default function Profile({ user, checkUser, setUser, client }) {
                                 <h3>{user.userSuggestions}</h3>
                                 <FontAwesomeIcon
                                     icon={faLightbulb}
-                                    style={{ color: "#3e3e6f" }}
+                                    style={{ color: colour }}
                                     size="xl">
 
                                 </FontAwesomeIcon>
