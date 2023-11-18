@@ -95,6 +95,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 	is_staff = models.BooleanField(default=False) 
 	points = models.PositiveSmallIntegerField(default=0)
 	likes = models.PositiveIntegerField(default=0)
+	likes_given = models.PositiveIntegerField(default=0)
+	likes_received = models.PositiveIntegerField(default=0)
+ 	
  
 	objects = UserManager()
  

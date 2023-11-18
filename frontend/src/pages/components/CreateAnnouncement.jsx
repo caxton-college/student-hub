@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo, faCirclePlus, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+
+import { toast } from 'react-toastify';
 
 export default function CreateAnnouncement({ 
     client, 
     user, 
     showAnnouncementPrompt, 
-    setShowAnnouncementPrompt
+    setShowAnnouncementPrompt,
+    getAnnouncements
 }) {
     
     const [csrfToken, setCsrfToken] = useState('');
@@ -24,7 +28,7 @@ export default function CreateAnnouncement({
             });
     }, []);
 
-    const handleSuggestionCreation = (e) => {
+    const handleAnnouncementCreation = (e) => {
         // Post request using the fetched CSRF token
         e.preventDefault();
         client.post(
@@ -35,7 +39,19 @@ export default function CreateAnnouncement({
             { headers: { 'X-CSRFToken': csrfToken } }
         ).then(response => {
             setShowAnnouncementPrompt(false);
-            window.location.reload();
+            getAnnouncements(true); 
+            setTitle("");
+            setBody("");
+            toast.success('Poll Created!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
         }).catch(error => {
             console.error('Error creating announcement:', error);
         });
@@ -58,7 +74,7 @@ export default function CreateAnnouncement({
             </div>
             {showAnnouncementPrompt ? (
                 <div className='shadow create-prompt'>
-                    <form id='create-announcement-form' onSubmit={handleSuggestionCreation}>
+                    <form id='create-announcement-form' onSubmit={handleAnnouncementCreation}>
                     <textarea 
                         name="title" 
                         value={title} 

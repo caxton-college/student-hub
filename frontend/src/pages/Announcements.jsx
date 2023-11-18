@@ -43,6 +43,7 @@ export default function Announcements({user, client, announcements, getAnnouncem
 						client={client} 
 						user={user} 
 						showAnnouncementPrompt={showAnnouncementPrompt}
+                        getAnnouncements={getAnnouncements}
 						setShowAnnouncementPrompt={setShowAnnouncementPrompt}>
 						</CreateAnnouncement>
 					</>
