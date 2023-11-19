@@ -499,6 +499,14 @@ display: flex;
     width: 100%;
 }
 
+#watermark {
+    font-size: 20px;
+    position: absolute;
+    top: 10%;
+    left: 1%;
+}
+
+
 input,
 span,
 label,

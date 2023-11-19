@@ -31,7 +31,7 @@ export default function DeleteSuggestion({ client, user, id, getSuggestions, che
         ).then(function (response) {
             getSuggestions(true);
 
-            toast.success('Suggestion deleted.', {
+            toast.info('Suggestion deleted.', {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,

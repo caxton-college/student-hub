@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
+
 export default function SuggestionLike({ 
     client, 
     user, 
@@ -15,7 +16,19 @@ export default function SuggestionLike({
     const [stateLiked, setLiked] = useState(suggestionsLikeData[id].liked);
     const [stateLikes, setLikes] = useState(suggestionsLikeData[id].likes);
     const [clicked, setClicked] = useState(false);
-
+    const [csrfToken, setCsrfToken] = useState('');
+    
+    useEffect(() => {
+        // Fetch the CSRF token on component mount
+        client.get('/api/get_csrf_token')
+        .then(response => {
+            setCsrfToken(response.data.csrfToken);
+        })
+        .catch(error => {
+            console.error('Error fetching CSRF token:', error);
+        });
+        
+	}, []);
 
 
     const updateLikes = () => {
@@ -23,6 +36,7 @@ export default function SuggestionLike({
         client.post(
             `/api/update_suggestion_likes`,
             { id : id },
+            { headers: { 'X-CSRFToken': csrfToken } }
             
         ).then(response => {
             setLiked(response.data.liked);

@@ -10,9 +10,8 @@ export default function Profile({ user, checkUser, setUser, client, theme, setTh
     let colour = theme === "light" ? "#3e3e6f" : "#d8d8ee";
 
     return (
-        
-            
-            <div id='profile-page'>
+        <>
+        <div id='profile-page'>
             <Header 
             page={"Profile"}
             theme={theme}
@@ -66,6 +65,10 @@ export default function Profile({ user, checkUser, setUser, client, theme, setTh
             </div>
             
         </div>
+        <div id='watermark'>
+            <h6>Made by Carlos Lorenzo</h6>
+        </div>
+        </>
         
         
     );
