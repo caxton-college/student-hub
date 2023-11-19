@@ -58,6 +58,7 @@ class Index(APIView):
 # User views
 class UserRegister(APIView):
     permission_classes = (permissions.AllowAny,)
+    authentication_classes = (SessionAuthentication,)
     
     def post(self, request: HttpRequest) -> Response:
         """
@@ -69,12 +70,16 @@ class UserRegister(APIView):
         Returns:
             Response: Status code 201 if the user was created, 400 if not. 
         """
+        
+        if not request.user.is_staff:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        
         clean_data = custom_validation(request.data)  # Assuming custom_validation function is defined elsewhere.
         serialiser = UserRegisterSerialiser(data=clean_data)  # Assuming UserRegisterSerializer is defined elsewhere.
 
         if serialiser.is_valid(raise_exception=True):
-            user = serialiser.create(clean_data)
-            user.save()
+            new_user = serialiser.create(clean_data)
+            new_user.save()
             return Response(status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
