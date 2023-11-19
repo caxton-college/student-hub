@@ -30,28 +30,32 @@ export default function Profile({ user, checkUser, setUser, client, theme, setTh
                             style={{ color: "#eeb825" }}> 
                             </FontAwesomeIcon>
                         </div>
-                        <div id='interactions-box' className='shadow'>
-                        
-                            <div className='likes'>
+                        <div id="interactions">
+                                <h4>Your Interactions</h4>
+                                <div id='interactions-box' className='shadow'>
                                 
-                                <h3>{user.userSuggestions}</h3>
-                                <FontAwesomeIcon
-                                    icon={faLightbulb}
-                                    style={{ color: colour }}
-                                    size="xl">
+                                <div className='likes'>
+                                    
+                                    <h3>{user.userSuggestions}</h3>
+                                    <FontAwesomeIcon
+                                        icon={faLightbulb}
+                                        style={{ color: colour }}
+                                        size="xl">
 
-                                </FontAwesomeIcon>
-                            </div>
+                                    </FontAwesomeIcon>
+                                </div>
 
-                            <div className='likes'>
-                                <h3>{user.likes}</h3>
-                                <FontAwesomeIcon
-                                    icon={faHeart}
-                                    style={{ color: "#B13F3E" }}
-                                    size="xl">
-                                </FontAwesomeIcon>
+                                <div className='likes'>
+                                    <h3>{user.likes}</h3>
+                                    <FontAwesomeIcon
+                                        icon={faHeart}
+                                        style={{ color: "#B13F3E" }}
+                                        size="xl">
+                                    </FontAwesomeIcon>
+                                </div>
                             </div>
                         </div>
+                        
 
                         <Logout setUser={setUser} client={client} />
                     </>

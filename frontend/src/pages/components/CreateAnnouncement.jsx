@@ -7,7 +7,6 @@ import { toast } from 'react-toastify';
 
 export default function CreateAnnouncement({ 
     client, 
-    user, 
     showAnnouncementPrompt, 
     setShowAnnouncementPrompt,
     getAnnouncements

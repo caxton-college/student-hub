@@ -12,8 +12,6 @@ export default function CreateSuggestion({ client, user, getSuggestions, order, 
     const [csrfToken, setCsrfToken] = useState('');
     
     useEffect(() => {
-        
-    
         // Fetch the CSRF token on component mount
         client.get('/api/get_csrf_token')
         .then(response => {
@@ -49,12 +47,12 @@ export default function CreateSuggestion({ client, user, getSuggestions, order, 
                 draggable: true,
                 progress: undefined,
                 theme: "light",
-                });
+            });
 
 
             
         }).catch(error => {
-            console.error('Error creating suggestion:', error);
+            
             toast.error('Something went wrong...', {
                 position: "top-right",
                 autoClose: 3000,
@@ -64,7 +62,7 @@ export default function CreateSuggestion({ client, user, getSuggestions, order, 
                 draggable: true,
                 progress: undefined,
                 theme: "light",
-                });
+            });
         });
     };
 

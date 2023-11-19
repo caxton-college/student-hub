@@ -6,11 +6,10 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 
 export default function DeleteSuggestion({ client, user, id, getSuggestions, checkUser }) {
+    
     const [csrfToken, setCsrfToken] = useState('');
 
     useEffect(() => {
-        
-    
         // Fetch the CSRF token on component mount
         client.get('/api/get_csrf_token')
         .then(response => {

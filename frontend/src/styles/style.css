@@ -27,7 +27,7 @@
 
     --points: #eeb825;
     --shadow: rgba(178, 168, 168, 0.1);
-  }
+}
 
 
 body {
@@ -668,6 +668,12 @@ input[type="submit"] {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+#interactions {
+    width: 100%;
+    display: grid;
+    place-items: center;
 }
 
 #interactions-box {

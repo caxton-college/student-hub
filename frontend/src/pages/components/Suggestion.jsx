@@ -6,8 +6,6 @@ import DeleteSuggestion from './DeleteSuggestion'
 
 export default function Suggestion({client, suggestion, user, checkUser, suggestionsLikeData, setSuggestionsLikeData, getSuggestions, order}) {
     
-    
-
     return (
         <>
 			<div className='suggestion shadow'>
