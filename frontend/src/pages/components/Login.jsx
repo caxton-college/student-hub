@@ -24,6 +24,7 @@ export default function Login({ client, checkUser}) {
             },
         ).then(function(response) {
             checkUser();
+            window.location.reload();
             toast.success('Login Successful!', {
                 position: "top-right",
                 autoClose: 3000,
