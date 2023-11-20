@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useState } from 'react';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
+
 import { toast } from 'react-toastify';
 
 export default function SuggestionLike({ 
@@ -16,28 +19,12 @@ export default function SuggestionLike({
     const [stateLiked, setLiked] = useState(suggestionsLikeData[id].liked);
     const [stateLikes, setLikes] = useState(suggestionsLikeData[id].likes);
     const [clicked, setClicked] = useState(false);
-    const [csrfToken, setCsrfToken] = useState('');
     
-    useEffect(() => {
-        // Fetch the CSRF token on component mount
-        client.get('/api/get_csrf_token')
-        .then(response => {
-            setCsrfToken(response.data.csrfToken);
-        })
-        .catch(error => {
-            console.error('Error fetching CSRF token:', error);
-        });
-        
-	}, []);
-
-
     const updateLikes = () => {
         
         client.post(
             `/api/update_suggestion_likes`,
-            { id : id },
-            { headers: { 'X-CSRFToken': csrfToken } }
-            
+            { id : id }            
         ).then(response => {
             setLiked(response.data.liked);
             setLikes(response.data.likes);
@@ -101,18 +88,20 @@ export default function SuggestionLike({
             {
                 user.loggedIn ? (
                     <FontAwesomeIcon
-                    onClick={updateLikes}
-                    icon={icon}
-                    className={clicked ? 'beat' : 'like'}
-                    style={{ color: colour }}
-                    size='xl'/>
+                        onClick={updateLikes}
+                        icon={icon}
+                        className={clicked ? 'beat' : 'like'}
+                        style={{ color: colour }}
+                        size='xl'
+                    />
                 ) : (
                     <FontAwesomeIcon
                         icon={solidHeart}
                         className={"like"}
                         onClick={mustLogIn}
                         style={{ color: "#B13F3E" }}
-                        size='xl'/>
+                        size='xl'
+                    />
                 )
             }
             

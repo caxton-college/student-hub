@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { faLock, faEnvelope, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 
-export default function Login({user, setUser, client, checkUser}) {
+export default function Login({ client, checkUser}) {
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");

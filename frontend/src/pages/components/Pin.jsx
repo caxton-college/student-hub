@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-
+import React from 'react';
+import { useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
@@ -17,8 +17,6 @@ export default function Pin({
     
     const [statePinned, setPinned] = useState(suggestionsLikeData[id].pinned);
    
-
-
     const updatePin = () => {
         // Post request using the fetched CSRF token
         client.post(
@@ -45,8 +43,16 @@ export default function Pin({
             
 
         }).catch(error => {
-            // Handle errors if the request fails
-            console.error('Error updating likes:', error);
+            toast.error('Something went wrong', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         });
     };
 

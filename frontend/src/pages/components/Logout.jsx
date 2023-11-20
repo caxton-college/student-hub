@@ -10,7 +10,9 @@ export default function Logout({ client, setUser }) {
 		  	"/api/logout",
 		  	
 		).then(function(response) {
+
 			setUser({"loggedIn": false});
+
 			toast.info('Logged out', {
                 position: "top-right",
                 autoClose: 3000,
@@ -24,6 +26,8 @@ export default function Logout({ client, setUser }) {
 		});
 	}
     return (
-        <button id="logout-button" className="shadow" onClick={handleLogout}><h2>Logout</h2></button>
+        <button id="logout-button" className="shadow" onClick={handleLogout}>
+            <h2>Logout</h2>
+        </button>
     )
 }

@@ -39,6 +39,11 @@ body {
     
 }
 
+h1,
+h2,
+h3 {
+    word-spacing: -10px;
+}
 
 #root {
     display: grid;

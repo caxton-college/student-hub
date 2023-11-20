@@ -1,7 +1,7 @@
 import React, { useState, useEffect, isValidElement } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleQuestion, faCircleXmark, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 
 import { toast } from 'react-toastify';
 
@@ -17,9 +17,6 @@ export default function CreatePoll({
     const [question, setQuestion] = useState('');
     const [options, setOptions] = useState(["", ""]);
     const [showPollPrompt, setShowPollPrompt] = useState(false);
-
-    
-
 
     const handleSuggestionCreation = (e) => {
         // Post request using the fetched CSRF token

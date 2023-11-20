@@ -5,7 +5,6 @@ import Navbar from './pages/components/Navbar';
 
 import { ToastContainer } from 'react-toastify';
 
-
 import Profile from './pages/Profile';
 import Suggestions from './pages/Suggestions';
 import Announcements from './pages/Announcements';

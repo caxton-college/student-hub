@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PollOption from './PollOption';
 import DeletePoll from './DeletePoll';
+
 export default function Poll({ 
     client, 
     user, 
@@ -32,6 +33,7 @@ export default function Poll({
         // Return a placeholder or loading state until data is ready
         return <div>Loading...</div>;
     }
+    
     return (
         <div className='poll shadow'>
 
