@@ -35,8 +35,13 @@ export default function Login({ client, checkUser}) {
             });
 
         }).catch(function(error) {
+            let errorMessage = "Something went wrong...";
+
+            if (error.response) {
+                errorMessage = error.response.data.message
+            }
             
-            toast.error(error.response.data.message, {
+            toast.error(errorMessage, {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
