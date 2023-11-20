@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './pages/components/Navbar';
 
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 
 import Profile from './pages/Profile';
@@ -11,14 +11,13 @@ import Suggestions from './pages/Suggestions';
 import Announcements from './pages/Announcements';
 import Polls from './pages/Polls';
 
-axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfCookieName = 'X-CSRFToken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
 const client = axios.create({
-	baseURL: 'http://192.168.1.64:8000',
+	baseURL: 'http://172.16.35.146:8000',
 });
-
 
 // Fetch the CSRF token on component mount
 client.get('/api/get_csrf_token')
@@ -27,6 +26,7 @@ client.get('/api/get_csrf_token')
 }) .catch(error => {
     console.error('Error fetching CSRF token:', error);
 });
+
 document.documentElement.setAttribute('data-theme', 'light');
 
 function App() {
@@ -40,6 +40,7 @@ function App() {
 		likes: 0,
         userSuggestions: 0,
 	});
+
     const [suggestions, setSuggestions] = useState([]);
     const [announcements, setAnnouncements] = useState([]);
     const [polls, setPolls] = useState([]);

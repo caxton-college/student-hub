@@ -17,20 +17,8 @@ export default function CreatePoll({
     const [question, setQuestion] = useState('');
     const [options, setOptions] = useState(["", ""]);
     const [showPollPrompt, setShowPollPrompt] = useState(false);
-    const [csrfToken, setCsrfToken] = useState('');
 
-    useEffect(() => {
-        
     
-        // Fetch the CSRF token on component mount
-        client.get('/api/get_csrf_token')
-        .then(response => {
-            setCsrfToken(response.data.csrfToken);
-        })
-        .catch(error => {
-            console.error('Error fetching CSRF token:', error);
-        });
-    }, []);
 
 
     const handleSuggestionCreation = (e) => {
@@ -42,7 +30,7 @@ export default function CreatePoll({
                 question: question, 
                 poll_options: options
             },
-            { headers: { 'X-CSRFToken': csrfToken } }
+            
             
         ).then(response => {
             setShowPollPrompt(false);

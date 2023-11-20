@@ -1,5 +1,4 @@
 import React from 'react'
-import { useNavigate } from "react-router-dom";
 
 import { toast } from 'react-toastify';
 
@@ -9,7 +8,7 @@ export default function Logout({ client, setUser }) {
 		e.preventDefault();
 		client.post(
 		  	"/api/logout",
-		  	{withCredentials: true}
+		  	
 		).then(function(response) {
 			setUser({"loggedIn": false});
 			toast.info('Logged out', {

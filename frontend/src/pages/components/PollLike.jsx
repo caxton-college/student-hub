@@ -16,7 +16,6 @@ export default function PollLike({
     setPollsOptionsLikeData,
     checkUser }) {
     
-    const [csrfToken, setCsrfToken] = useState('');
     const [stateLiked, setLiked] = useState();
     const [stateLikes, setLikes] = useState();
     const [clicked, setClicked] = useState(false);
@@ -26,14 +25,6 @@ export default function PollLike({
         setLiked(optionsLikeData[id].liked)
         setLikes(optionsLikeData[id].likes)
 
-        // Fetch the CSRF token on component mount
-        client.get('/api/get_csrf_token')
-        .then(response => {
-            setCsrfToken(response.data.csrfToken);
-        })
-        .catch(error => {
-            console.error('Error fetching CSRF token:', error);
-        });
         
 	}, [optionsLikeData]);
 
@@ -44,7 +35,7 @@ export default function PollLike({
         client.post(
             `/api/update_poll_likes`,
             { id : id },
-            { headers: { 'X-CSRFToken': csrfToken } }
+            
             
         ).then(response => {
             let newPollsOptionsLikeData = pollsOptionsLikeData;

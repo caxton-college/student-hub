@@ -12,20 +12,9 @@ export default function CreateAnnouncement({
     getAnnouncements
 }) {
     
-    const [csrfToken, setCsrfToken] = useState('');
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
 
-    useEffect(() => {
-        // Fetch the CSRF token on component mount
-        client.get('/api/get_csrf_token')
-            .then(response => {
-                setCsrfToken(response.data.csrfToken);
-            })
-            .catch(error => {
-                console.error('Error fetching CSRF token:', error);
-            });
-    }, []);
 
     const handleAnnouncementCreation = (e) => {
         // Post request using the fetched CSRF token
@@ -34,9 +23,8 @@ export default function CreateAnnouncement({
             '/api/create_announcement',
             { 
                 body: body, 
-                title: title},
-            { headers: { 'X-CSRFToken': csrfToken } }
-        ).then(response => {
+                title: title
+            }).then(response => {
             setShowAnnouncementPrompt(false);
             getAnnouncements(true); 
             setTitle("");

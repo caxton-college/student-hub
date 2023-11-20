@@ -16,29 +16,15 @@ export default function Pin({
 }) {
     
     const [statePinned, setPinned] = useState(suggestionsLikeData[id].pinned);
-    const [csrfToken, setCsrfToken] = useState('');
-
-    useEffect(() => {
-        
-    
-        // Fetch the CSRF token on component mount
-        client.get('/api/get_csrf_token')
-        .then(response => {
-            setCsrfToken(response.data.csrfToken);
-        })
-        .catch(error => {
-            console.error('Error fetching CSRF token:', error);
-        });
-        
-	}, []);
+   
 
 
     const updatePin = () => {
         // Post request using the fetched CSRF token
         client.post(
             '/api/update_suggestion_pin',
-            { suggestion_id: id },
-            { headers: { 'X-CSRFToken': csrfToken } }
+            { suggestion_id: id }
+            
         ).then(response => {
             setPinned(response.data.pinned);
             

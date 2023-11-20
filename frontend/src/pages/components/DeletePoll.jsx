@@ -8,19 +8,8 @@ import { toast } from 'react-toastify';
 
 export default function DeletePoll({ client, user, id, getPolls }) {
     
-    const [csrfToken, setCsrfToken] = useState('');
 
-    useEffect(() => {
-        // Fetch the CSRF token on component mount
-        client.get('/api/get_csrf_token')
-        .then(response => {
-            setCsrfToken(response.data.csrfToken);
-        })
-        .catch(error => {
-            console.error('Error fetching CSRF token:', error);
-        });
-        
-	}, []);
+   
 
     function deletePoll() {
         client.post(
@@ -28,7 +17,6 @@ export default function DeletePoll({ client, user, id, getPolls }) {
         {
             poll_id: id
         },
-        { headers: { 'X-CSRFToken': csrfToken } }
         ).then(function (response) {
             getPolls(true);
             
