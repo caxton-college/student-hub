@@ -25,8 +25,11 @@ export default function CreateAnnouncement({
                 body: body, 
                 title: title
             }).then(response => {
-            setShowAnnouncementPrompt(false);
-            getAnnouncements(true); 
+            
+            setShowAnnouncementPrompt(false); // Set icon back to plus from cross
+            getAnnouncements(true);
+            
+            // Clear prompt text
             setTitle("");
             setBody("");
             toast.success('Announcement Created!', {
@@ -39,8 +42,18 @@ export default function CreateAnnouncement({
                 progress: undefined,
                 theme: "light",
                 });
+
         }).catch(error => {
-            console.error('Error creating announcement:', error);
+            toast.error('Something went wrong...', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
         });
     };
 

@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './pages/components/Navbar';
 
+// Toast: Info pop-ups
 import { ToastContainer } from 'react-toastify';
 
 import Profile from './pages/Profile';
@@ -10,15 +11,16 @@ import Suggestions from './pages/Suggestions';
 import Announcements from './pages/Announcements';
 import Polls from './pages/Polls';
 
+// Axios settings for authentication
 axios.defaults.xsrfCookieName = 'X-CSRFToken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
 const client = axios.create({
-	baseURL: 'http://192.168.1.64:8000',
+	baseURL: 'http://172.16.35.146:8000',
 });
 
-// Fetch the CSRF token on component mount
+// Fetch the CSRF token
 client.get('/api/get_csrf_token')
 .then(response => {
     client.defaults.headers.common['X-CSRFToken'] = response.data.csrfToken;
@@ -48,6 +50,7 @@ function App() {
     const [pollsOptionsLikeData, setPollsOptionsLikeData] = useState({});
     const [theme, setTheme] = useState('light'); 
 
+    // Check if the user is logged in, if no error, user authenticated
 	const checkUser = () => {	
         client.get('/api/user', {
             
@@ -69,6 +72,8 @@ function App() {
 
 	};
 
+
+    // Get suggestion with a given order
     function getSuggestions(force=false, newOrder="new") {
 		if (suggestions.length === 0 | force) {
 			client.get(
@@ -81,6 +86,8 @@ function App() {
 		}
 	}
 
+
+    // Get all announcements
     function getAnnouncements(force) {
 		if (announcements.length === 0 | force) {
 			client.get(
@@ -92,7 +99,7 @@ function App() {
 		}
 	}
     
-
+    // Get all polls
 	function getPolls(force) {
 		if (polls.length === 0 | force) {
 			client.get(
@@ -104,7 +111,7 @@ function App() {
 		}
 	}
 
-	
+	// Get suggestion made by the current user (not currently in use)
     function getUserSuggestions() {
        
         client.get(
@@ -117,7 +124,7 @@ function App() {
         
     }
 
-
+    // Set a state with poll like data (allows the maintenance of the visual state)
     function getPollsOptionsLikeData(pollsData) {
         let newPollsOptionsLikeData = {};
        
@@ -139,6 +146,7 @@ function App() {
         
     }
 
+    // Set a state with Suggestion like data (allows the maintenance of the visual state)
     function getSuggestionLikeData(suggestionData) {
         
         let newSuggestionLikeData = {}
@@ -223,6 +231,7 @@ function App() {
                 }/>
 			</Routes>
 			<Navbar />
+            
             <ToastContainer
                 position="top-right"
                 autoClose={300000}
