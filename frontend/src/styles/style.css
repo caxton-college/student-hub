@@ -60,7 +60,7 @@ h3 {
     padding-top: 1%;
     
     place-items: start center;
-    padding-bottom: 3%;
+    
     grid-template-rows: auto 1fr; /* Use "auto" for the header row and 1fr for the content row */
     
 }
@@ -487,13 +487,15 @@ display: flex;
     position: relative;
     
     width: 80%;
-    height: fit-content;
+    
     border-radius: 35px;
     padding-left: 25px;
     padding-top: 5px;
     background-color: var(--background);
     transition: all 0.2s ease;
     padding-bottom: 10px;
+    margin-bottom: 2%;
+    
     
 }
 

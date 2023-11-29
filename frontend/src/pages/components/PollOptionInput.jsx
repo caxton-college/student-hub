@@ -41,7 +41,7 @@ export default function PollOptionInput({ index, current_option, options, setOpt
                 onClick={handleOptionDeletion}
                 icon={faCircleXmark}
                 className='close'
-                size='l'
+                size='1x'
             />
             </div>
 

@@ -35,7 +35,7 @@ export default function Poll({
     }
     
     return (
-        <div className='poll shadow'>
+        <div className='poll shadow' style={{height: `${pollData.options.length * 17}vh`}}>
 
             <h3>{pollData.poll.question}</h3>
 
