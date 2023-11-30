@@ -16,8 +16,11 @@ axios.defaults.xsrfCookieName = 'X-CSRFToken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
+
+ 
+      
 const client = axios.create({
-	baseURL: 'http://172.16.34.35:8000',
+    baseURL: `http://${window.location.hostname}:8000`, // Constructing the baseURL dynamically
 });
 
 // Fetch the CSRF token
