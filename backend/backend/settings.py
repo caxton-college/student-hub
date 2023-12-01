@@ -31,38 +31,19 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ip = socket.gethostbyname(socket.gethostname())
-
-CSRF_TRUSTED_ORIGINS = [f"http://{ip}", "http://localhost"]
+IP = socket.gethostbyname(socket.gethostname())
+PORT = 3000
+CSRF_TRUSTED_ORIGINS = [f"http://{IP}", "http://localhost", f"http://*.{IP}:{PORT}/", f"http://localhost:{PORT}", "http://192.168.88.201:3000/", "http://*.192.168.1.64:3000/", "http://*.http://172.16.35.147:3000/"]
 
 ALLOWED_HOSTS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 
-CORS_ALLOW_METHODS = [
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-]
-
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
 
 SESSION_COOKIE_DOMAIN = None
 CSRF_COOKIE_DOMAIN = None
+CSRF_COOKIE_SECURE = False  # Set to False if not using HTTPS.
 
 
 # Application definition
@@ -125,8 +106,8 @@ DATABASES = {
 }
 
 """
-Replace sqlite with this on production
-
+#Replace sqlite with this on production
+DATABASES = {
 'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': env("DB_NAME"),
@@ -139,6 +120,15 @@ Replace sqlite with this on production
 """
 
 AUTH_USER_MODEL = 'users.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -156,7 +146,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en-uk"
 
 TIME_ZONE = "UTC"
 
