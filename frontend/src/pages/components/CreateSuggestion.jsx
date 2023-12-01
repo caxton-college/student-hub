@@ -12,7 +12,7 @@ export default function CreateSuggestion({ client, user, getSuggestions, order, 
     
 
     const handleSuggestionCreation = (e) => {
-        // Post request using the fetched CSRF token
+        
         e.preventDefault();
         client.post(
             '/api/create_suggestion',

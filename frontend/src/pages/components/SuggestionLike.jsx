@@ -24,7 +24,8 @@ export default function SuggestionLike({
         
         client.post(
             `/api/update_suggestion_likes`,
-            { id : id }            
+            { id : id }   
+                     
         ).then(response => {
             setLiked(response.data.liked);
             setLikes(response.data.likes);

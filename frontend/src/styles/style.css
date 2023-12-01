@@ -1,9 +1,4 @@
 * {
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: -moz-none;
-    -o-user-select: none;
-    user-select: none;
     overflow-x: hidden;
 }
 
@@ -220,10 +215,10 @@ transform: scale(1.01);
     background-color: var(--background);
     border-radius: 35px;
     width: 40%;
-   
+    margin-top: 15px;
     
     padding-top: 1.5%;
-    height: 100px;
+    height: 13vh;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -300,6 +295,7 @@ transform: scale(1.01);
     top: 50%; /* Adjust this value based on your design */
     left: 50%; /* Adjust this value based on your design */
     transform: translate(-50%, -50%); /* Centers the prompt */
+    
 }
 
 .open {
@@ -308,6 +304,7 @@ transform: scale(1.01);
 
 .close {
     color: var(--accent);
+    
 }
 
 

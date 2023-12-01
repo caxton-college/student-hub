@@ -14,7 +14,9 @@ export default function Poll({
     
     const [dataReady, setDataReady] = useState(false);
     const [optionsLikeData, setOptionsLikeData] = useState();
-   
+    
+
+    // If pollData changes, update the liked and pinned status
     useEffect(() => {
         if (pollData && pollData.options && pollsOptionsLikeData) {
             let newData = {};
@@ -35,7 +37,7 @@ export default function Poll({
     }
     
     return (
-        <div className='poll shadow' style={{height: `${pollData.options.length * 17}vh`}}>
+        <div className='poll shadow' style={{height: `${pollData.options.length * 18}vh`}}>
 
             <h3>{pollData.poll.question}</h3>
 

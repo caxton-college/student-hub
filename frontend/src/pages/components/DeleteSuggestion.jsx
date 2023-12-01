@@ -1,11 +1,11 @@
 import React from 'react'
-import { useState, useEffect } from 'react';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { toast } from 'react-toastify';
 
-export default function DeleteSuggestion({ client, user, id, getSuggestions, checkUser }) {
+export default function DeleteSuggestion({ client, user, id, getSuggestions, checkUser, order }) {
     
     
     function deleteSuggestion() {
@@ -16,7 +16,7 @@ export default function DeleteSuggestion({ client, user, id, getSuggestions, che
         },
         
         ).then(function (response) {
-            getSuggestions(true);
+            getSuggestions(true, order);
 
             toast.info('Suggestion deleted.', {
                 position: "top-right",
@@ -28,6 +28,7 @@ export default function DeleteSuggestion({ client, user, id, getSuggestions, che
                 progress: undefined,
                 theme: "light",
             });
+            
             checkUser();
 
         })
@@ -38,10 +39,10 @@ export default function DeleteSuggestion({ client, user, id, getSuggestions, che
         return (
             <div className='delete'>
                 <FontAwesomeIcon 
-                onClick={deleteSuggestion}
-                icon={faXmark}
-                className='close'
-                size='xl'
+                    onClick={deleteSuggestion}
+                    icon={faXmark}
+                    className='close'
+                    size='xl'
                 />
             </div>
             

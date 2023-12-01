@@ -16,8 +16,6 @@ axios.defaults.xsrfCookieName = 'X-CSRFToken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
-
- 
       
 const client = axios.create({
     baseURL: `http://${window.location.hostname}:8000`, // Constructing the baseURL dynamically
@@ -36,13 +34,6 @@ document.documentElement.setAttribute('data-theme', 'light');
 function App() {
 	const [user, setUser] = useState({
 		loggedIn: false,
-		name: '',
-		surname: '',
-		email: '',
-		role: 0,
-		points: 0,
-		likes: 0,
-        userSuggestions: 0,
 	});
 
     const [suggestions, setSuggestions] = useState([]);
@@ -188,11 +179,9 @@ function App() {
                         userSuggestions={userSuggestions}
                         setUser={setUser}
                         theme={theme}
-                        setTheme={setTheme}/>
-                    }
-                        
-                        
+                        setTheme={setTheme}
                     />
+                }/>
 				<Route path="/suggestions" element={
                     <Suggestions 
                         user={user} 
@@ -230,9 +219,9 @@ function App() {
                         theme={theme}
                         setTheme={setTheme}
                     />
-                    
                 }/>
 			</Routes>
+
 			<Navbar />
             
             <ToastContainer

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import SuggestionLike from './SuggestionLike'
 import Pin from './Pin'
@@ -16,35 +16,38 @@ export default function Suggestion({client, suggestion, user, checkUser, suggest
 
                 
                 <DeleteSuggestion 
-                client={client}
-                user={user} 
-                id={suggestion.id}
-                checkUser={checkUser}
-                getSuggestions={getSuggestions}
-                order={order}>
-                </DeleteSuggestion>
+                    client={client}
+                    user={user} 
+                    id={suggestion.id}
+                    checkUser={checkUser}
+                    getSuggestions={getSuggestions}
+                    order={order}
+                />
+                
 
 				<div className='suggestion-options'>
             
                 <Pin 
-                client={client}
-                user={user}
-                pinned={suggestion.pinned}
-                id={suggestion.id}
-                checkUser={checkUser}
-                suggestionsLikeData={suggestionsLikeData}
-                setSuggestionsLikeData={setSuggestionsLikeData}>
-                </Pin>
-                <SuggestionLike 
-                client={client} 
-                user={user}
-                id={suggestion.id}
-                checkUser={checkUser}
-                suggestionsLikeData={suggestionsLikeData}
-                setSuggestionsLikeData={setSuggestionsLikeData}
+                    client={client}
+                    user={user}
+                    pinned={suggestion.pinned}
+                    id={suggestion.id}
+                    checkUser={checkUser}
+                    suggestionsLikeData={suggestionsLikeData}
+                    setSuggestionsLikeData={setSuggestionsLikeData}
                 />
-                    
-                    	
+                
+
+
+                <SuggestionLike 
+                    client={client} 
+                    user={user}
+                    id={suggestion.id}
+                    checkUser={checkUser}
+                    suggestionsLikeData={suggestionsLikeData}
+                    setSuggestionsLikeData={setSuggestionsLikeData}
+                />
+
 				</div>
 			</div>
 		</>
