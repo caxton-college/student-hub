@@ -59,7 +59,8 @@ INSTALLED_APPS = [
     "corsheaders",
     "api",
     "feed",
-    "users"
+    "users",
+    "rewards"
 ]
 
 MIDDLEWARE = [

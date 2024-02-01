@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
+
 class UserManager(BaseUserManager):
 	def create_user(self, email: str, password: str, name: str, surname: str, role: int=1):
 		if not email:
@@ -80,7 +81,7 @@ class User(AbstractBaseUser, PermissionsMixin):
   
   
 	user_id = models.AutoField(primary_key=True)
-	email = models.EmailField(max_length=50, unique=True)
+	email = models.EmailField(max_length=100, unique=True)
 	name = models.CharField(max_length=50)
 	surname = models.CharField(max_length=50)
 	role = models.IntegerField(Role.choices, default=1)
@@ -91,7 +92,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = ['name', 'surname', 'role']
 	
-	is_active = models.BooleanField(default=True)  # Added 'is_active' field for user activation
+	
 	is_staff = models.BooleanField(default=False) 
 	points = models.PositiveSmallIntegerField(default=0)
 	likes = models.PositiveIntegerField(default=0)
