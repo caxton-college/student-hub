@@ -10,6 +10,7 @@ import Profile from './pages/Profile';
 import Suggestions from './pages/Suggestions';
 import Announcements from './pages/Announcements';
 import Polls from './pages/Polls';
+import Rewards from './pages/Rewards';
 
 // Axios settings for authentication
 axios.defaults.xsrfCookieName = 'X-CSRFToken';
@@ -58,7 +59,9 @@ function App() {
                     role: response.data.user.role,
                     points: response.data.user.points,
                     likes: response.data.user.likes,
-                    userSuggestions: response.data.user.user_suggestions
+                    userSuggestions: response.data.user.user_suggestions,
+                    user_id: response.data.user.user_id,
+                    rewards_id: response.data.user.user_id // ID of the user for which to show rewards (always user_id unless role = teacher)
                 });
                 
             },
@@ -156,6 +159,20 @@ function App() {
         setSuggestionsLikeData(newSuggestionLikeData);
     }
 
+    const [rewards, setRewards] = useState([]);
+
+    useEffect(() => {
+        // Fetch data when the component mounts
+        client.get(`/api/user_rewards?user=${user.rewards_id}`)
+        .then(function (response) {
+            setRewards(response.data);
+        })
+        .catch(error => {
+            console.error("Error fetching rewards:", error);
+        });
+    }, [client, user.rewards_id]);
+
+
     useEffect(() => {
 		checkUser();
         getSuggestions();
@@ -220,6 +237,17 @@ function App() {
                         setTheme={setTheme}
                     />
                 }/>
+
+                <Route path="/rewards" element={
+                    <Rewards 
+                        user={user}
+                        client={client}
+                        rewards={rewards}
+                        theme={theme}
+                        setTheme={setTheme}
+                    />
+                }/>
+
 			</Routes>
 
 			<Navbar />

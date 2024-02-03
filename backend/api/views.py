@@ -2,12 +2,15 @@ from django.http import HttpRequest
 from django.contrib.auth import login, logout, authenticate
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
+from django.db.models import Q
 
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import permissions, status
+
+from fuzzywuzzy import fuzz
 
 from users.models import User
 from users.serialisers import UserRegisterSerialiser, UserSerialiser
@@ -19,7 +22,8 @@ from django.utils import timezone
 from feed.models import Announcement, Suggestion, Poll, PollOption
 from feed.serialisers import AnnouncementSerializer, SuggestionSerializer, PollSerializer, PollOptionSerializer
 
-
+from rewards.models import Reward
+from rewards.serialisers import RewardSerialiser
 
 class GetCSRFToken(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -37,8 +41,6 @@ class GetCSRFToken(APIView):
         csrf_token = get_token(request)
         return JsonResponse({'csrfToken': csrf_token})
 
-
-# Index
 class Index(APIView):
     permission_classes = (permissions.AllowAny,)
     
@@ -162,7 +164,6 @@ class UserView(APIView):
         user_data["user_suggestions"] = len(Suggestion.objects.all().filter(owner=request.user))
         
         return Response({'user': user_data}, status=status.HTTP_200_OK)
-
 
 
 
@@ -781,3 +782,102 @@ class UpdatePollOptionLikedStatus(APIView):
         return Response(options_liked_data, status=status.HTTP_200_OK)
 
 
+
+class GetRewards(APIView):
+    permission_classes = (permissions.AllowAny,)
+    
+    def get(self, request: HttpRequest) -> Response:
+        """
+            Retrieves a list of all the available rewards
+
+            Args:
+                request (HttpRequest): Request from the user.
+
+            Returns:
+                Response: A list of rewards as serialized data and a status code of 200 (OK).
+        """
+        
+        rewards = Reward.objects.all()
+        serialiser = RewardSerialiser(rewards, many=True)
+     
+
+        return Response(serialiser.data, status=status.HTTP_200_OK)
+    
+    
+class GetCurrentUserRewards(APIView):
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    
+    def get(self, request: HttpRequest) -> Response:
+        """
+            Retrieves a list of the rewards owned by the current user
+
+            Args:
+                request (HttpRequest): Request from the user.
+
+            Returns:
+                Response: A list of rewards as serialized data and a status code of 200 (OK).
+        """
+        user = request.user
+        rewards = list(filter(lambda reward: user in reward.owners.all(), Reward.objects.all()))
+        
+        serialiser = RewardSerialiser(rewards, many=True)
+
+
+        return Response(serialiser.data, status=status.HTTP_200_OK)
+    
+    
+class GetUserRewards(APIView):
+    permission_classes = (permissions.AllowAny,)
+    
+    def get(self, request: HttpRequest) -> Response:
+        """
+            Retrieves a list of the rewards owned by the current user
+
+            Args:
+                request (HttpRequest): Request from the user.
+
+            Returns:
+                Response: A list of rewards as serialized data and a status code of 200 (OK).
+        """
+        user_id = request.GET.get("user", None)
+        user = User.objects.all().filter(user_id=user_id)
+        rewards = list(filter(lambda reward: user in reward.owners.all(), Reward.objects.all()))
+        
+        serialiser = RewardSerialiser(rewards, many=True)
+
+
+        return Response(serialiser.data, status=status.HTTP_200_OK)
+
+
+class SearchUser(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request):
+        name = request.GET.get("name", "")
+        surname = request.GET.get("surname", "")
+        year = request.GET.get("year", "")
+
+        # Fetch all users from the database
+        all_users = User.objects.all()
+
+        # Filter users based on the fuzzy matching criteria
+        filtered_users = filter(
+            lambda user: fuzz.ratio(name, user.name) >= 80 or
+                         fuzz.ratio(surname, user.surname) >= 80 and
+                         (year == "" or year == user.year),
+            all_users
+        )
+
+        # Extract specific fields from filtered users
+        result = [
+            {
+                'user_id': user.user_id,
+                'name': user.name,
+                'surname': user.surname,
+                'year': user.year,
+            }
+            for user in filtered_users
+        ]
+
+        return Response(result, status=status.HTTP_200_OK)

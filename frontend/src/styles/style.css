@@ -769,3 +769,55 @@ button {
     background-color: var(--background);
 }
 
+
+#rewards {
+    gap: 15% 0px;
+    display: grid;
+    height: 100%;
+    width: 100vw;
+    padding-top: 2%;
+    place-items: start center;
+    grid-template-columns: 1fr 1fr;
+}
+
+
+.user-reward {
+    width: 45vw;
+    
+    background-color: var(--background);
+    border-radius: 35px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.reward-actions {
+    width: 90%;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 2fr 3fr;
+}
+
+.reward-action {
+    cursor: pointer;
+    background-color: var(--primary);
+    color: var(--background);
+    border-radius: 35px;
+    width: 100%;
+}
+
+.reward-points {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+
+    
+    border-radius: 35px;
+    color: var(--background);
+    background-color: var(--primary);
+}

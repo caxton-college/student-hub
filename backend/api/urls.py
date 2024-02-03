@@ -22,5 +22,9 @@ urlpatterns = [
     path("delete_poll", views.DeletePoll.as_view(), name="delete_poll"),
     path("create_poll", views.CreatePoll.as_view(), name="createpoll"),
     path("update_poll_likes", views.UpdatePollOptionLikedStatus.as_view(), name="updatepolllikedstatus"),
+    path("search_user", views.SearchUser.as_view(), name="searchuser"),
+    path("all_rewards", views.GetRewards.as_view(), name="all_rewards"),
+    path("user_rewards", views.GetCurrentUserRewards.as_view(), name="userrewards"),
+    path("current_user_rewards", views.GetCurrentUserRewards.as_view(), name="currentuserrewards")
 ]
 
