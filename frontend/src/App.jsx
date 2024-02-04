@@ -46,6 +46,7 @@ function App() {
     const [theme, setTheme] = useState('light'); 
     const [allRewards, setAllRewards] = useState([]);
     const [userRewards, setUserRewards] = useState([]);
+    const [selected, setSelected] = useState(window.location.pathname);
 
     // Check if the user is logged in, if no error, user authenticated
 	const checkUser = () => {	
@@ -218,6 +219,9 @@ function App() {
                         setUser={setUser}
                         theme={theme}
                         setTheme={setTheme}
+                        selected={selected}
+                        setSelected={setSelected}
+                        
                     />
                 }/>
 				<Route path="/suggestions" element={
@@ -289,7 +293,10 @@ function App() {
 
 			</Routes>
 
-			<Navbar />
+			<Navbar 
+                selected={selected}
+                setSelected={setSelected}
+            />
             
             <ToastContainer
                 position="top-right"

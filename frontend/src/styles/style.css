@@ -735,7 +735,7 @@ button {
 }
 
 #logout-button {
-    background-color: var(--primary);
+    background-color: var(--accent);
     color: var(--background);
     border-radius: 35px;
     width: 25%;
@@ -770,6 +770,23 @@ button {
 }
 
 
+#reward-links {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    place-items: center;
+    width: 55%;
+}
+
+.reward-link {
+    text-decoration: none;
+    color: var(--background);
+    background-color: var(--primary);
+    border-radius: 35px;
+    width: 100%;
+    text-align: center;
+}
+
 #points-banner-rewards {
     position: absolute;
     top: 15%;
@@ -798,6 +815,7 @@ button {
     grid-template-rows: auto 1fr;
 
 }
+
 
 
 .user-reward {

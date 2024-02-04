@@ -39,7 +39,7 @@ export default function CreateSuggestion({ client, user, getSuggestions, order, 
             
         }).catch(error => {
             
-            toast.error('Something went wrong...', {
+            toast.error(error.response.data.message, {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,

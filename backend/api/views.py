@@ -288,8 +288,8 @@ class CreateSuggestion(APIView):
             return Response(status=status.HTTP_403_FORBIDDEN)
         
         data = dict(request.data)
-        if not "body" in data.keys():
-            return Response({"message": "suggestion body missing"}, status=status.HTTP_400_BAD_REQUEST)
+        if not "body" in data.keys() or len(data.get("body")) <= 10:
+            return Response({"message": "Try explaining a little more..."}, status=status.HTTP_400_BAD_REQUEST)
         
         suggestion_body = data["body"]
         

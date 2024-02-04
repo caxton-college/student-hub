@@ -1,11 +1,17 @@
 import React, { useState, useReducer, useEffect } from 'react';
-import Login from './components/Login';
-import Logout from './components/Logout';
-import Header from './components/Header';
+
+import { Link } from "react-router-dom"
+
 import { faHeart, faCoins, faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default function Profile({ user, checkUser, setUser, client, theme, setTheme }) {
+import Login from './components/Login';
+import Logout from './components/Logout';
+import Header from './components/Header';
+
+
+
+export default function Profile({ user, checkUser, setUser, client, theme, setTheme, setSelected }) {
     
     let colour = theme === "light" ? "#3e3e6f" : "#d8d8ee";
 
@@ -55,6 +61,15 @@ export default function Profile({ user, checkUser, setUser, client, theme, setTh
                             </div>
                         </div>
                         
+                        <div id='reward-links'>
+                            <Link to="/shop" onClick={(e) => setSelected("none")} className='reward-link shadow'>
+                                <h4>Shop</h4>
+                            </Link>
+                            
+                            <Link to="/rewards" onClick={(e) => setSelected("none")} className='reward-link shadow'>
+                                <h4>Rewards</h4>
+                            </Link>
+                        </div>
 
                         <Logout setUser={setUser} client={client} />
                     </>

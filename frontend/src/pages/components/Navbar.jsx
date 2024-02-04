@@ -6,8 +6,8 @@ import React from "react";
 import { useState } from "react";
 
 
-function Navbar() {
-    const [selected, setSelected] = useState(window.location.pathname);
+function Navbar({ selected, setSelected}) {
+    
 
     return (
         <div id="navbar-container">
