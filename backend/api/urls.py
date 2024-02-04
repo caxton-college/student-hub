@@ -25,6 +25,8 @@ urlpatterns = [
     path("search_user", views.SearchUser.as_view(), name="searchuser"),
     path("all_rewards", views.GetRewards.as_view(), name="all_rewards"),
     path("user_rewards", views.GetCurrentUserRewards.as_view(), name="userrewards"),
-    path("current_user_rewards", views.GetCurrentUserRewards.as_view(), name="currentuserrewards")
+    path("current_user_rewards", views.GetCurrentUserRewards.as_view(), name="currentuserrewards"),
+    path("purchase_reward", views.PurchaseReward.as_view(), name="purchasereward"),
+    path("sell_reward", views.SellReward.as_view(), name="sellreward"),
 ]
 

@@ -692,7 +692,7 @@ class DeletePoll(APIView):
                 )
         except Poll.DoesNotExist:
             return Response(
-                {"message": "Suggestion not found."},
+                {"message": "Poll not found."},
                 status=status.HTTP_404_NOT_FOUND
             )
                        
@@ -881,3 +881,90 @@ class SearchUser(APIView):
         ]
 
         return Response(result, status=status.HTTP_200_OK)
+    
+    
+
+class PurchaseReward(APIView):
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    
+    def post(self, request: HttpRequest) -> Response:
+        """
+            Retrieves a list of the rewards owned by the current user
+
+            Args:
+                request (HttpRequest): Request from the user.
+
+            Returns:
+                Response: A list of rewards as serialized data and a status code of 200 (OK).
+        """
+        user = request.user
+        data = dict(request.data)
+        
+        reward_id = data.get("reward_id", "")
+        
+        try:
+            reward = Reward.objects.get(id=reward_id)
+            
+            if user.points <= reward.cost:
+                return Response({"message": "Insuficient funds!"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            if user in reward.owners.all():
+                return Response({"message": "Already owned!"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            
+            user.points -= reward.cost
+            reward.owners.add(user)
+            
+            reward.save()
+            user.save()
+            
+            return Response({"message": "Purschase successful!"}, status=status.HTTP_200_OK)
+
+            
+        
+        except Reward.DoesNotExist:
+            return Response({"message": "Reward not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+class SellReward(APIView):
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    
+    def post(self, request: HttpRequest) -> Response:
+        """
+            Retrieves a list of the rewards owned by the current user
+
+            Args:
+                request (HttpRequest): Request from the user.
+
+            Returns:
+                Response: A list of rewards as serialized data and a status code of 200 (OK).
+        """
+        user = request.user
+        data = dict(request.data)
+        
+        reward_id = data.get("reward_id", "")
+        
+        try:
+            reward = Reward.objects.get(id=reward_id)
+            
+            
+            
+            if user not in reward.owners.all():
+                return Response({"message": "Not owned"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            
+            reward.owners.remove(user)
+            user.points += reward.cost
+            
+            reward.save()
+            user.save()
+            
+            return Response({"message": "Sell successful!"}, status=status.HTTP_200_OK)
+
+            
+        
+        except Reward.DoesNotExist:
+            return Response({"message": "Reward not found"}, status=status.HTTP_404_NOT_FOUND)

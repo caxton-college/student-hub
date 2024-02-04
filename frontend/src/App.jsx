@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import axios from 'axios';
+import axios, { all } from 'axios';
 import Navbar from './pages/components/Navbar';
 
 // Toast: Info pop-ups
@@ -44,6 +44,8 @@ function App() {
     const [suggestionsLikeData, setSuggestionsLikeData] = useState({});
     const [pollsOptionsLikeData, setPollsOptionsLikeData] = useState({});
     const [theme, setTheme] = useState('light'); 
+    const [allRewards, setAllRewards] = useState([]);
+    const [userRewards, setUserRewards] = useState([]);
 
     // Check if the user is logged in, if no error, user authenticated
 	const checkUser = () => {	
@@ -159,18 +161,39 @@ function App() {
         setSuggestionsLikeData(newSuggestionLikeData);
     }
 
-    const [rewards, setRewards] = useState([]);
+   
 
-    useEffect(() => {
+    function getUserRewards() {
         // Fetch data when the component mounts
         client.get(`/api/user_rewards?user=${user.rewards_id}`)
         .then(function (response) {
-            setRewards(response.data);
+            setUserRewards(response.data);
         })
         .catch(error => {
             console.error("Error fetching rewards:", error);
         });
-    }, [client, user.rewards_id]);
+    }
+
+    
+
+    function getAllRewards() {
+
+        if (allRewards.length === 0) {
+            // Fetch data when the component mounts
+            client.get(`/api/all_rewards`)
+            .then(function (response) {
+                setAllRewards(response.data);
+            })
+            .catch(error => {
+                console.error("Error fetching rewards:", error);
+            });
+        }
+        
+    }
+
+    useEffect(() => {
+        getUserRewards();
+    }, [user.rewards_id]);
 
 
     useEffect(() => {
@@ -178,9 +201,7 @@ function App() {
         getSuggestions();
         getAnnouncements();
         getPolls();
-        //getUserSuggestions();
-       
-        
+        getAllRewards();
             
 	}, []);
 
@@ -242,9 +263,27 @@ function App() {
                     <Rewards 
                         user={user}
                         client={client}
-                        rewards={rewards}
+                        rewards={userRewards}
                         theme={theme}
                         setTheme={setTheme}
+                        type={"view"}
+                        getAllRewards={getAllRewards}
+                        getUserRewards={getUserRewards}
+                        checkUser={checkUser}
+                    />
+                }/>
+
+                <Route path="/shop" element={
+                    <Rewards 
+                        user={user}
+                        client={client}
+                        rewards={allRewards}
+                        theme={theme}
+                        setTheme={setTheme}
+                        type={"shop"}
+                        getAllRewards={getAllRewards}
+                        getUserRewards={getUserRewards}
+                        checkUser={checkUser}
                     />
                 }/>
 
