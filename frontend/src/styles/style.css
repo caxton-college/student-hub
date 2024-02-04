@@ -770,20 +770,39 @@ button {
 }
 
 
+#points-banner-rewards {
+    position: absolute;
+    top: 15%;
+    left: 50%; /* Set to 50% to center horizontally */
+    transform: translateX(-50%); /* Translate back by 50% of the width */
+    display: flex;
+    border-radius: 35px;
+    width: 25%;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    color: var(--text);
+    background-color: var(--background);
+}
+
+
 #rewards {
+ 
     gap: 15% 0px;
     display: grid;
     height: 100%;
     width: 100vw;
-    padding-top: 2%;
+
     place-items: start center;
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
+
 }
 
 
 .user-reward {
     width: 45vw;
-    
+    margin-top: 17%;
     background-color: var(--background);
     border-radius: 35px;
     padding: 20px;
@@ -820,4 +839,17 @@ button {
     border-radius: 35px;
     color: var(--background);
     background-color: var(--primary);
+}
+
+@media screen and (max-width: 1100px) {
+    #rewards {
+        
+        grid-template-columns: 1fr;
+       
+    }
+
+    .user-reward {
+        width: 85vw;
+    }
+    
 }

@@ -40,7 +40,7 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
                 page={title}
                 theme={theme}
                 setTheme={setTheme}/>
-            <div id='points' className='shadow'>
+            <div id='points-banner-rewards' className='shadow'>
                 <h3>{user.points}</h3>
                 <FontAwesomeIcon 
                 icon={faCoins} 
@@ -63,6 +63,7 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
                         key={i}/>
                     ))
                 }
+
             </div>
         </>
        
