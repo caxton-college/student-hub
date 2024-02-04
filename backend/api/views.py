@@ -854,6 +854,15 @@ class SearchUser(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def get(self, request):
+        """
+            Seaches for users given name, surname and/or yeargroup
+            Args:
+                request (HttpRequest): Request from the user.
+
+            Returns:
+                Response: A list of found users
+        """
+        
         name = request.GET.get("name", "")
         surname = request.GET.get("surname", "")
         year = request.GET.get("year", "")
@@ -890,13 +899,13 @@ class PurchaseReward(APIView):
     
     def post(self, request: HttpRequest) -> Response:
         """
-            Retrieves a list of the rewards owned by the current user
-
+            Purchases a reward given an id, sufficient funds and reward not already owned
+            
             Args:
                 request (HttpRequest): Request from the user.
 
             Returns:
-                Response: A list of rewards as serialized data and a status code of 200 (OK).
+                Response: HTTP_401_UNAUTHORIZED if insuficient funds / already owned. HTTP_200_OK if successful. HTTP_404_NOT_FOUND if reward not found
         """
         user = request.user
         data = dict(request.data)
@@ -934,13 +943,13 @@ class SellReward(APIView):
     
     def post(self, request: HttpRequest) -> Response:
         """
-            Retrieves a list of the rewards owned by the current user
-
+            Sells a reward given an id, and reward already owned
+            
             Args:
                 request (HttpRequest): Request from the user.
 
             Returns:
-                Response: A list of rewards as serialized data and a status code of 200 (OK).
+                Response: HTTP_401_UNAUTHORIZED if not already owned. HTTP_200_OK if successful. HTTP_404_NOT_FOUND if reward not found
         """
         user = request.user
         data = dict(request.data)
