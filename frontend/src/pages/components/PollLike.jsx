@@ -14,6 +14,7 @@ export default function PollLike({
     index,
     pollsOptionsLikeData,
     setPollsOptionsLikeData,
+    getPolls,
     checkUser }) {
     
     const [stateLiked, setLiked] = useState();
@@ -47,6 +48,8 @@ export default function PollLike({
             setOptionsLikeData(response.data);
             setClicked(true);
             checkUser();
+            getPolls(true);
+
             
             toast.info('Like updated', {
                 position: "top-right",

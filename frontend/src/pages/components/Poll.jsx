@@ -16,7 +16,7 @@ export default function Poll({
     const [optionsLikeData, setOptionsLikeData] = useState();
     
 
-    // If pollData changes, update the liked and pinned status
+    // If pollData changes, update the liked  status
     useEffect(() => {
         if (pollData && pollData.options && pollsOptionsLikeData) {
             let newData = {};
@@ -60,6 +60,7 @@ export default function Poll({
                     pollsOptionsLikeData={pollsOptionsLikeData}
                     setPollsOptionsLikeData={setPollsOptionsLikeData}  
                     checkUser={checkUser}  
+                    getPolls={getPolls}
                 />
             ))}
         </div>

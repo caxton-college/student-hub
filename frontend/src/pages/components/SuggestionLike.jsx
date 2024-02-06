@@ -29,9 +29,11 @@ export default function SuggestionLike({
         ).then(response => {
             setLiked(response.data.liked);
             setLikes(response.data.likes);
+
             let newSuggestionsLikeData = suggestionsLikeData;
             newSuggestionsLikeData[id] = response.data;
             setSuggestionsLikeData(newSuggestionsLikeData);
+            
             setClicked(true);
             checkUser();
             

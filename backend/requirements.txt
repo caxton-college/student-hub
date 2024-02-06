@@ -4,3 +4,8 @@ djangorestframework==3.14.0
 Pillow==10.0.0
 Django==4.1.5
 gunicorn==20.1.0
+fuzzywuzzy==0.18.0
+Levenshtein==0.24.0
+python-Levenshtein==0.24.0
+sycopg2-binary==2.9.9
+rapidfuzz==3.6.1

@@ -10,7 +10,9 @@ export default function PollOption({
     index,
     pollsOptionsLikeData,
     setPollsOptionsLikeData,
-    checkUser }) {
+    checkUser,
+    getPolls 
+}) {
     
     return (
         <div className='poll-option'>
@@ -24,6 +26,7 @@ export default function PollOption({
                 index={index}
                 pollsOptionsLikeData={pollsOptionsLikeData}
                 setPollsOptionsLikeData={setPollsOptionsLikeData}
+                getPolls={getPolls}
                 checkUser={checkUser}
             >
             </PollLike>
