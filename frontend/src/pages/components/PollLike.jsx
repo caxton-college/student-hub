@@ -27,8 +27,14 @@ export default function PollLike({
         setLikes(optionsLikeData[id].likes)
 
         
-	}, [optionsLikeData]);
+	}, [optionsLikeData, ]);
 
+    useEffect(() => {
+        setLiked(pollsOptionsLikeData[index][id].liked)
+        setLikes(pollsOptionsLikeData[index][id].likes)
+
+        
+	}, []);
 
 
     const updateLikes = () => {
@@ -39,6 +45,7 @@ export default function PollLike({
             
             
         ).then(response => {
+
             let newPollsOptionsLikeData = pollsOptionsLikeData;
             
             newPollsOptionsLikeData[index] = response.data;
@@ -46,11 +53,12 @@ export default function PollLike({
             setPollsOptionsLikeData(newPollsOptionsLikeData)
 
             setOptionsLikeData(response.data);
+
             setClicked(true);
             checkUser();
-            getPolls(true);
-
             
+
+
             toast.info('Like updated', {
                 position: "top-right",
                 autoClose: 3000,
