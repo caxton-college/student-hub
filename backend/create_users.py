@@ -2,18 +2,22 @@ import smtplib
 import string
 from random import choice
 
+from django.contrib.auth.hashers import make_password
+
+import pandas as pd
+
 from users.models import User
 
 def email_creds(recipient: str, password: str) -> None:
     smtp_server = 'smtp.gmail.com'
     smtp_port = 587
     smtp_username = 'email'
-    smtp_password = 'pws'
+    smtp_password = 'psw'
 
     from_email = 'email'
     to_email = recipient
     subject = 'Student Hub Account'
-    body = f'You can the new plaform with the following credenials:\nEmail: {recipient}\nPassword: {password}'
+    body = f'You can log into the new plaform with the following credenials:\nEmail: {recipient}\nPassword: {password}'
 
     message = f'Subject: {subject}\n\n{body}'
 
@@ -23,6 +27,7 @@ def email_creds(recipient: str, password: str) -> None:
         smtp.sendmail(from_email, to_email, message)
         
 def generate_password(length: int) -> str:
+    
     return "".join([choice(string.ascii_letters) for _ in range(length)])
         
 def create_user(email: str,
@@ -39,14 +44,26 @@ def create_user(email: str,
         email=email,
         name=name,
         surname=surname,
+        password=make_password(password),
         role=role,
+        year=year,
+        form=form,
+        house=house
     )
-    new_user.set_password(password)
-    new_user.year = year
-    new_user.form = form
-    new_user.house = house
-    print(password)
+    
+    email_creds(recipient=email, password=password)
+    
     new_user.save()
     
 
-
+def populate_db() -> None:
+    df = pd.read_csv("test.csv")
+    
+    for i, row in df.iterrows():
+        create_user(email=row["email"],
+                    name=row["name"],
+                    surname=row["surname"],
+                    role=row["role"],
+                    form=row["form"],
+                    year=row["year"],
+                    house=row["house"])
