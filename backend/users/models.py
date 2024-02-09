@@ -63,7 +63,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 		TEN = 10
 		ELEVEN = 11
 		TWELVE = 12
-		THIRTEEN = 13	
+		THIRTEEN = 13
+		TEACHER = 0
 	
 	class Form(models.IntegerChoices):
 		A = 1
@@ -71,12 +72,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 		C = 3
 		D = 4
 		E = 5
+		TEACHER = 0
   
 	class House(models.IntegerChoices):
 		ADVENTURE = 1
 		ENDEAVOUR = 2
 		DISCOVERY = 3
 		ENDURANCE = 4
+		TEACHER = 0
 		
   
   

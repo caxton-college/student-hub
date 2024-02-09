@@ -284,8 +284,8 @@ class CreateSuggestion(APIView):
         """
         user = request.user
         
-        if user.role == "teacher":
-            return Response(status=status.HTTP_403_FORBIDDEN)
+        if user.role == 5:
+            return Response({"message": "You sure you're a student?"}, status=status.HTTP_403_FORBIDDEN)
         
         data = dict(request.data)
         if not "body" in data.keys() or len(data.get("body")) <= 10:
@@ -354,8 +354,8 @@ class UpdateSuggestionLikes(APIView):
         """
         user = request.user
         
-        if user.role == "teacher":
-            return Response(status=status.HTTP_403_FORBIDDEN)
+        if user.role == 5:
+            return Response({"message": "You sure you're a student?"}, status=status.HTTP_403_FORBIDDEN)
         
         data = dict(request.data)
         
@@ -435,8 +435,8 @@ class UpdateSuggestionPin(APIView):
         """
         user = request.user
         
-        if user.role == "teacher" or user.role == "student":
-            return Response(status=status.HTTP_403_FORBIDDEN)
+        if user.role == 5 or user.role == 1:
+            return Response({"message": "Not allowed"}, status=status.HTTP_403_FORBIDDEN)
         
         data = dict(request.data)
         
@@ -628,8 +628,8 @@ class CreatePoll(APIView):
         
         user = request.user
         
-        if user.role == "teacher" or user.role == "student":
-            return Response(status=status.HTTP_403_FORBIDDEN)
+        if user.role == 5 or user.role == 1:
+            return Response({"message": "Not allowed"}, status=status.HTTP_403_FORBIDDEN)
         
         
         data = dict(request.data)
@@ -682,7 +682,7 @@ class DeletePoll(APIView):
             poll = Poll.objects.get(id=data["poll_id"])
 
             # Check if the user is the owner of the suggestion or has permission to delete it.
-            if request.user == poll.owner or request.user.role not in ["teacher", "student"]:
+            if request.user == poll.owner or request.user.role not in [5, 1]:
                 poll.delete()
                 return Response({"message": "Poll deleted"}, status=status.HTTP_204_NO_CONTENT)
             else:
@@ -714,8 +714,8 @@ class UpdatePollOptionLikedStatus(APIView):
         if not user.is_authenticated:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         
-        if user.role == "teacher":
-            return Response(status=status.HTTP_403_FORBIDDEN)
+        if user.role == 5:
+            return Response({"message": "You sure you're a student?"}, status=status.HTTP_403_FORBIDDEN)
         
         
         data = request.data
@@ -873,8 +873,8 @@ class SearchUser(APIView):
         # Filter users based on the fuzzy matching criteria
         filtered_users = filter(
             lambda user: fuzz.ratio(name, user.name) >= 80 or
-                         fuzz.ratio(surname, user.surname) >= 80 and
-                         (year == "" or year == user.year),
+                         fuzz.ratio(surname, user.surname) >= 80 or
+                         int(year) == user.year,
             all_users
         )
 
@@ -882,13 +882,13 @@ class SearchUser(APIView):
         result = [
             {
                 'user_id': user.user_id,
-                'name': user.name,
-                'surname': user.surname,
+                'name': user.name.capitalize(),
+                'surname': user.surname.capitalize(),
                 'year': user.year,
             }
             for user in filtered_users
         ]
-
+       
         return Response(result, status=status.HTTP_200_OK)
     
     

@@ -516,7 +516,7 @@ input,
 span,
 label,
 textarea {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: inherit;
     display: block;
     color: var(--text);
     margin: 10px;
@@ -787,6 +787,15 @@ button {
     text-align: center;
 }
 
+.search-link {
+    text-decoration: none;
+    color: var(--background);
+    background-color: var(--primary);
+    border-radius: 35px;
+    width: 65%;
+    text-align: center;
+}
+
 #points-banner-rewards {
     position: absolute;
     top: 15%;
@@ -859,6 +868,81 @@ button {
     background-color: var(--primary);
 }
 
+#search-page {
+    width: 100vw;
+    
+    overflow-y: scroll;
+    display: grid;
+    gap: 35px;
+    grid-template-rows: 1fr 4fr;
+}
+
+#search-form {
+    margin-top: 1%;
+    place-self: center;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    place-items: center;
+    gap: 15px;
+    width: 80%;
+    height: 100%;
+}
+
+#search-form .submit {
+    width: 100%;
+    
+}
+
+#search-form input {
+    height: 50%;
+    width: 80%;
+    padding-left: 35px;
+    border-radius: 35px;
+    
+}
+
+select {
+    height: 50%;
+    width: 80%;
+    border: none;
+    display: block;
+    border-radius: 35px;
+    font-family: inherit;
+    font-size: 22px;
+    text-align: center;
+    background-color: var(--background);
+}
+
+option {
+    border: none;
+    text-decoration: none;
+    border-radius: 35px;
+}
+
+#search-results {
+    gap: 25px;
+    display: grid;
+    width: 100vw;
+    padding-top: 1%;
+    height: fit-content;
+    place-items: start center;
+    
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 1fr 1fr;
+}
+
+.student-card {
+    display: grid;
+    text-decoration: none;
+    color: var(--text);
+    place-items: center;
+    background-color: var(--background);
+    border-radius: 35px;
+    cursor: pointer;
+    width: 90%;
+    height: 20vh;
+}
+
 @media screen and (max-width: 1100px) {
     #rewards {
         
@@ -871,3 +955,4 @@ button {
     }
     
 }
+

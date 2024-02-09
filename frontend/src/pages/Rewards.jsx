@@ -17,11 +17,9 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
             rewardAction = "buy";
             break;
 
-        case "view":
-            
-            
 
-            // 5 - techer, 1-4 (student body role's)
+        case "view":
+            // 5 - techer, 1-4 (student body roles)
 
             if (user.role === 5) {
                 title = `Student Rewards`
@@ -39,32 +37,48 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
             <Header 
                 page={title}
                 theme={theme}
-                setTheme={setTheme}/>
-            <div id='points-banner-rewards' className='shadow'>
-                <h3>{user.points}</h3>
-                <FontAwesomeIcon 
-                icon={faCoins} 
-                style={{ color: "#eeb825" }}> 
-                </FontAwesomeIcon>
-            </div>
-            <div id='rewards'>
+                setTheme={setTheme}    
+            />
+
+            {
+                user.role != 5 ? (
+                    <div id='points-banner-rewards' className='shadow'>
+                        <h3>{user.points}</h3>
+                        <FontAwesomeIcon 
+                        icon={faCoins} 
+                        style={{ color: "#eeb825" }}> 
+                        </FontAwesomeIcon>
+                    </div>
+                ) : (
+                    <></>
+                )
+            }
                 {
-                    rewards.map((reward, i) => (
-                        <UserReward 
-                        client={client}
-                        user={user}
-                        name={reward.name}
-                        cost={reward.cost}
-                        id={reward.id}
-                        action={rewardAction}
-                        getAllRewards={getAllRewards}
-                        getUserRewards={getUserRewards}
-                        checkUser={checkUser}
-                        key={i}/>
-                    ))
+                   
+                    rewards.length != 0 ? (
+                        rewards.map((reward, i) => (
+                            <div id='rewards'>
+                                <UserReward 
+                                client={client}
+                                user={user}
+                                name={reward.name}
+                                cost={reward.cost}
+                                id={reward.id}
+                                action={rewardAction}
+                                getAllRewards={getAllRewards}
+                                getUserRewards={getUserRewards}
+                                checkUser={checkUser}
+                                key={i}/>
+                            </div>
+                        ))
+
+                    ) : (
+                        <h3 className='content'>No rewards...</h3>
+                    )
+                    
                 }
 
-            </div>
+            
         </>
        
     );

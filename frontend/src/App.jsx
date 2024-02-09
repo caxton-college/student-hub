@@ -11,6 +11,8 @@ import Suggestions from './pages/Suggestions';
 import Announcements from './pages/Announcements';
 import Polls from './pages/Polls';
 import Rewards from './pages/Rewards';
+import Search from './pages/Search';
+
 
 // Axios settings for authentication
 axios.defaults.xsrfCookieName = 'X-CSRFToken';
@@ -72,6 +74,20 @@ function App() {
 
 	};
 
+    function setRewardsId(id) {
+        setUser({
+            loggedIn: true,
+            name: user.name,
+            surname: user.surname,
+            email: user.email,
+            role: user.role,
+            points: user.points,
+            likes: user.likes,
+            userSuggestions: user.user_suggestions,
+            user_id: user.user_id,
+            rewards_id: id // ID of the user for which to show rewards (always user_id unless role = teacher)
+        });
+    }
 
     // Get suggestion with a given order
     function getSuggestions(force=false, newOrder="new") {
@@ -288,6 +304,17 @@ function App() {
                         getAllRewards={getAllRewards}
                         getUserRewards={getUserRewards}
                         checkUser={checkUser}
+                    />
+                }/>
+
+                <Route path="/search" element={
+                    <Search 
+                        user={user}
+                        client={client}
+                        rewards={allRewards}
+                        theme={theme}
+                        setTheme={setTheme}
+                        setRewardsId={setRewardsId}
                     />
                 }/>
 

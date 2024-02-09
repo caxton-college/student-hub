@@ -57,14 +57,14 @@ export default function Suggestions({
                 }
                 
                 
-                <CreateSuggestion 
-                    client={client} 
-                    user={user} 
-                    getSuggestions={getSuggestions}
-                    forceUpdate={forceUpdate}
-                    checkUser={checkUser}
-                    order={order}
-                />
+                    <CreateSuggestion 
+                        client={client} 
+                        user={user} 
+                        getSuggestions={getSuggestions}
+                        forceUpdate={forceUpdate}
+                        checkUser={checkUser}
+                        order={order}
+                    />
                 
             </div>
         </>

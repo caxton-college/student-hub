@@ -2,3 +2,4 @@ email,name,surname,role,year,form,house
 tester1@test.com,Tester1,Tester,1,8,2,1
 tester2@test.com,Tester2,Tester,1,10,2,1
 tester3@test.com,Tester3,Tester,3,10,2,3
+teacher@test.com,Teacher,Teacher,5,0,0,0

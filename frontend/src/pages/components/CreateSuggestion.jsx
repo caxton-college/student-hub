@@ -52,7 +52,7 @@ export default function CreateSuggestion({ client, user, getSuggestions, order, 
         });
     };
 
-    if (user.loggedIn) {
+    if (user.loggedIn && user.role != 5) {
         return (
             <>
                 <div className={showPrompt ? 'close create-toggle' : 'open create-toggle'}>
