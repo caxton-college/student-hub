@@ -13,8 +13,8 @@ from users.models import User
 def email_creds(users: List[Dict[str, str]]) -> None:
     smtp_server = 'smtp.gmail.com'
     smtp_port = 587
-    smtp_username = 'clorenzozunigamari@caxtoncollege.net'
-    smtp_password = 'Carlos-4407'
+    smtp_username = 'email'
+    smtp_password = 'psw'
 
     
 
@@ -28,7 +28,7 @@ def email_creds(users: List[Dict[str, str]]) -> None:
             password = user.get("password")
             
             from_email = 'email'
-            to_email = "clorenzozunigamari@caxtoncollege.net"
+            to_email = "email"
             subject = 'Student Hub Account'
             body = f'You can log into the new plaform with the following credenials:\nEmail: {recipient}\nPassword: {password}'
 
