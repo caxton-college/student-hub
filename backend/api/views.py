@@ -840,14 +840,18 @@ class GetUserRewards(APIView):
             Returns:
                 Response: A list of rewards as serialized data and a status code of 200 (OK).
         """
-        user_id = request.GET.get("user", None)
-        user = User.objects.all().filter(user_id=user_id)
-        rewards = list(filter(lambda reward: user in reward.owners.all(), Reward.objects.all()))
+        try:
+            user_id = request.GET.get("user", None)
+            user = User.objects.get(user_id=user_id)
+            rewards = list(filter(lambda reward: user in reward.owners.all(), Reward.objects.all()))
+            
+            serialiser = RewardSerialiser(rewards, many=True)
+
+
+            return Response(serialiser.data, status=status.HTTP_200_OK)
         
-        serialiser = RewardSerialiser(rewards, many=True)
-
-
-        return Response(serialiser.data, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({"message": "user not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class SearchUser(APIView):
@@ -872,9 +876,10 @@ class SearchUser(APIView):
 
         # Filter users based on the fuzzy matching criteria
         filtered_users = filter(
-            lambda user: fuzz.ratio(name, user.name) >= 80 or
-                         fuzz.ratio(surname, user.surname) >= 80 or
-                         int(year) == user.year,
+            lambda user: (
+                (fuzz.ratio(name, user.name) >= 80 or
+                fuzz.ratio(surname, user.surname) >= 80) and
+                int(year) == user.year) and user.role != 5,
             all_users
         )
 
@@ -977,3 +982,47 @@ class SellReward(APIView):
         
         except Reward.DoesNotExist:
             return Response({"message": "Reward not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class RedeemReward(APIView):
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    
+    def post(self, request: HttpRequest) -> Response:
+        """
+            Sells a reward given an id, and reward already owned
+            
+            Args:
+                request (HttpRequest): Request from the user.
+
+            Returns:
+                Response: HTTP_401_UNAUTHORIZED if not already owned. HTTP_200_OK if successful. HTTP_404_NOT_FOUND if reward not found
+        """
+        
+        data = dict(request.data)
+        
+        reward_id = data.get("reward_id", "")
+        user_id = data.get("user_id", "")
+        
+        try:
+            reward = Reward.objects.get(id=reward_id)
+            user = User.objects.get(user_id=user_id)
+            
+            
+            if user not in reward.owners.all():
+                return Response({"message": "Not owned"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            
+            reward.owners.remove(user)
+            
+            reward.save()
+            
+            return Response({"message": "Redeem successful!"}, status=status.HTTP_200_OK)
+
+            
+        
+        except Reward.DoesNotExist:
+            return Response({"message": "Reward not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        except User.DoesNotExist:
+            return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)

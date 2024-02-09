@@ -78,7 +78,37 @@ export default function UserReward({ client, user, name, cost, id, action, getAl
                 break;
     
             case "redeem":
-    
+                client.post("/api/redeem_reward", {
+                    reward_id: id,
+                    user_id: user.rewards_id
+                }).then((response) => {
+                    
+                    checkUser();
+                    getUserRewards();
+
+                    toast.success(response.data.message, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+
+                }).catch(error => {
+                    toast.error(error.response.data.message, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                });
                 break;
             
             default:

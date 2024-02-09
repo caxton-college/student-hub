@@ -210,7 +210,7 @@ function App() {
 
     useEffect(() => {
         getUserRewards();
-    }, [user.rewards_id]);
+    }, [user]);
 
 
     useEffect(() => {
