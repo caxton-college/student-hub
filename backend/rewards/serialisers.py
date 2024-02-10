@@ -5,4 +5,4 @@ from .models import Reward
 class RewardSerialiser(serializers.ModelSerializer):
     class Meta:
         model = Reward
-        fields ='__all__'
+        fields = ("id", "name", "cost")
