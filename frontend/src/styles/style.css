@@ -813,12 +813,11 @@ button {
 
 
 #rewards {
- 
+    margin-top: 3%;
     gap: 15% 0px;
     display: grid;
-    height: 100%;
-    width: 100vw;
-
+    
+    
     place-items: start center;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto 1fr;
@@ -829,7 +828,7 @@ button {
 
 .user-reward {
     width: 45vw;
-    margin-top: 17%;
+    margin-bottom: 25%;
     background-color: var(--background);
     border-radius: 35px;
     padding: 20px;
@@ -943,15 +942,43 @@ option {
     height: 20vh;
 }
 
-@media screen and (max-width: 1100px) {
+.nudge-down {
+    margin-top: 8% !important;
+}
+
+@media screen and (max-width: 1200px) {
     #rewards {
         
         grid-template-columns: 1fr;
+       
        
     }
 
     .user-reward {
         width: 85vw;
+        
+    }
+    
+}
+
+@media screen and (min-height: 1000px) {
+    #points-banner-rewards {
+        top: 10%;
+    }
+
+    #rewards {
+        margin-top: 3%;
+    
+    }
+
+    .nudge-down {
+        margin-top: 15%;
+    }
+
+
+    .user-reward {
+        margin-bottom: 0% !important;
+        
     }
     
 }

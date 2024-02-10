@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import { faHeart, faCoins, faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { faCoins } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import UserReward from './components/UserReward';
@@ -10,17 +10,19 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
     
     let title = "";
     let rewardAction = "";
+    let marginClass = "";
 
     switch (type) {
         case "shop":
             title = "Shop"
             rewardAction = "buy";
+            marginClass = "nudge-down";
             break;
 
 
         case "view":
             // 5 - techer, 1-4 (student body roles)
-
+            
             if (user.role === 5) {
                 title = `Student Rewards`
                 rewardAction = "redeem";
@@ -41,7 +43,7 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
             />
 
             {
-                user.role != 5 ? (
+                user.role != 5 && type === "shop" ? (
                     <div id='points-banner-rewards' className='shadow'>
                         <h3>{user.points}</h3>
                         <FontAwesomeIcon 
@@ -53,11 +55,12 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
                     <></>
                 )
             }
+                <div id='rewards' className={marginClass}>
                 {
                    
                     rewards.length != 0 ? (
                         rewards.map((reward, i) => (
-                            <div id='rewards'>
+                                <>
                                 <UserReward 
                                 client={client}
                                 user={user}
@@ -69,14 +72,30 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
                                 getUserRewards={getUserRewards}
                                 checkUser={checkUser}
                                 key={i}/>
-                            </div>
+                                <UserReward 
+                                client={client}
+                                user={user}
+                                name={reward.name}
+                                cost={reward.cost}
+                                id={reward.id}
+                                action={rewardAction}
+                                getAllRewards={getAllRewards}
+                                getUserRewards={getUserRewards}
+                                checkUser={checkUser}
+                                key={i}/>
+                                </>
+                                
+                                
+                            
                         ))
+                        
 
                     ) : (
                         <h3 className='content'>No rewards...</h3>
                     )
                     
                 }
+                </div>
 
             
         </>

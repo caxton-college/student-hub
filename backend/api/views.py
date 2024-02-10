@@ -920,7 +920,7 @@ class PurchaseReward(APIView):
         try:
             reward = Reward.objects.get(id=reward_id)
             
-            if user.points <= reward.cost:
+            if user.points < reward.cost:
                 return Response({"message": "Insuficient funds!"}, status=status.HTTP_401_UNAUTHORIZED)
             
             if user in reward.owners.all():
