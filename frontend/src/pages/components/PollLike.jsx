@@ -23,16 +23,30 @@ export default function PollLike({
 
     useEffect(() => {
         
-        setLiked(optionsLikeData[id].liked)
-        setLikes(optionsLikeData[id].likes)
+        try {
+            setLiked(optionsLikeData[id].liked);
+            setLikes(optionsLikeData[id].likes);
 
+        } catch(err) {
+            console.log(err);
+            setLiked(false);
+            setLikes(0);
+        }
+            
         
 	}, [optionsLikeData, ]);
 
     useEffect(() => {
-        setLiked(pollsOptionsLikeData[index][id].liked)
-        setLikes(pollsOptionsLikeData[index][id].likes)
+        try {
+            setLiked(pollsOptionsLikeData[index][id].liked);
+            setLikes(pollsOptionsLikeData[index][id].likes);
 
+        } catch(err) {
+            console.log(err);
+            setLiked(false);
+            setLikes(0);
+        }
+        
         
 	}, []);
 

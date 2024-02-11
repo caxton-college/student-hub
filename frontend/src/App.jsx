@@ -181,6 +181,10 @@ function App() {
    
 
     function getUserRewards() {
+        if(!user.loggedIn) {
+            return;
+        }
+
         // Fetch data when the component mounts
         client.get(`/api/user_rewards?user=${user.rewards_id}`)
         .then(function (response) {
