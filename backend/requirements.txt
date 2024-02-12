@@ -7,5 +7,7 @@ gunicorn==20.1.0
 fuzzywuzzy==0.18.0
 Levenshtein==0.24.0
 python-Levenshtein==0.24.0
-sycopg2-binary==2.9.9
+psycopg2-binary==2.9.9
 rapidfuzz==3.6.1
+tqdm==4.66.2
+pandas==2.2.0

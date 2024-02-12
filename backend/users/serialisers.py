@@ -32,4 +32,4 @@ class UserLoginSerialiser(serializers.Serializer):
 class UserSerialiser(serializers.ModelSerializer):
 	class Meta:
 		model = UserModel
-		fields = '__all__'
+		exclude = ('password', "user_permissions", "groups")

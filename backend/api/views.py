@@ -59,7 +59,7 @@ class Index(APIView):
 
 # User views
 class UserRegister(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAdminUser,)
     authentication_classes = (SessionAuthentication,)
     
     def post(self, request: HttpRequest) -> Response:
@@ -1023,6 +1023,47 @@ class RedeemReward(APIView):
         
         except Reward.DoesNotExist:
             return Response({"message": "Reward not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        except User.DoesNotExist:
+            return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        
+
+
+class UpdateUserPoints(APIView):
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.IsAdminUser,)
+    
+    def post(self, request: HttpRequest) -> Response:
+        """
+            Sells a reward given an id, and reward already owned
+            
+            Args:
+                request (HttpRequest): Request from the user.
+
+            Returns:
+                Response: HTTP_401_UNAUTHORIZED if not already owned. HTTP_200_OK if successful. HTTP_404_NOT_FOUND if reward not found
+        """
+      
+        data = dict(request.data)
+        
+        user_id = data.get("user_id", "")
+        points = data.get("points", 0)
+        
+        
+        try:
+            user = User.objects.get(user_id=user_id)
+            
+            if new_points := (user.points + points) < 0:
+                return Response({"message": "Attempted to set points below 0, points unchanged"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            user.points = new_points            
+            
+            user.save()
+            
+            return Response({"message": "Points updated successfully"}, status=status.HTTP_200_OK)
+
+            
         
         except User.DoesNotExist:
             return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)

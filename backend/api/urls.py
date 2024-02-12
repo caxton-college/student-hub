@@ -29,5 +29,6 @@ urlpatterns = [
     path("purchase_reward", views.PurchaseReward.as_view(), name="purchasereward"),
     path("sell_reward", views.SellReward.as_view(), name="sellreward"),
     path("redeem_reward", views.RedeemReward.as_view(), name="redeemreward"),
+    path("update_points", views.UpdateUserPoints.as_view(), name="updateuserpoints")
 ]
 
