@@ -869,7 +869,7 @@ class SearchUser(APIView):
         
         name = request.GET.get("name", "")
         surname = request.GET.get("surname", "")
-        year = request.GET.get("year", "")
+        year = request.GET.get("year", -1)
 
         # Fetch all users from the database
         all_users = User.objects.all()
@@ -879,22 +879,16 @@ class SearchUser(APIView):
             lambda user: (
                 (fuzz.ratio(name, user.name) >= 80 or
                 fuzz.ratio(surname, user.surname) >= 80) and
-                int(year) == user.year) and user.role != 5,
+                int(year) == user.year) and 
+                user.role != 5,
             all_users
         )
-
-        # Extract specific fields from filtered users
-        result = [
-            {
-                'user_id': user.user_id,
-                'name': user.name.capitalize(),
-                'surname': user.surname.capitalize(),
-                'year': user.year,
-            }
-            for user in filtered_users
-        ]
+        
+        serialiser = UserSerialiser(list(filtered_users), many=True)
+        
        
-        return Response(result, status=status.HTTP_200_OK)
+       
+        return Response(serialiser.data, status=status.HTTP_200_OK)
     
     
 

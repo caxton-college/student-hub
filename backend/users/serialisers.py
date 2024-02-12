@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model, authenticate
-from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError
 
 from rest_framework import serializers
@@ -13,7 +12,7 @@ class UserRegisterSerialiser(serializers.ModelSerializer):
   
   
 	def create(self, data):
-		user_obj = UserModel.objects.create_user(email=data['email'], password=make_password(data['password']), name=data['name'], surname=data['surname'], role=data['role'])
+		user_obj = UserModel.objects.create_user(email=data['email'], password=data['password'], name=data['name'], surname=data['surname'], role=data['role'])
 		
 		user_obj.save()
 		return user_obj
