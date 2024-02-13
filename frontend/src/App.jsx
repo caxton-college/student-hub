@@ -74,7 +74,7 @@ function App() {
 
 	};
 
-    function setRewardsId(id) {
+    function setRewardsId(id, name) {
         setUser({
             loggedIn: true,
             name: user.name,
@@ -85,7 +85,8 @@ function App() {
             likes: user.likes,
             userSuggestions: user.user_suggestions,
             user_id: user.user_id,
-            rewards_id: id // ID of the user for which to show rewards (always user_id unless role = teacher)
+            rewards_id: id, // ID of the user for which to show rewards (always user_id unless role = teacher)
+            rewards_name: name
         });
     }
 

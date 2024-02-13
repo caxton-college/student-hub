@@ -100,13 +100,14 @@ class UserLogin(APIView):
         Returns:
             Response: Status code 200 if valid credentials, 400 if not
         """
-        data = request.data
+        data: dict = request.data
         email = data.get('email', '')
         password = data.get('password', '')
 
         if not email or not password:
             return Response({"message": "Both an email and password are required."}, status=status.HTTP_400_BAD_REQUEST)
 
+        
         user = authenticate(request, email=email, password=password)
 
         if user is not None:

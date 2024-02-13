@@ -83,7 +83,7 @@ export default function UserReward({ client, user, name, cost, id, action, getAl
                     user_id: user.rewards_id
                 }).then((response) => {
                     
-                    checkUser();
+                    
                     getUserRewards();
 
                     toast.success(response.data.message, {

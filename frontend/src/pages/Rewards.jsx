@@ -12,6 +12,16 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
     let rewardAction = "";
     let marginClass = "";
 
+    function capitalise(string) {
+        try {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        } catch (err) {
+            return string
+        }
+        
+    }
+
+
     switch (type) {
         case "shop":
             title = "Shop"
@@ -24,11 +34,11 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
             // 5 - techer, 1-4 (student body roles)
             
             if (user.role === 5) {
-                title = `Student Rewards`
+                title = `${capitalise(user.rewards_name)}' Rewards`
                 rewardAction = "redeem";
                 
             } else {
-                title = `${user.name}' Rewards`
+                title = `Your Rewards`
                 rewardAction = "sell";
             }
 
@@ -72,17 +82,7 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
                                 getUserRewards={getUserRewards}
                                 checkUser={checkUser}
                                 key={i}/>
-                                <UserReward 
-                                client={client}
-                                user={user}
-                                name={reward.name}
-                                cost={reward.cost}
-                                id={reward.id}
-                                action={rewardAction}
-                                getAllRewards={getAllRewards}
-                                getUserRewards={getUserRewards}
-                                checkUser={checkUser}
-                                key={i}/>
+                                
                                 </>
                                 
                                 

@@ -9,13 +9,22 @@ export default function StudentCard({ info, setRewardsId }) {
     let year = info["year"];
 
     function handleCardClick() {
-        setRewardsId(id);
+        setRewardsId(id, name);
+        
+    }
+
+    function capitalise(string) {
+        try {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        } catch (err) {
+            return string
+        }
         
     }
 
     return (
         <Link to="/rewards" className='student-card shadow' onClick={handleCardClick}>
-            <h4>{name} {surname}</h4>
+            <h4>{capitalise(name)} {capitalise(surname)}</h4>
         </Link>
         
     )

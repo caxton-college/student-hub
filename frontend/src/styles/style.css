@@ -836,7 +836,13 @@ button {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    transition: all 0.2s ease;
 }
+
+.user-reward:hover {
+    transform: scale(1.01);
+}
+    
 
 .reward-actions {
     width: 90%;
