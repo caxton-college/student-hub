@@ -10,7 +10,6 @@ export default function StudentCard({ info, setRewardsId }) {
 
     function handleCardClick() {
         setRewardsId(id, name);
-        
     }
 
     function capitalise(string) {
@@ -25,7 +24,6 @@ export default function StudentCard({ info, setRewardsId }) {
     return (
         <Link to="/rewards" className='student-card shadow' onClick={handleCardClick}>
             <h4>{capitalise(name)} {capitalise(surname)}</h4>
-        </Link>
-        
+        </Link>   
     )
 }

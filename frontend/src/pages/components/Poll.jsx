@@ -39,7 +39,7 @@ export default function Poll({
     return (
         <div className='poll shadow' style={{height: `${pollData.options.length * 18}vh`}}>
 
-            <h3>{pollData.poll.question}</h3>
+            <h3>{pollData.poll?.question}</h3>
 
             <DeletePoll
                 client={client}

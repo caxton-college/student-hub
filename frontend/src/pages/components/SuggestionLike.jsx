@@ -27,8 +27,8 @@ export default function SuggestionLike({
             { id : id }   
                      
         ).then(response => {
-            setLiked(response.data.liked);
-            setLikes(response.data.likes);
+            setLiked(response.dat?.liked);
+            setLikes(response.data?.likes);
 
             let newSuggestionsLikeData = suggestionsLikeData;
             newSuggestionsLikeData[id] = response.data;

@@ -18,7 +18,6 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
         } catch (err) {
             return string
         }
-        
     }
 
 
@@ -32,16 +31,15 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
 
         case "view":
             // 5 - techer, 1-4 (student body roles)
-            
+		
             if (user.role === 5) {
-                title = `${capitalise(user.rewards_name)}' Rewards`
+                title = `${capitalise(user?.rewards_name)}' Rewards`
                 rewardAction = "redeem";
                 
             } else {
                 title = `Your Rewards`
                 rewardAction = "sell";
             }
-
     }
     
     return (
@@ -67,33 +65,25 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
             }
                 <div id='rewards' className={marginClass}>
                 {
-                   
                     rewards.length != 0 ? (
                         rewards.map((reward, i) => (
-                                <>
-                                <UserReward 
-                                client={client}
-                                user={user}
-                                name={reward.name}
-                                cost={reward.cost}
-                                id={reward.id}
-                                action={rewardAction}
-                                getAllRewards={getAllRewards}
-                                getUserRewards={getUserRewards}
-                                checkUser={checkUser}
-                                key={i}/>
-                                
-                                </>
-                                
-                                
-                            
+							<>
+								<UserReward 
+								client={client}
+								user={user}
+								name={reward.name}
+								cost={reward.cost}
+								id={reward.id}
+								action={rewardAction}
+								getAllRewards={getAllRewards}
+								getUserRewards={getUserRewards}
+								checkUser={checkUser}
+								key={i}/>
+							</>
                         ))
-                        
-
                     ) : (
                         <h3 className='content'>No rewards...</h3>
                     )
-                    
                 }
                 </div>
 

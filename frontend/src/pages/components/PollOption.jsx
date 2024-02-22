@@ -16,7 +16,7 @@ export default function PollOption({
     
     return (
         <div className='poll-option'>
-            <p className='option-body'>{option.body}</p>
+            <p className='option-body'>{option?.body}</p>
             <PollLike
                 client={client}
                 user={user}

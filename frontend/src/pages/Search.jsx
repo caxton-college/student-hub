@@ -7,16 +7,7 @@ import StudentSearchForm from './components/StudentSearchForm';
 
 export default function Search({ client, user, theme, setTheme, setRewardsId}) {
 
-    let info = {
-        user_id:1,
-        name: "carlos",
-        surname: "lorenzo",
-        year: 12
-    }
-
     const [foundUsers, setFoundUsers] = useState([]);
-
-    
 
     return (
         <>
@@ -38,7 +29,6 @@ export default function Search({ client, user, theme, setTheme, setRewardsId}) {
                                 return (
                                     <StudentCard info={userInfo} key={i} setRewardsId={setRewardsId}/>
                                 )
-                                
                             })
                         ) : (
                             <h4>No users found</h4>

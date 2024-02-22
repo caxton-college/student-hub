@@ -24,8 +24,8 @@ export default function PollLike({
     useEffect(() => {
         
         try {
-            setLiked(optionsLikeData[id].liked);
-            setLikes(optionsLikeData[id].likes);
+            setLiked(optionsLikeData[id]?.liked);
+            setLikes(optionsLikeData[id]?.likes);
 
         } catch(err) {
             console.log(err);
@@ -38,11 +38,10 @@ export default function PollLike({
 
     useEffect(() => {
         try {
-            setLiked(pollsOptionsLikeData[index][id].liked);
-            setLikes(pollsOptionsLikeData[index][id].likes);
+            setLiked(pollsOptionsLikeData[index][id]?.liked);
+            setLikes(pollsOptionsLikeData[index][id]?.likes);
 
         } catch(err) {
-            console.log(err);
             setLiked(false);
             setLikes(0);
         }

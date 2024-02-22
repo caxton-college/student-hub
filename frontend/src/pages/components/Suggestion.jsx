@@ -11,7 +11,7 @@ export default function Suggestion({client, suggestion, user, checkUser, suggest
 			<div className='suggestion shadow'>
 
 				<div className='suggestion-body'>
-					<p>{suggestion.body}</p>
+					<p>{suggestion?.body}</p>
 				</div>
 
                 
