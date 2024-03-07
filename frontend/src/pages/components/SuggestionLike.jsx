@@ -54,16 +54,19 @@ export default function SuggestionLike({
             }, 500);
 
         }).catch(error => {
-            toast.error(error.response.data.message, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            if (error.response && error.response.data && error.response.data.message) {
+                    toast.error(error.response.data.message, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+            }
+            
         });
     };
 

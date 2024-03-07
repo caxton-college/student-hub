@@ -126,21 +126,7 @@ function App() {
 		}
 	}
 
-	// Get suggestion made by the current user (not currently in use)
-    function getUserSuggestions() {
-       
-        client.get(
-            "api/user_suggestions"
-            ).then(function (response) {
-            setUserSuggestions(response.data);
-        });
 
-
-        
-    }
-
-
-    // Set a state with poll like data (allows the maintenance of the visual state)
 
     // Set a state with Suggestion like data (allows the maintenance of the visual state)
     function getSuggestionLikeData(suggestionData) {
