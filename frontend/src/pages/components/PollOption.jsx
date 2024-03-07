@@ -4,27 +4,25 @@ import PollLike from './PollLike'
 export default function PollOption({
     client, 
     user, 
-    option, 
-    optionsLikeData, 
-    setOptionsLikeData, 
-    index,
-    pollsOptionsLikeData,
-    setPollsOptionsLikeData,
-    checkUser }) {
+    checkUser,
+    polls,
+    setPolls,
+    pollIndexInPolls,
+    optionIndexInPolls,
+}) {
     
     return (
         <div className='poll-option'>
-            <p className='option-body'>{option.body}</p>
+            <p className='option-body'>{polls[pollIndexInPolls].options[optionIndexInPolls].body}</p>
             <PollLike
                 client={client}
                 user={user}
-                id={option.id}
-                optionsLikeData={optionsLikeData}
-                setOptionsLikeData={setOptionsLikeData}
-                index={index}
-                pollsOptionsLikeData={pollsOptionsLikeData}
-                setPollsOptionsLikeData={setPollsOptionsLikeData}
                 checkUser={checkUser}
+                polls={polls}
+                setPolls={setPolls}
+                pollIndexInPolls={pollIndexInPolls}
+                optionIndexInPolls={optionIndexInPolls}
+                
             >
             </PollLike>
 

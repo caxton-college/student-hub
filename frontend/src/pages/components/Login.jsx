@@ -39,7 +39,7 @@ export default function Login({ client, checkUser}) {
             let errorMessage = "Something went wrong...";
 
             if (error.response) {
-                errorMessage = error.response.data.message
+                errorMessage = error.response.data.message;
             }
             
             toast.error(errorMessage, {

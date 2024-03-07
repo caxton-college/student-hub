@@ -24,13 +24,16 @@ export default function SuggestionLike({
         
         client.post(
             `/api/update_suggestion_likes`,
-            { id : id }            
+            { id : id }   
+                     
         ).then(response => {
-            setLiked(response.data.liked);
-            setLikes(response.data.likes);
+            setLiked(response.dat?.liked);
+            setLikes(response.data?.likes);
+
             let newSuggestionsLikeData = suggestionsLikeData;
             newSuggestionsLikeData[id] = response.data;
             setSuggestionsLikeData(newSuggestionsLikeData);
+            
             setClicked(true);
             checkUser();
             
@@ -51,16 +54,19 @@ export default function SuggestionLike({
             }, 500);
 
         }).catch(error => {
-            toast.error(error.response.data.message, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            if (error.response && error.response.data && error.response.data.message) {
+                    toast.error(error.response.data.message, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+            }
+            
         });
     };
 

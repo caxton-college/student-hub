@@ -8,46 +8,57 @@ import { toast } from 'react-toastify';
 export default function PollLike({ 
     client, 
     user, 
-    id, 
-    optionsLikeData, 
-    setOptionsLikeData, 
-    index,
-    pollsOptionsLikeData,
-    setPollsOptionsLikeData,
-    checkUser }) {
+    checkUser,
+    polls,
+    setPolls,
+    pollIndexInPolls,
+    optionIndexInPolls
+}) {
     
-    const [stateLiked, setLiked] = useState();
-    const [stateLikes, setLikes] = useState();
+        
     const [clicked, setClicked] = useState(false);
-
-    useEffect(() => {
-        
-        setLiked(optionsLikeData[id].liked)
-        setLikes(optionsLikeData[id].likes)
-
-        
-	}, [optionsLikeData]);
-
+    
+    
 
 
     const updateLikes = () => {
         
         client.post(
             `/api/update_poll_likes`,
-            { id : id },
+            { id : polls[pollIndexInPolls].options[optionIndexInPolls].id },
             
             
         ).then(response => {
-            let newPollsOptionsLikeData = pollsOptionsLikeData;
-            
-            newPollsOptionsLikeData[index] = response.data;
-           
-            setPollsOptionsLikeData(newPollsOptionsLikeData)
 
-            setOptionsLikeData(response.data);
-            setClicked(true);
+            
+            let newPollOptionData = [...polls[pollIndexInPolls].options];
+            
+            
+            for (let i = 0; i < newPollOptionData.length; i++) {
+                newPollOptionData[i] = {
+                     ...newPollOptionData[i], 
+                     likes: response.data[newPollOptionData[i].id].likes, 
+                     liked: response.data[newPollOptionData[i].id].liked 
+                };
+
+            }
+            
+
+            let newPolls = [...polls];
+            newPolls[pollIndexInPolls] = {
+                ...polls[pollIndexInPolls],
+                options: newPollOptionData
+            }
+            setPolls(newPolls);
+
+            
+
+
+            setClicked(!clicked);
             checkUser();
             
+
+
             toast.info('Like updated', {
                 position: "top-right",
                 autoClose: 3000,
@@ -65,16 +76,22 @@ export default function PollLike({
             }, 500);
             
         }).catch(error => {   
-            toast.error(error.response.data.message, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            console.log(error);
+            
+            if (error.response && error.response.data) {
+                toast.error(error.response.data.message, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+            
+            
         });
     };
 
@@ -91,13 +108,13 @@ export default function PollLike({
         });
     }
 
-    const icon = stateLiked ? solidHeart : faHeart;
-    const colour = stateLiked ? "#B13F3E" : "#cbcbe2";
+    const icon = polls[pollIndexInPolls].options[optionIndexInPolls].liked ? solidHeart : faHeart;
+    const colour = polls[pollIndexInPolls].options[optionIndexInPolls].liked ? "#B13F3E" : "#cbcbe2";
 
     return (
         <div className='likes'>
 
-            <h5>{stateLikes}</h5>
+            <h5>{polls[pollIndexInPolls].options[optionIndexInPolls].likes}</h5>
             {
                 user.loggedIn ? (
                     <FontAwesomeIcon

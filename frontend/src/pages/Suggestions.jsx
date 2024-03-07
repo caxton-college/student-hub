@@ -38,34 +38,33 @@ export default function Suggestions({
             setTheme={setTheme}/>
             <div className='content'>
             
-                <SuggestionFilter order={order} handleSetOrder={handleSetOrder}></SuggestionFilter>
+                <SuggestionFilter order={order} handleSetOrder={handleSetOrder}/>
 
                 {
                     suggestions.map(suggestion => (
                         <Suggestion 
-                        client={client} 
-                        suggestion={suggestion} 
-                        user={user} 
-                        key={suggestion.id} 
-                        checkUser={checkUser}
-                        suggestionsLikeData={suggestionsLikeData}
-                        setSuggestionsLikeData={setSuggestionsLikeData}
-                        getSuggestions={getSuggestions}
-                        order={order}/>
+                            client={client} 
+                            suggestion={suggestion} 
+                            user={user} 
+                            key={suggestion.id} 
+                            checkUser={checkUser}
+                            suggestionsLikeData={suggestionsLikeData}
+                            setSuggestionsLikeData={setSuggestionsLikeData}
+                            getSuggestions={getSuggestions}
+                            order={order}
+                        />
                     ))
                 }
                 
                 
-                <CreateSuggestion 
-                client={client} 
-                user={user} 
-                getSuggestions={getSuggestions}
-                forceUpdate={forceUpdate}
-                checkUser={checkUser}
-                order={order}>
-                </CreateSuggestion>
-                
-                
+                    <CreateSuggestion 
+                        client={client} 
+                        user={user} 
+                        getSuggestions={getSuggestions}
+                        forceUpdate={forceUpdate}
+                        checkUser={checkUser}
+                        order={order}
+                    />
                 
             </div>
         </>

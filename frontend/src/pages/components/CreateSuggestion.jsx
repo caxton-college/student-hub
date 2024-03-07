@@ -12,7 +12,7 @@ export default function CreateSuggestion({ client, user, getSuggestions, order, 
     
 
     const handleSuggestionCreation = (e) => {
-        // Post request using the fetched CSRF token
+        
         e.preventDefault();
         client.post(
             '/api/create_suggestion',
@@ -39,7 +39,7 @@ export default function CreateSuggestion({ client, user, getSuggestions, order, 
             
         }).catch(error => {
             
-            toast.error('Something went wrong...', {
+            toast.error(error.response.data.message, {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -52,7 +52,7 @@ export default function CreateSuggestion({ client, user, getSuggestions, order, 
         });
     };
 
-    if (user.loggedIn) {
+    if (user.loggedIn && user.role != 5) {
         return (
             <>
                 <div className={showPrompt ? 'close create-toggle' : 'open create-toggle'}>

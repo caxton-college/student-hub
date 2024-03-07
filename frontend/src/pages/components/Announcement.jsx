@@ -10,8 +10,8 @@ export default function Announcement({ client, user, announcement, getAnnounceme
             id={announcement.id}
             user={user}
             getAnnouncements={getAnnouncements}></DeleteAnnouncement>
-            <h4>{announcement.title}</h4>
-            <p>{announcement.body}</p>
+            <h4>{announcement?.title}</h4>
+            <p>{announcement?.body}</p>
         </div>
     )
 }

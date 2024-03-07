@@ -1,9 +1,4 @@
 * {
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: -moz-none;
-    -o-user-select: none;
-    user-select: none;
     overflow-x: hidden;
 }
 
@@ -220,10 +215,10 @@ transform: scale(1.01);
     background-color: var(--background);
     border-radius: 35px;
     width: 40%;
-   
+    margin-top: 15px;
     
     padding-top: 1.5%;
-    height: 100px;
+    height: 13vh;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -300,6 +295,7 @@ transform: scale(1.01);
     top: 50%; /* Adjust this value based on your design */
     left: 50%; /* Adjust this value based on your design */
     transform: translate(-50%, -50%); /* Centers the prompt */
+    
 }
 
 .open {
@@ -308,6 +304,7 @@ transform: scale(1.01);
 
 .close {
     color: var(--accent);
+    
 }
 
 
@@ -519,7 +516,7 @@ input,
 span,
 label,
 textarea {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: inherit;
     display: block;
     color: var(--text);
     margin: 10px;
@@ -738,7 +735,7 @@ button {
 }
 
 #logout-button {
-    background-color: var(--primary);
+    background-color: var(--accent);
     color: var(--background);
     border-radius: 35px;
     width: 25%;
@@ -770,5 +767,226 @@ button {
     align-items: center;
     color: var(--text);
     background-color: var(--background);
+}
+
+
+#reward-links {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    place-items: center;
+    width: 55%;
+}
+
+.reward-link {
+    text-decoration: none;
+    color: var(--background);
+    background-color: var(--primary);
+    border-radius: 35px;
+    width: 100%;
+    text-align: center;
+}
+
+.search-link {
+    text-decoration: none;
+    color: var(--background);
+    background-color: var(--primary);
+    border-radius: 35px;
+    width: 65%;
+    text-align: center;
+}
+
+#points-banner-rewards {
+    position: absolute;
+    top: 15%;
+    left: 50%; /* Set to 50% to center horizontally */
+    transform: translateX(-50%); /* Translate back by 50% of the width */
+    display: flex;
+    border-radius: 35px;
+    width: 25%;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    color: var(--text);
+    background-color: var(--background);
+}
+
+
+#rewards {
+    padding-top: 1%;
+    margin-top: 5%;
+    gap: 15% 0px;
+    display: grid;
+    
+    
+    place-items: start center;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
+
+}
+
+
+
+.user-reward {
+    width: 45vw;
+    margin-bottom: 25%;
+    background-color: var(--background);
+    border-radius: 35px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.user-reward:hover {
+    transform: scale(1.01);
+}
+    
+
+.reward-actions {
+    width: 90%;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 2fr 3fr;
+}
+
+.reward-action {
+    cursor: pointer;
+    background-color: var(--primary);
+    color: var(--background);
+    border-radius: 35px;
+    width: 100%;
+}
+
+.reward-points {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+
+    
+    border-radius: 35px;
+    color: var(--background);
+    background-color: var(--primary);
+}
+
+#search-page {
+    width: 100vw;
+    
+    overflow-y: scroll;
+    display: grid;
+    gap: 35px;
+    grid-template-rows: 1fr 4fr;
+}
+
+#search-form {
+    margin-top: 1%;
+    place-self: center;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    place-items: center;
+    gap: 15px;
+    width: 80%;
+    height: 100%;
+}
+
+#search-form .submit {
+    width: 100%;
+    
+}
+
+#search-form input {
+    height: 50%;
+    width: 80%;
+    padding-left: 35px;
+    border-radius: 35px;
+    
+}
+
+select {
+    height: 50%;
+    width: 80%;
+    border: none;
+    display: block;
+    border-radius: 35px;
+    font-family: inherit;
+    font-size: 22px;
+    text-align: center;
+    background-color: var(--background);
+}
+
+option {
+    border: none;
+    text-decoration: none;
+    border-radius: 35px;
+}
+
+#search-results {
+    gap: 25px;
+    display: grid;
+    width: 100vw;
+    padding-top: 1%;
+    height: fit-content;
+    place-items: start center;
+    
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 1fr 1fr;
+}
+
+.student-card {
+    display: grid;
+    text-decoration: none;
+    color: var(--text);
+    place-items: center;
+    background-color: var(--background);
+    border-radius: 35px;
+    cursor: pointer;
+    width: 90%;
+    height: 20vh;
+}
+
+.nudge-down {
+    margin-top: 10% !important;
+}
+
+@media screen and (max-width: 1200px) {
+    #rewards {
+        
+        grid-template-columns: 1fr;
+       
+       
+    }
+
+    .user-reward {
+        width: 85vw;
+        
+    }
+    
+}
+
+@media screen and (min-height: 1000px) {
+    #points-banner-rewards {
+        top: 10%;
+    }
+
+    #rewards {
+        margin-top: 3%;
+    
+    }
+
+    .nudge-down {
+        margin-top: 15%;
+    }
+
+
+    .user-reward {
+        margin-bottom: 0% !important;
+        
+    }
+    
 }
 

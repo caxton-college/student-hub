@@ -2,12 +2,15 @@ from django.http import HttpRequest
 from django.contrib.auth import login, logout, authenticate
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
+from django.db.models import Q
 
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import permissions, status
+
+from fuzzywuzzy import fuzz
 
 from users.models import User
 from users.serialisers import UserRegisterSerialiser, UserSerialiser
@@ -19,7 +22,8 @@ from django.utils import timezone
 from feed.models import Announcement, Suggestion, Poll, PollOption
 from feed.serialisers import AnnouncementSerializer, SuggestionSerializer, PollSerializer, PollOptionSerializer
 
-
+from rewards.models import Reward
+from rewards.serialisers import RewardSerialiser
 
 class GetCSRFToken(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -37,8 +41,6 @@ class GetCSRFToken(APIView):
         csrf_token = get_token(request)
         return JsonResponse({'csrfToken': csrf_token})
 
-
-# Index
 class Index(APIView):
     permission_classes = (permissions.AllowAny,)
     
@@ -57,7 +59,7 @@ class Index(APIView):
 
 # User views
 class UserRegister(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAdminUser,)
     authentication_classes = (SessionAuthentication,)
     
     def post(self, request: HttpRequest) -> Response:
@@ -98,13 +100,14 @@ class UserLogin(APIView):
         Returns:
             Response: Status code 200 if valid credentials, 400 if not
         """
-        data = request.data
+        data: dict = request.data
         email = data.get('email', '')
         password = data.get('password', '')
 
         if not email or not password:
             return Response({"message": "Both an email and password are required."}, status=status.HTTP_400_BAD_REQUEST)
 
+        
         user = authenticate(request, email=email, password=password)
 
         if user is not None:
@@ -162,7 +165,6 @@ class UserView(APIView):
         user_data["user_suggestions"] = len(Suggestion.objects.all().filter(owner=request.user))
         
         return Response({'user': user_data}, status=status.HTTP_200_OK)
-
 
 
 
@@ -283,12 +285,12 @@ class CreateSuggestion(APIView):
         """
         user = request.user
         
-        if user.role == "teacher":
-            return Response(status=status.HTTP_403_FORBIDDEN)
+        if user.role == 5:
+            return Response({"message": "You sure you're a student?"}, status=status.HTTP_403_FORBIDDEN)
         
         data = dict(request.data)
-        if not "body" in data.keys():
-            return Response({"message": "suggestion body missing"}, status=status.HTTP_400_BAD_REQUEST)
+        if not "body" in data.keys() or len(data.get("body")) <= 10:
+            return Response({"message": "Try explaining a little more..."}, status=status.HTTP_400_BAD_REQUEST)
         
         suggestion_body = data["body"]
         
@@ -353,8 +355,8 @@ class UpdateSuggestionLikes(APIView):
         """
         user = request.user
         
-        if user.role == "teacher":
-            return Response(status=status.HTTP_403_FORBIDDEN)
+        if user.role == 5:
+            return Response({"message": "You sure you're a student?"}, status=status.HTTP_403_FORBIDDEN)
         
         data = dict(request.data)
         
@@ -434,8 +436,8 @@ class UpdateSuggestionPin(APIView):
         """
         user = request.user
         
-        if user.role == "teacher" or user.role == "student":
-            return Response(status=status.HTTP_403_FORBIDDEN)
+        if user.role == 5 or user.role == 1:
+            return Response({"message": "Not allowed"}, status=status.HTTP_403_FORBIDDEN)
         
         data = dict(request.data)
         
@@ -627,8 +629,8 @@ class CreatePoll(APIView):
         
         user = request.user
         
-        if user.role == "teacher" or user.role == "student":
-            return Response(status=status.HTTP_403_FORBIDDEN)
+        if user.role == 5 or user.role == 1:
+            return Response({"message": "Not allowed"}, status=status.HTTP_403_FORBIDDEN)
         
         
         data = dict(request.data)
@@ -681,7 +683,7 @@ class DeletePoll(APIView):
             poll = Poll.objects.get(id=data["poll_id"])
 
             # Check if the user is the owner of the suggestion or has permission to delete it.
-            if request.user == poll.owner or request.user.role not in ["teacher", "student"]:
+            if request.user == poll.owner or request.user.role not in [5, 1]:
                 poll.delete()
                 return Response({"message": "Poll deleted"}, status=status.HTTP_204_NO_CONTENT)
             else:
@@ -691,7 +693,7 @@ class DeletePoll(APIView):
                 )
         except Poll.DoesNotExist:
             return Response(
-                {"message": "Suggestion not found."},
+                {"message": "Poll not found."},
                 status=status.HTTP_404_NOT_FOUND
             )
                        
@@ -713,8 +715,8 @@ class UpdatePollOptionLikedStatus(APIView):
         if not user.is_authenticated:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         
-        if user.role == "teacher":
-            return Response(status=status.HTTP_403_FORBIDDEN)
+        if user.role == 5:
+            return Response({"message": "You sure you're a student?"}, status=status.HTTP_403_FORBIDDEN)
         
         
         data = request.data
@@ -781,3 +783,282 @@ class UpdatePollOptionLikedStatus(APIView):
         return Response(options_liked_data, status=status.HTTP_200_OK)
 
 
+
+class GetRewards(APIView):
+    permission_classes = (permissions.AllowAny,)
+    
+    def get(self, request: HttpRequest) -> Response:
+        """
+            Retrieves a list of all the available rewards
+
+            Args:
+                request (HttpRequest): Request from the user.
+
+            Returns:
+                Response: A list of rewards as serialized data and a status code of 200 (OK).
+        """
+        
+        rewards = Reward.objects.all()
+        serialiser = RewardSerialiser(rewards, many=True)
+     
+
+        return Response(serialiser.data, status=status.HTTP_200_OK)
+    
+    
+class GetCurrentUserRewards(APIView):
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    
+    def get(self, request: HttpRequest) -> Response:
+        """
+            Retrieves a list of the rewards owned by the current user
+
+            Args:
+                request (HttpRequest): Request from the user.
+
+            Returns:
+                Response: A list of rewards as serialized data and a status code of 200 (OK).
+        """
+        user = request.user
+        rewards = list(filter(lambda reward: user in reward.owners.all(), Reward.objects.all()))
+        
+        serialiser = RewardSerialiser(rewards, many=True)
+
+
+        return Response(serialiser.data, status=status.HTTP_200_OK)
+    
+    
+class GetUserRewards(APIView):
+    permission_classes = (permissions.AllowAny,)
+    
+    def get(self, request: HttpRequest) -> Response:
+        """
+            Retrieves a list of the rewards owned by the current user
+
+            Args:
+                request (HttpRequest): Request from the user.
+
+            Returns:
+                Response: A list of rewards as serialized data and a status code of 200 (OK).
+        """
+        try:
+            user_id = request.GET.get("user", None)
+            user = User.objects.get(user_id=user_id)
+            rewards = list(filter(lambda reward: user in reward.owners.all(), Reward.objects.all()))
+            
+            serialiser = RewardSerialiser(rewards, many=True)
+
+
+            return Response(serialiser.data, status=status.HTTP_200_OK)
+        
+        except User.DoesNotExist:
+            return Response({"message": "user not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class SearchUser(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request):
+        """
+            Seaches for users given name, surname and/or yeargroup
+            Args:
+                request (HttpRequest): Request from the user.
+
+            Returns:
+                Response: A list of found users
+        """
+        
+        name = request.GET.get("name", "")
+        surname = request.GET.get("surname", "")
+        year = request.GET.get("year", -1)
+
+        # Fetch all users from the database
+        all_users = User.objects.all()
+
+        # Filter users based on the fuzzy matching criteria
+        filtered_users = filter(
+            lambda user: (
+                (fuzz.ratio(name, user.name) >= 80 or
+                fuzz.ratio(surname, user.surname) >= 80) and
+                int(year) == user.year) and 
+                user.role != 5,
+            all_users
+        )
+        
+        serialiser = UserSerialiser(list(filtered_users), many=True)
+        
+       
+       
+        return Response(serialiser.data, status=status.HTTP_200_OK)
+    
+    
+
+class PurchaseReward(APIView):
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    
+    def post(self, request: HttpRequest) -> Response:
+        """
+            Purchases a reward given an id, sufficient funds and reward not already owned
+            
+            Args:
+                request (HttpRequest): Request from the user.
+
+            Returns:
+                Response: HTTP_401_UNAUTHORIZED if insuficient funds / already owned. HTTP_200_OK if successful. HTTP_404_NOT_FOUND if reward not found
+        """
+        user = request.user
+        data = dict(request.data)
+        
+        reward_id = data.get("reward_id", "")
+        
+        try:
+            reward = Reward.objects.get(id=reward_id)
+            
+            if user.points < reward.cost:
+                return Response({"message": "Insuficient funds!"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            if user in reward.owners.all():
+                return Response({"message": "Already owned!"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            
+            user.points -= reward.cost
+            reward.owners.add(user)
+            
+            reward.save()
+            user.save()
+            
+            return Response({"message": "Purschase successful!"}, status=status.HTTP_200_OK)
+
+            
+        
+        except Reward.DoesNotExist:
+            return Response({"message": "Reward not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+class SellReward(APIView):
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    
+    def post(self, request: HttpRequest) -> Response:
+        """
+            Sells a reward given an id, and reward already owned
+            
+            Args:
+                request (HttpRequest): Request from the user.
+
+            Returns:
+                Response: HTTP_401_UNAUTHORIZED if not already owned. HTTP_200_OK if successful. HTTP_404_NOT_FOUND if reward not found
+        """
+        user = request.user
+        data = dict(request.data)
+        
+        reward_id = data.get("reward_id", "")
+        
+        try:
+            reward = Reward.objects.get(id=reward_id)
+            
+            
+            
+            if user not in reward.owners.all():
+                return Response({"message": "Not owned"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            
+            reward.owners.remove(user)
+            user.points += reward.cost
+            
+            reward.save()
+            user.save()
+            
+            return Response({"message": "Sell successful!"}, status=status.HTTP_200_OK)
+
+            
+        
+        except Reward.DoesNotExist:
+            return Response({"message": "Reward not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class RedeemReward(APIView):
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    
+    def post(self, request: HttpRequest) -> Response:
+        """
+            Sells a reward given an id, and reward already owned
+            
+            Args:
+                request (HttpRequest): Request from the user.
+
+            Returns:
+                Response: HTTP_401_UNAUTHORIZED if not already owned. HTTP_200_OK if successful. HTTP_404_NOT_FOUND if reward not found
+        """
+        
+        data = dict(request.data)
+        
+        reward_id = data.get("reward_id", "")
+        user_id = data.get("user_id", "")
+        
+        try:
+            reward = Reward.objects.get(id=reward_id)
+            user = User.objects.get(user_id=user_id)
+            
+            
+            if user not in reward.owners.all():
+                return Response({"message": "Not owned"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            
+            reward.owners.remove(user)
+            
+            reward.save()
+            
+            return Response({"message": "Redeem successful!"}, status=status.HTTP_200_OK)
+
+            
+        
+        except Reward.DoesNotExist:
+            return Response({"message": "Reward not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        except User.DoesNotExist:
+            return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        
+
+
+class UpdateUserPoints(APIView):
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.IsAdminUser,)
+    
+    def post(self, request: HttpRequest) -> Response:
+        """
+            Sells a reward given an id, and reward already owned
+            
+            Args:
+                request (HttpRequest): Request from the user.
+
+            Returns:
+                Response: HTTP_401_UNAUTHORIZED if not already owned. HTTP_200_OK if successful. HTTP_404_NOT_FOUND if reward not found
+        """
+      
+        data = dict(request.data)
+        
+        user_id = data.get("user_id", "")
+        points = data.get("points", 0)
+        
+        
+        try:
+            user = User.objects.get(user_id=user_id)
+            
+            if new_points := (user.points + points) < 0:
+                return Response({"message": "Attempted to set points below 0, points unchanged"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            user.points = new_points            
+            
+            user.save()
+            
+            return Response({"message": "Points updated successfully"}, status=status.HTTP_200_OK)
+
+            
+        
+        except User.DoesNotExist:
+            return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)

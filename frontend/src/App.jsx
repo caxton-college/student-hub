@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import axios from 'axios';
+import axios, { all } from 'axios';
 import Navbar from './pages/components/Navbar';
 
 // Toast: Info pop-ups
@@ -10,14 +10,15 @@ import Profile from './pages/Profile';
 import Suggestions from './pages/Suggestions';
 import Announcements from './pages/Announcements';
 import Polls from './pages/Polls';
+import Rewards from './pages/Rewards';
+import Search from './pages/Search';
+
 
 // Axios settings for authentication
 axios.defaults.xsrfCookieName = 'X-CSRFToken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
-
- 
       
 const client = axios.create({
     baseURL: `http://${window.location.hostname}:8000`, // Constructing the baseURL dynamically
@@ -36,13 +37,6 @@ document.documentElement.setAttribute('data-theme', 'light');
 function App() {
 	const [user, setUser] = useState({
 		loggedIn: false,
-		name: '',
-		surname: '',
-		email: '',
-		role: 0,
-		points: 0,
-		likes: 0,
-        userSuggestions: 0,
 	});
 
     const [suggestions, setSuggestions] = useState([]);
@@ -50,8 +44,10 @@ function App() {
     const [polls, setPolls] = useState([]);
 	const [userSuggestions, setUserSuggestions] = useState([]);
     const [suggestionsLikeData, setSuggestionsLikeData] = useState({});
-    const [pollsOptionsLikeData, setPollsOptionsLikeData] = useState({});
     const [theme, setTheme] = useState('light'); 
+    const [allRewards, setAllRewards] = useState([]);
+    const [userRewards, setUserRewards] = useState([]);
+    const [selected, setSelected] = useState(window.location.pathname);
 
     // Check if the user is logged in, if no error, user authenticated
 	const checkUser = () => {	
@@ -67,7 +63,9 @@ function App() {
                     role: response.data.user.role,
                     points: response.data.user.points,
                     likes: response.data.user.likes,
-                    userSuggestions: response.data.user.user_suggestions
+                    userSuggestions: response.data.user.user_suggestions,
+                    user_id: response.data.user.user_id,
+                    rewards_id: response.data.user.user_id // ID of the user for which to show rewards (always user_id unless role = teacher)
                 });
                 
             },
@@ -75,6 +73,21 @@ function App() {
 
 	};
 
+    function setRewardsId(id, name) {
+        setUser({
+            loggedIn: true,
+            name: user.name,
+            surname: user.surname,
+            email: user.email,
+            role: user.role,
+            points: user.points,
+            likes: user.likes,
+            userSuggestions: user.user_suggestions,
+            user_id: user.user_id,
+            rewards_id: id, // ID of the user for which to show rewards (always user_id unless role = teacher)
+            rewards_name: name
+        });
+    }
 
     // Get suggestion with a given order
     function getSuggestions(force=false, newOrder="new") {
@@ -109,45 +122,11 @@ function App() {
 				"api/polls"
 			).then(function(response) {
 				setPolls(response.data);
-                getPollsOptionsLikeData(response.data);
 			})
 		}
 	}
 
-	// Get suggestion made by the current user (not currently in use)
-    function getUserSuggestions() {
-       
-        client.get(
-            "api/user_suggestions"
-            ).then(function (response) {
-            setUserSuggestions(response.data);
-        });
 
-
-        
-    }
-
-    // Set a state with poll like data (allows the maintenance of the visual state)
-    function getPollsOptionsLikeData(pollsData) {
-        let newPollsOptionsLikeData = {};
-       
-        let i = 0;
-        pollsData.forEach(poll => {
-            let optionsLikeData = {};
-            
-            poll.options.forEach(option => {
-                let optionLikeData = {}
-                optionLikeData["likes"] = option.likes;
-                optionLikeData["liked"] = option.liked
-
-                optionsLikeData[option.id] = optionLikeData;
-            })
-            newPollsOptionsLikeData[i] = optionsLikeData;
-            i++;
-        })
-        setPollsOptionsLikeData(newPollsOptionsLikeData);
-        
-    }
 
     // Set a state with Suggestion like data (allows the maintenance of the visual state)
     function getSuggestionLikeData(suggestionData) {
@@ -165,14 +144,51 @@ function App() {
         setSuggestionsLikeData(newSuggestionLikeData);
     }
 
+   
+
+    function getUserRewards() {
+        if(!user.loggedIn) {
+            return;
+        }
+
+        // Fetch data when the component mounts
+        client.get(`/api/user_rewards?user=${user.rewards_id}`)
+        .then(function (response) {
+            setUserRewards(response.data);
+        })
+        .catch(error => {
+            console.error("Error fetching rewards:", error);
+        });
+    }
+
+    
+
+    function getAllRewards() {
+
+        if (allRewards.length === 0) {
+            // Fetch data when the component mounts
+            client.get(`/api/all_rewards`)
+            .then(function (response) {
+                setAllRewards(response.data);
+            })
+            .catch(error => {
+                console.error("Error fetching rewards:", error);
+            });
+        }
+        
+    }
+
+    useEffect(() => {
+        getUserRewards();
+    }, [user]);
+
+
     useEffect(() => {
 		checkUser();
         getSuggestions();
         getAnnouncements();
         getPolls();
-        //getUserSuggestions();
-       
-        
+        getAllRewards();
             
 	}, []);
 
@@ -188,11 +204,12 @@ function App() {
                         userSuggestions={userSuggestions}
                         setUser={setUser}
                         theme={theme}
-                        setTheme={setTheme}/>
-                    }
-                        
+                        setTheme={setTheme}
+                        selected={selected}
+                        setSelected={setSelected}
                         
                     />
+                }/>
 				<Route path="/suggestions" element={
                     <Suggestions 
                         user={user} 
@@ -222,18 +239,61 @@ function App() {
                     <Polls 
                         user={user} 
                         client={client} 
-                        polls={polls}
                         checkUser={checkUser}
+                        polls={polls} 
+                        setPolls={setPolls}
                         getPolls={getPolls}
-                        pollsOptionsLikeData={pollsOptionsLikeData}
-                        setPollsOptionsLikeData={setPollsOptionsLikeData}
                         theme={theme}
                         setTheme={setTheme}
+                        
                     />
-                    
                 }/>
+
+                <Route path="/rewards" element={
+                    <Rewards 
+                        user={user}
+                        client={client}
+                        rewards={userRewards}
+                        theme={theme}
+                        setTheme={setTheme}
+                        type={"view"}
+                        getAllRewards={getAllRewards}
+                        getUserRewards={getUserRewards}
+                        checkUser={checkUser}
+                    />
+                }/>
+
+                <Route path="/shop" element={
+                    <Rewards 
+                        user={user}
+                        client={client}
+                        rewards={allRewards}
+                        theme={theme}
+                        setTheme={setTheme}
+                        type={"shop"}
+                        getAllRewards={getAllRewards}
+                        getUserRewards={getUserRewards}
+                        checkUser={checkUser}
+                    />
+                }/>
+
+                <Route path="/search" element={
+                    <Search 
+                        user={user}
+                        client={client}
+                        rewards={allRewards}
+                        theme={theme}
+                        setTheme={setTheme}
+                        setRewardsId={setRewardsId}
+                    />
+                }/>
+
 			</Routes>
-			<Navbar />
+
+			<Navbar 
+                selected={selected}
+                setSelected={setSelected}
+            />
             
             <ToastContainer
                 position="top-right"
