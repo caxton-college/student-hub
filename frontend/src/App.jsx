@@ -44,7 +44,6 @@ function App() {
     const [polls, setPolls] = useState([]);
 	const [userSuggestions, setUserSuggestions] = useState([]);
     const [suggestionsLikeData, setSuggestionsLikeData] = useState({});
-    const [pollsOptionsLikeData, setPollsOptionsLikeData] = useState({});
     const [theme, setTheme] = useState('light'); 
     const [allRewards, setAllRewards] = useState([]);
     const [userRewards, setUserRewards] = useState([]);
@@ -123,7 +122,6 @@ function App() {
 				"api/polls"
 			).then(function(response) {
 				setPolls(response.data);
-                getPollsOptionsLikeData(response.data);
 			})
 		}
 	}
@@ -141,27 +139,8 @@ function App() {
         
     }
 
-    // Set a state with poll like data (allows the maintenance of the visual state)
-    function getPollsOptionsLikeData(pollsData) {
-        let newPollsOptionsLikeData = {};
-       
-        let i = 0;
-        pollsData.forEach(poll => {
-            let optionsLikeData = {};
-            
-            poll.options.forEach(option => {
-                let optionLikeData = {}
-                optionLikeData["likes"] = option.likes;
-                optionLikeData["liked"] = option.liked
 
-                optionsLikeData[option.id] = optionLikeData;
-            })
-            newPollsOptionsLikeData[i] = optionsLikeData;
-            i++;
-        })
-        setPollsOptionsLikeData(newPollsOptionsLikeData);
-        
-    }
+    // Set a state with poll like data (allows the maintenance of the visual state)
 
     // Set a state with Suggestion like data (allows the maintenance of the visual state)
     function getSuggestionLikeData(suggestionData) {
@@ -274,13 +253,13 @@ function App() {
                     <Polls 
                         user={user} 
                         client={client} 
-                        polls={polls}
                         checkUser={checkUser}
+                        polls={polls} 
+                        setPolls={setPolls}
                         getPolls={getPolls}
-                        pollsOptionsLikeData={pollsOptionsLikeData}
-                        setPollsOptionsLikeData={setPollsOptionsLikeData}
                         theme={theme}
                         setTheme={setTheme}
+                        
                     />
                 }/>
 
