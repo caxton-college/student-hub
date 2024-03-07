@@ -18,9 +18,9 @@ export default function PollLike({
     checkUser }) {
     
     const [stateLiked, setLiked] = useState();
-    const [stateLikes, setLikes] = useState();
+    const [stateLikes, setLikes] = useState(0);
     const [clicked, setClicked] = useState(false);
-
+    
     useEffect(() => {
         
         try {
@@ -28,7 +28,6 @@ export default function PollLike({
             setLikes(optionsLikeData[id]?.likes);
 
         } catch(err) {
-            console.log(err);
             setLiked(false);
             setLikes(0);
         }

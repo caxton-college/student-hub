@@ -813,7 +813,8 @@ button {
 
 
 #rewards {
-    margin-top: 3%;
+    padding-top: 1%;
+    margin-top: 5%;
     gap: 15% 0px;
     display: grid;
     
