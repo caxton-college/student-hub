@@ -76,7 +76,7 @@ export default function Profile({ user, checkUser, setUser, client, theme, setTh
                                         </Link>
                                         
                                         <Link to="/rewards" onClick={(e) => setSelected("none")} className='reward-link shadow'>
-                                            <h4>Rewards</h4>
+                                            <h4>Your Rewards</h4>
                                         </Link>
                                     </div>
                                 </>
