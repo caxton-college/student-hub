@@ -205,8 +205,8 @@ transform: scale(1.01);
 
 .delete {
     position: absolute;
-    top: 10%;
-    right: 3%;
+    top: 5%;
+    right: 2%;
     font-size: 23px;
     cursor: pointer;
 }
@@ -829,7 +829,6 @@ button {
 
 .user-reward {
     width: 45vw;
-    margin-bottom: 25%;
     background-color: var(--background);
     border-radius: 35px;
     padding: 20px;
@@ -956,17 +955,23 @@ option {
 @media screen and (max-width: 1200px) {
     #rewards {
         
-        grid-template-columns: 1fr;
-       
-       
+        grid-template-columns: 1fr;  
     }
 
     .user-reward {
         width: 85vw;
+        margin-bottom: 20% !important;
         
     }
+
+    .nudge-down {
+        margin-top: 20% !important;
+    }
+    
     
 }
+
+
 
 @media screen and (min-height: 1000px) {
     #points-banner-rewards {
@@ -978,15 +983,10 @@ option {
     
     }
 
-    .nudge-down {
-        margin-top: 15%;
-    }
+   
 
 
-    .user-reward {
-        margin-bottom: 0% !important;
-        
-    }
+   
     
 }
 

@@ -67,8 +67,8 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
                 {
                     rewards.length != 0 ? (
                         rewards.map((reward, i) => (
-							<>
-								<UserReward 
+							<UserReward 
+								key={i}
 								client={client}
 								user={user}
 								name={reward.name}
@@ -77,9 +77,7 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
 								action={rewardAction}
 								getAllRewards={getAllRewards}
 								getUserRewards={getUserRewards}
-								checkUser={checkUser}
-								key={i}/>
-							</>
+								checkUser={checkUser}/>
                         ))
                     ) : (
                         <h3 className='content'>No rewards...</h3>
@@ -92,3 +90,4 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
        
     );
 }
+

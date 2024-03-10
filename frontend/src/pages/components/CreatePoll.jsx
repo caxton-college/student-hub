@@ -31,6 +31,8 @@ export default function CreatePoll({
             
         ).then(response => {
             setShowPollPrompt(false);
+            setQuestion('');
+            setOptions(["", ""]);
             getPolls(true);
             toast.success('Poll Created!', {
                 position: "top-right",
@@ -58,6 +60,7 @@ export default function CreatePoll({
         });
     };
 
+
     function handlePromtToggle() {
         setShowPollPrompt(!showPollPrompt);
 
@@ -79,7 +82,7 @@ export default function CreatePoll({
                     
                 </div>
                 {showPollPrompt ? (
-                    <div className='shadow create-prompt'>
+                    <div className='shadow create-prompt' style={{ height: `calc(350px + ${options.length*75}px)`}}>
                         <form id='create-poll-form' onSubmit={handleSuggestionCreation} key={"create-poll-form"}>
                                 <textarea 
                                     name="question" 
