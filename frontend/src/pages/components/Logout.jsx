@@ -8,7 +8,11 @@ export default function Logout({ client, setUser }) {
 		e.preventDefault();
 		client.post(
 		  	"/api/logout",
-		  	
+              {
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('token')}`
+                }
+            }
 		).then(function(response) {
 
 			setUser({"loggedIn": false});

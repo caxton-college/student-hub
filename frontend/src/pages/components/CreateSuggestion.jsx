@@ -17,9 +17,11 @@ export default function CreateSuggestion({ client, user, getSuggestions, order, 
         client.post(
             '/api/create_suggestion',
             { body: body },
-            
-           
-        ).then(response => {
+            {
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('token')}`
+                }
+            }).then(response => {
             setShowPrompt(false);
             getSuggestions(true, order);
             setBody("");

@@ -21,7 +21,11 @@ export default function Pin({
         // Post request using the fetched CSRF token
         client.post(
             '/api/update_suggestion_pin',
-            { suggestion_id: id }
+            { suggestion_id: id },{
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('token')}`
+                }
+            }
             
         ).then(response => {
             setPinned(response.data.pinned);

@@ -26,10 +26,11 @@ export default function CreatePoll({
             { 
                 question: question, 
                 poll_options: options
-            },
-            
-            
-        ).then(response => {
+            },  {
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('token')}`
+                }
+            }).then(response => {
             setShowPollPrompt(false);
             setQuestion('');
             setOptions(["", ""]);

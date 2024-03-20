@@ -17,6 +17,11 @@ export default function DeletePoll({ client, user, id, getPolls }) {
         {
             poll_id: id
         },
+        {
+            headers: {
+                'Authorization': `Token ${localStorage.getItem('token')}`
+            }
+        }
         ).then(function (response) {
             getPolls(true);
             

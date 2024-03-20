@@ -24,7 +24,12 @@ export default function SuggestionLike({
         
         client.post(
             `/api/update_suggestion_likes`,
-            { id : id }   
+            { id : id },
+            {
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('token')}`
+                }
+            }
                      
         ).then(response => {
             setLiked(response.dat?.liked);

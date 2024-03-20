@@ -13,7 +13,11 @@ export default function DeleteSuggestion({ client, user, id, getSuggestions, che
             `/api/delete_suggestion`,
         {
             suggestion_id: id
-        },
+        },{
+            headers: {
+                'Authorization': `Token ${localStorage.getItem('token')}`
+            }
+        }
         
         ).then(function (response) {
             getSuggestions(true, order);

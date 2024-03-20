@@ -26,6 +26,11 @@ export default function PollLike({
         client.post(
             `/api/update_poll_likes`,
             { id : polls[pollIndexInPolls].options[optionIndexInPolls].id },
+            {
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('token')}`
+                }
+            }
             
             
         ).then(response => {

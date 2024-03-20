@@ -13,6 +13,11 @@ export default function UserReward({ client, user, name, cost, id, action, getAl
             case "buy":
                 client.post("/api/purchase_reward", {
                     reward_id: id
+                },
+                {
+                    headers: {
+                        'Authorization': `Token ${localStorage.getItem('token')}`
+                    }
                 }).then((response) => {
 
                     checkUser();
@@ -47,6 +52,11 @@ export default function UserReward({ client, user, name, cost, id, action, getAl
             case "sell":
                 client.post("/api/sell_reward", {
                     reward_id: id
+                },
+                {
+                    headers: {
+                        'Authorization': `Token ${localStorage.getItem('token')}`
+                    }
                 }).then((response) => {
                     
                     checkUser();
@@ -81,6 +91,11 @@ export default function UserReward({ client, user, name, cost, id, action, getAl
                 client.post("/api/redeem_reward", {
                     reward_id: id,
                     user_id: user.rewards_id
+                },
+                {
+                    headers: {
+                        'Authorization': `Token ${localStorage.getItem('token')}`
+                    }
                 }).then((response) => {
                         
                     getUserRewards();

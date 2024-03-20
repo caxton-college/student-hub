@@ -12,6 +12,10 @@ export default function DeleteAnnouncement({ client, user, id, getAnnouncements 
             `/api/delete_announcement`,
         {
             announcement_id: id
+        },{
+            headers: {
+                'Authorization': `Token ${localStorage.getItem('token')}`
+            }
         }).then(function (response) {
             getAnnouncements(true);
             

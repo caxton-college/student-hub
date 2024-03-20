@@ -24,6 +24,10 @@ export default function CreateAnnouncement({
             { 
                 body: body, 
                 title: title
+            }, {
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('token')}`
+                }
             }).then(response => {
             
             setShowAnnouncementPrompt(false); // Set icon back to plus from cross

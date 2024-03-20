@@ -1,4 +1,7 @@
 import React from 'react'
+
+import axios from 'axios'
+
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast } from 'react-toastify';
@@ -19,10 +22,13 @@ export default function Login({ client, checkUser}) {
         client.post(
             "/api/login",
             {
-                email: email,
+                username: email,
                 password: password
-            },
+            }
         ).then(function(response) {
+            axios.defaults.headers.common['Authorization'] = `Token ${response.data.token}`;
+            localStorage.setItem('token', response.data.token);
+
             checkUser();
             window.location.reload();
             toast.success('Login Successful!', {

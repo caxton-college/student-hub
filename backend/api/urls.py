@@ -1,11 +1,15 @@
 from django.urls import path
+
+from rest_framework.authtoken.views import obtain_auth_token
+
 from . import views
 
 urlpatterns = [
     path("", views.Index.as_view(), name="index"),
+    
     path("get_csrf_token", views.GetCSRFToken.as_view(), name="csrftoken"),
     path("register", views.UserRegister.as_view(), name="register"),
-    path("login", views.UserLogin.as_view(), name="login"),
+    path("login", obtain_auth_token, name="login"),
     path("logout", views.UserLogout.as_view(), name="logout"),
     path("user", views.UserView.as_view(), name="userview"),
     path("popular_suggestions", views.GetPopularSuggestions.as_view(), name="popularsuggestions"),
@@ -29,6 +33,7 @@ urlpatterns = [
     path("purchase_reward", views.PurchaseReward.as_view(), name="purchasereward"),
     path("sell_reward", views.SellReward.as_view(), name="sellreward"),
     path("redeem_reward", views.RedeemReward.as_view(), name="redeemreward"),
-    path("update_points", views.UpdateUserPoints.as_view(), name="updateuserpoints")
+    path("update_points", views.UpdateUserPoints.as_view(), name="updateuserpoints"),
+    path("update_role", views.UpdateUserRole.as_view(), name="updaterole")
 ]
 

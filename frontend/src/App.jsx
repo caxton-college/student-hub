@@ -52,7 +52,9 @@ function App() {
     // Check if the user is logged in, if no error, user authenticated
 	const checkUser = () => {	
         client.get('/api/user', {
-            
+            headers: {
+                'Authorization': `Token ${localStorage.getItem('token')}`
+            }
         }).then(
             function (response) {
                 setUser({
@@ -93,7 +95,12 @@ function App() {
     function getSuggestions(force=false, newOrder="new") {
 		if (suggestions.length === 0 | force) {
 			client.get(
-				`api/${newOrder}_suggestions`
+				`api/${newOrder}_suggestions`,
+                {
+                    headers: {
+                        'Authorization': `Token ${localStorage.getItem('token')}`
+                    }
+                }
 			).then(function(response) {
 				setSuggestions(response.data);
                 getSuggestionLikeData(response.data);
@@ -107,7 +114,12 @@ function App() {
     function getAnnouncements(force) {
 		if (announcements.length === 0 | force) {
 			client.get(
-				"api/announcements"
+				"api/announcements",
+                {
+                    headers: {
+                        'Authorization': `Token ${localStorage.getItem('token')}`
+                    }
+                }
 			).then(function(response) {
 				setAnnouncements(response.data);
 				
@@ -119,7 +131,12 @@ function App() {
 	function getPolls(force) {
 		if (polls.length === 0 | force) {
 			client.get(
-				"api/polls"
+				"api/polls",
+                {
+                    headers: {
+                        'Authorization': `Token ${localStorage.getItem('token')}`
+                    }
+                }
 			).then(function(response) {
 				setPolls(response.data);
 			})
@@ -152,7 +169,12 @@ function App() {
         }
 
         // Fetch data when the component mounts
-        client.get(`/api/user_rewards?user=${user.rewards_id}`)
+        client.get(`/api/user_rewards?user=${user.rewards_id}`,
+        {
+            headers: {
+                'Authorization': `Token ${localStorage.getItem('token')}`
+            }
+        })
         .then(function (response) {
             setUserRewards(response.data);
         })
@@ -167,7 +189,12 @@ function App() {
 
         if (allRewards.length === 0) {
             // Fetch data when the component mounts
-            client.get(`/api/all_rewards`)
+            client.get(`/api/all_rewards`,
+            {
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('token')}`
+                }
+            })
             .then(function (response) {
                 setAllRewards(response.data);
             })

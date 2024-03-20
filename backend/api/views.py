@@ -60,7 +60,7 @@ class Index(APIView):
 # User views
 class UserRegister(APIView):
     permission_classes = (permissions.IsAdminUser,)
-    authentication_classes = (SessionAuthentication,)
+    
     
     def post(self, request: HttpRequest) -> Response:
         """
@@ -143,7 +143,6 @@ class UserLogout(APIView):
 
 class UserView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
     
     def get(self, request: HttpRequest) -> Response:
         """
@@ -240,7 +239,7 @@ class GetNewSuggestions(APIView):
 
 class GetUserSuggestions(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    
     
     def get(self, request: HttpRequest) -> Response:
         """
@@ -269,7 +268,6 @@ class GetUserSuggestions(APIView):
 
 class CreateSuggestion(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
  
     def post(self, request: HttpRequest) -> Response:
         """
@@ -339,7 +337,6 @@ class DeleteSuggestion(APIView):
 
 class UpdateSuggestionLikes(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
     
     def post(self, request: HttpRequest) -> Response:
         """
@@ -420,7 +417,7 @@ class UpdateSuggestionLikes(APIView):
 
 class UpdateSuggestionPin(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    
     
     def post(self, request: HttpRequest) -> Response:
         """
@@ -496,7 +493,7 @@ class GetAnnouncements(APIView):
 
 class CreateAnnouncement(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    
  
     def post(self, request: HttpRequest) -> Response:
         """
@@ -806,7 +803,7 @@ class GetRewards(APIView):
     
     
 class GetCurrentUserRewards(APIView):
-    authentication_classes = (SessionAuthentication,)
+    
     permission_classes = (permissions.IsAuthenticated,)
     
     def get(self, request: HttpRequest) -> Response:
@@ -894,7 +891,7 @@ class SearchUser(APIView):
     
 
 class PurchaseReward(APIView):
-    authentication_classes = (SessionAuthentication,)
+    
     permission_classes = (permissions.IsAuthenticated,)
     
     def post(self, request: HttpRequest) -> Response:
@@ -938,7 +935,7 @@ class PurchaseReward(APIView):
 
 
 class SellReward(APIView):
-    authentication_classes = (SessionAuthentication,)
+    
     permission_classes = (permissions.IsAuthenticated,)
     
     def post(self, request: HttpRequest) -> Response:
@@ -980,7 +977,7 @@ class SellReward(APIView):
 
 
 class RedeemReward(APIView):
-    authentication_classes = (SessionAuthentication,)
+    
     permission_classes = (permissions.IsAuthenticated,)
     
     def post(self, request: HttpRequest) -> Response:
@@ -1026,7 +1023,7 @@ class RedeemReward(APIView):
 
 
 class UpdateUserPoints(APIView):
-    authentication_classes = (SessionAuthentication,)
+    
     permission_classes = (permissions.IsAdminUser,)
     
     def post(self, request: HttpRequest) -> Response:
@@ -1057,6 +1054,32 @@ class UpdateUserPoints(APIView):
             user.save()
             
             return Response({"message": "Points updated successfully"}, status=status.HTTP_200_OK)
+
+            
+        
+        except User.DoesNotExist:
+            return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class UpdateUserRole(APIView):
+    permission_classes = (permissions.IsAdminUser,)
+    def post(self, request):
+        data = dict(request.data)
+        
+        user_id = data.get("user_id", -1)
+        new_role = data.get("role", 1)
+        
+        try:
+            user = User.objects.get(user_id=user_id)
+            
+            if new_role not in [1, 2, 3, 4, 5]:
+                return Response({"message": "Attempted to set invalid role"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            user.role = new_role           
+            
+            user.save()
+            
+            return Response({"message": "Role updated successfully"}, status=status.HTTP_200_OK)
 
             
         
