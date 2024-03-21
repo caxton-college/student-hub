@@ -109,13 +109,18 @@ def populate_db() -> None:
     
     print("Creating users...")
     for i, row in tqdm(df.iterrows()):
-        users.append(create_user(email=row["email"],
-                                 name=row["name"],
-                                 surname=row["surname"],
-                                 role=row["role"],
-                                 form=row["form"],
-                                 year=row["year"],
-                                 house=row["house"]))
+        try:
+          users.append(create_user(email=row["email"],
+                                  name=row["name"],
+                                  surname=row["surname"],
+                                  role=row["role"],
+                                  form=row["form"],
+                                  year=row["year"],
+                                  house=row["house"]))
+        except Exception as e:
+          print(e)
+          print(f"Failed to create user: {i}, {row}")
+          continue
         
     print("Emailing credentials...")
     email_creds(users=users)
