@@ -15,8 +15,9 @@ export default function Logout({ client, setUser }) {
             }
 		).then(function(response) {
 
+            localStorage.setItem('token', "");
 			setUser({"loggedIn": false});
-
+            
 			toast.info('Logged out', {
                 position: "top-right",
                 autoClose: 3000,
