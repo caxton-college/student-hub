@@ -23,10 +23,11 @@ export default function Profile({ user, checkUser, setUser, client, theme, setTh
             theme={theme}
             setTheme={setTheme}/>
 
-            <div id='profile-content'>
+            
             {
                 user.loggedIn ? (
                     <>
+                    <div id='profile-content'>
                         <h3 style={{textTransform: 'uppercase'}}>WELCOME {user.name}!</h3>
                         
 
@@ -53,7 +54,7 @@ export default function Profile({ user, checkUser, setUser, client, theme, setTh
                                                 <FontAwesomeIcon
                                                     icon={faLightbulb}
                                                     style={{ color: colour }}
-                                                    size="1x">
+                                                    size="xl">
 
                                                 </FontAwesomeIcon>
 
@@ -64,7 +65,7 @@ export default function Profile({ user, checkUser, setUser, client, theme, setTh
                                                 <FontAwesomeIcon
                                                     icon={faHeart}
                                                     style={{ color: "#B13F3E" }}
-                                                    size="1x">
+                                                    size="xl">
                                                 </FontAwesomeIcon>
                                             </div>
                                         </div>
@@ -98,12 +99,13 @@ export default function Profile({ user, checkUser, setUser, client, theme, setTh
                         
 
                         <Logout setUser={setUser} client={client} />
+                        </div>
                     </>
                 ) : (
                     <Login user={user} checkUser={checkUser} client={client} />
                 )
             }
-            </div>
+            
             
         </div>
         <div id='watermark'>

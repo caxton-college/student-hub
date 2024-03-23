@@ -215,7 +215,7 @@ transform: scale(1.01);
     margin-top: 15px;
     
     padding-top: 1.5%;
-    height: 13dvh;
+    height: 8dvh;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -508,8 +508,8 @@ display: flex;
 #watermark {
     font-size: 20px;
     position: absolute;
-    top: 10%;
-    left: 1%;
+    top: 10dvh;
+    left: 2.5vw;
 }
 
 
@@ -718,6 +718,7 @@ input[type="submit"] {
     padding-top: 25px;
     padding-bottom: 25px;
     padding-left: 50px;
+    padding-right: 25px;
     width: 70%;
     border-radius: 35px;
 }
@@ -725,7 +726,7 @@ input[type="submit"] {
 
 .login-field {
     background-color: var(--background);
-    width: 83%;
+    width: 100%;
 }
 
 button {
@@ -742,7 +743,7 @@ button {
     background-color: var(--accent);
     color: var(--background);
     border-radius: 35px;
-    width: 25%;
+    width: 20%;
 }
 
 #user-suggestions {

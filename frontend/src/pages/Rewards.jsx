@@ -80,7 +80,12 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
 								checkUser={checkUser}/>
                         ))
                     ) : (
-                        <h3 className='content'>No rewards...</h3>
+                        <h3 className='content' style={{ textAlign: 'center' } }>
+                            No rewards for now, the will be added soon...
+                            <br/>
+                            <br/>
+                            Here you will be able to spend your points
+                        </h3>
                     )
                 }
                 </div>

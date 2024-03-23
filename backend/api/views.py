@@ -12,8 +12,6 @@ from rest_framework import permissions, status
 
 from fuzzywuzzy import fuzz
 
-from .tasks import log_suggestion
-
 from users.models import User
 from users.serialisers import UserRegisterSerialiser, UserSerialiser
 from users.validations import custom_validation
@@ -1047,7 +1045,7 @@ class UpdateUserPoints(APIView):
                 request (HttpRequest): Request from the user.
 
             Returns:
-                Response: HTTP_401_UNAUTHORIZED if not already owned. HTTP_200_OK if successful. HTTP_404_NOT_FOUND if reward not found
+                Response: HTTP_200_OK if successful. HTTP_404_NOT_FOUND if user not found
         """
       
         data = dict(request.data)
@@ -1077,6 +1075,15 @@ class UpdateUserPoints(APIView):
 class UpdateUserRole(APIView):
     permission_classes = (permissions.IsAdminUser,)
     def post(self, request):
+        """
+        A function to handle POST requests, updating the user's role based on the provided data.
+        
+        Parameters:
+            request (HttpRequest): The request object containing the data to update the user's role.
+            
+        Returns:
+            Response: A JSON response indicating the success or failure of the role update.
+        """
         data = dict(request.data)
         
         user_id = data.get("user_id", -1)

@@ -30,7 +30,7 @@ export default function Login({ client, checkUser}) {
             localStorage.setItem('token', response.data.token);
 
             checkUser();
-            window.location.reload();
+
             toast.success('Login Successful!', {
                 position: "top-right",
                 autoClose: 3000,
@@ -41,14 +41,8 @@ export default function Login({ client, checkUser}) {
                 progress: undefined,
             });
 
-        }).catch(function(error) {
-            let errorMessage = "Something went wrong...";
-
-            if (error.response) {
-                errorMessage = error.response.data.message;
-            }
-            
-            toast.error(errorMessage, {
+        }).catch(function(error) {            
+            toast.error("Invalid credentials", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
