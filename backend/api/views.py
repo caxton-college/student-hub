@@ -12,6 +12,8 @@ from rest_framework import permissions, status
 
 from fuzzywuzzy import fuzz
 
+from .tasks import log_suggestion
+
 from users.models import User
 from users.serialisers import UserRegisterSerialiser, UserSerialiser
 from users.validations import custom_validation
@@ -295,8 +297,19 @@ class CreateSuggestion(APIView):
         new_suggestion = Suggestion.objects.create(body=suggestion_body, owner=user)
        
         new_suggestion.save()
-  
-        return Response(status=status.HTTP_200_OK)
+
+        suggestion_data = {
+            "suggestion_id": new_suggestion.id,
+            "body": new_suggestion.body,
+            "name": new_suggestion.owner.name,
+            "surname": new_suggestion.owner.surname
+        }
+        
+        #log_suggestion(suggestion_data)
+        
+        return Response({"message": "Suggestion created"}, status=status.HTTP_200_OK)
+        
+        
 
 
 class DeleteSuggestion(APIView):

@@ -1,6 +1,7 @@
 from pathlib import Path
 import environ
 import socket
+import os
 
 env = environ.Env()
 environ.Env.read_env()
@@ -17,11 +18,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 IP = socket.gethostbyname(socket.gethostname())
 
-CSRF_TRUSTED_ORIGINS = [f"http://{IP}"]
+CSRF_TRUSTED_ORIGINS = [f"http://{IP}", f"http://{IP}:3000"]
 
 ALLOWED_HOSTS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
@@ -90,8 +91,14 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
 
-#Replace sqlite with this on production
+"""#Replace sqlite with this on production
 DATABASES = {
 'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -102,7 +109,7 @@ DATABASES = {
         'PORT': env("DB_PORT"),
     }
 }
-
+"""
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -145,6 +152,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT= os.path.join(BASE_DIR, "static")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

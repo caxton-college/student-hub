@@ -40,9 +40,17 @@ h3 {
     word-spacing: -10px;
 }
 
+a {
+    text-decoration: none;
+    width: 100%;
+    display: grid;
+    place-items: center;
+    
+}
+
 #root {
     display: grid;
-    height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     grid-template-rows: auto 5fr 1fr; /* Use "auto" for the header row and 1fr for the content row */
 }
@@ -97,17 +105,6 @@ h3 {
     box-shadow: var(--shadow) 0px 0px 16px;
 }
 
-.navbar {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 10%;
-    display: flex;
-    justify-content: space-around; /* Adjust to space the icons evenly */
-    align-items: center;
-    padding: 10px;
-
-}
 
 
 
@@ -160,7 +157,7 @@ h3 {
     padding-top: 10px;
     background-color: var(--background);
     width: 85vw;
-    height: 25vh;
+    height: 25dvh;
     grid-template-columns: 4fr 1fr;
     border-radius: 35px;
     transition: all 0.2s ease;
@@ -218,7 +215,7 @@ transform: scale(1.01);
     margin-top: 15px;
     
     padding-top: 1.5%;
-    height: 13vh;
+    height: 13dvh;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -371,21 +368,25 @@ transform: scale(1.01);
     background-color: transparent;
 }
 
-/* Navbar Component */
 .navbar {
-    position: fixed;
-    
+    position: absolute;
+    left: 50%;
     bottom: 2%;
+    transform: translate(-50%, 0);
+
     width: 90vw;
-    height: 8vh;
+    height: 9dvh;
+
     background-color: var(--background);
     border-radius: 100px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     justify-content: center;
     padding: 10px;
     z-index: 500;
 }
+
 
 
 
@@ -659,15 +660,14 @@ input[type="submit"] {
     place-items: center;
     width: 100vw;
     height: 100%;
-    
-
+    grid-template-rows: 2fr 2fr 2fr 1fr;
 }
 
 #profile-page {
     display: grid;
     place-items: center;
     grid-template-rows: auto 1fr;
-    height: 80vh;
+    height: 80dvh;
 
 }
 
@@ -685,14 +685,18 @@ input[type="submit"] {
 
 #interactions {
     width: 100%;
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0px;
 }
 
 #interactions-box {
     display: flex;
     flex-direction: row;
     width: 50%;
+    
     justify-content: space-around;
     align-items: center;
     border-radius: 35px;
@@ -783,7 +787,7 @@ button {
     color: var(--background);
     background-color: var(--primary);
     border-radius: 35px;
-    width: 100%;
+    width: 80%;
     text-align: center;
 }
 
@@ -946,7 +950,7 @@ option {
     border-radius: 35px;
     cursor: pointer;
     width: 90%;
-    height: 20vh;
+    height: 20dvh;
 }
 
 .nudge-down {

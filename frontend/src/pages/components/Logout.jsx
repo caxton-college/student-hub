@@ -32,7 +32,7 @@ export default function Logout({ client, setUser }) {
 	}
     return (
         <button id="logout-button" className="shadow" onClick={handleLogout}>
-            <h2>Logout</h2>
+            <h3>Logout</h3>
         </button>
     )
 }

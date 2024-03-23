@@ -27,7 +27,7 @@ export default function Profile({ user, checkUser, setUser, client, theme, setTh
             {
                 user.loggedIn ? (
                     <>
-                        <h2 style={{textTransform: 'uppercase'}}>WELCOME {user.name}!</h2>
+                        <h3 style={{textTransform: 'uppercase'}}>WELCOME {user.name}!</h3>
                         
 
                         {
@@ -48,36 +48,44 @@ export default function Profile({ user, checkUser, setUser, client, theme, setTh
                                             
                                             <div className='likes'>
                                                 
-                                                <h3>{user.userSuggestions}</h3>
+                                                <h5>{user.userSuggestions}</h5>
 
                                                 <FontAwesomeIcon
                                                     icon={faLightbulb}
                                                     style={{ color: colour }}
-                                                    size="xl">
+                                                    size="1x">
 
                                                 </FontAwesomeIcon>
 
                                             </div>
 
                                             <div className='likes'>
-                                                <h3>{user.likes}</h3>
+                                                <h5>{user.likes}</h5>
                                                 <FontAwesomeIcon
                                                     icon={faHeart}
                                                     style={{ color: "#B13F3E" }}
-                                                    size="xl">
+                                                    size="1x">
                                                 </FontAwesomeIcon>
                                             </div>
                                         </div>
                                     </div>
                                     
                                     <div id='reward-links'>
-                                        <Link to="/shop" onClick={(e) => setSelected("none")} className='reward-link shadow'>
-                                            <h4>Shop</h4>
+                                        <Link to="/shop" onClick={(e) => setSelected("none")}>
+                                            <button className='reward-link shadow'>
+                                                <h2>Shop</h2>
+                                            </button>
                                         </Link>
                                         
-                                        <Link to="/rewards" onClick={(e) => setSelected("none")} className='reward-link shadow'>
-                                            <h4>Your Rewards</h4>
+                                        <Link to="/rewards" onClick={(e) => setSelected("none")}>
+                                            <button className='reward-link shadow'>
+                                                <h2>Rewards</h2>
+                                            </button>
                                         </Link>
+
+                                        
+
+                                        
                                     </div>
                                 </>
                             ) : (

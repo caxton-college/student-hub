@@ -58,7 +58,7 @@ def email_creds(users: List[Dict[str, str]]) -> None:
 
             msg = MIMEMultipart()
             msg['From'] = from_email
-            msg['To'] = from_email
+            msg['To'] = recipient
             msg['Subject'] = subject
             msg.attach(MIMEText(body, 'html'))
             
