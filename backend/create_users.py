@@ -37,7 +37,7 @@ def email_creds(users: List[Dict[str, str]]) -> None:
             
             from_email = smtp_username
             
-            subject = 'Welcome to Student Hub!'
+            subject = "Welcome to Student Hub!"
             
             body = f"""
             <html>
@@ -49,7 +49,7 @@ def email_creds(users: List[Dict[str, str]]) -> None:
                   <li><strong>Username:</strong> {recipient}</li>
                   <li><strong>Password:</strong> {password}</li>
                 </ul>
-                <p>You can access the Student Hub platform using the following link: <a href="https://www.studenthub.com">Student Hub Platform</a></p>
+                <p>You can access the Student Hub platform using the following link: <a href="http://www.studenthub.caxtoncollege.local">Student Hub Platform</a></p>
                 <p>We hope it imporves school and allows you to win prizes ;)</p>
                 <p>Best regards,<br/>Carlos Lorenzo</p>
               </body>
@@ -57,9 +57,9 @@ def email_creds(users: List[Dict[str, str]]) -> None:
             """         
 
             msg = MIMEMultipart()
-            msg['From'] = from_email
-            msg['To'] = recipient
-            msg['Subject'] = subject
+            msg["From"] = from_email
+            msg["To"] = recipient
+            msg["Subject"] = subject
             msg.attach(MIMEText(body, 'html'))
             
             smtp.send_message(msg)
