@@ -60,8 +60,8 @@ a {
     display: grid;
     height: 100%;
     width: 100vw;
-    padding-top: 1%;
-    
+    padding-top: 1dvh;
+    padding-bottom: 2dvh;
     place-items: start center;
     
     grid-template-rows: auto 1fr; /* Use "auto" for the header row and 1fr for the content row */
@@ -215,7 +215,7 @@ transform: scale(1.01);
     margin-top: 15px;
     
     padding-top: 1.5%;
-    height: 8dvh;
+    height: 10dvh;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
