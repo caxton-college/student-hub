@@ -14,11 +14,10 @@ export default function Poll({
     
 
     
-    
     return (
-        <div className='poll shadow' style={{height: `${polls[pollIndexInPolls].options.length * 15 + 5}vh`}}>
+        <div className='poll shadow' style={{height: `${polls[pollIndexInPolls].options.length * 15 + 8}vh`}}>
 
-            <h3>Poll Question</h3>
+            <h3>{polls[pollIndexInPolls].poll.question}</h3>
 
             <DeletePoll
                 client={client}

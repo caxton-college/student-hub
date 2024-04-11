@@ -55,6 +55,7 @@ function App() {
             headers: {
                 'Authorization': `Token ${localStorage.getItem('token')}`
             }
+
         }).then(
             function (response) {
                 setUser({
@@ -70,6 +71,9 @@ function App() {
                     rewards_id: response.data.user.user_id // ID of the user for which to show rewards (always user_id unless role = teacher)
                 });
                 
+                getPolls(true);
+                getAnnouncements(true);
+                getSuggestions(true);
             },
         )
 
@@ -94,18 +98,29 @@ function App() {
     // Get suggestion with a given order
     function getSuggestions(force=false, newOrder="new") {
 		if (suggestions.length === 0 | force) {
-			client.get(
-				`api/${newOrder}_suggestions`,
-                {
-                    headers: {
-                        'Authorization': `Token ${localStorage.getItem('token')}`
+            if(user.loggedIn) {
+                client.get(
+                    `api/${newOrder}_suggestions`,
+                    {
+                        headers: {
+                            'Authorization': `Token ${localStorage.getItem('token')}`
+                        }
                     }
-                }
-			).then(function(response) {
-				setSuggestions(response.data);
-                getSuggestionLikeData(response.data);
-				
-			})
+                ).then(function(response) {
+                    setSuggestions(response.data);
+                    getSuggestionLikeData(response.data);
+                    
+                })
+            } else {
+                client.get(
+                    `api/${newOrder}_suggestions`
+                ).then(function(response) {
+                    setSuggestions(response.data);
+                    getSuggestionLikeData(response.data);
+                    
+                })
+            }
+			
 		}
 	}
 
@@ -113,33 +128,54 @@ function App() {
     // Get all announcements
     function getAnnouncements(force) {
 		if (announcements.length === 0 | force) {
-			client.get(
-				"api/announcements",
-                {
-                    headers: {
-                        'Authorization': `Token ${localStorage.getItem('token')}`
+
+            if (user.loggedIn) {
+                client.get(
+                    "api/announcements",
+                    {
+                        headers: {
+                            'Authorization': `Token ${localStorage.getItem('token')}`
+                        }
                     }
-                }
-			).then(function(response) {
-				setAnnouncements(response.data);
-				
-			})
+                ).then(function(response) {
+                    setAnnouncements(response.data);
+                    
+                })
+            } else {
+                client.get(
+                    "api/announcements"
+                ).then(function(response) {
+                    setAnnouncements(response.data);
+                    
+                })
+            }
+			
 		}
 	}
     
     // Get all polls
 	function getPolls(force) {
 		if (polls.length === 0 | force) {
-			client.get(
-				"api/polls",
-                {
-                    headers: {
-                        'Authorization': `Token ${localStorage.getItem('token')}`
+            if(localStorage.getItem('token')) {
+                client.get(
+                    "api/polls",
+                    {
+                        headers: {
+                            'Authorization': `Token ${localStorage.getItem('token')}`
+                        }
                     }
-                }
-			).then(function(response) {
-				setPolls(response.data);
-			})
+                ).then(function(response) {
+                    setPolls(response.data);
+                })
+
+            } else {
+                client.get(
+                    "api/polls"
+                ).then(function(response) {
+                    setPolls(response.data);
+                })
+            }
+			
 		}
 	}
 
