@@ -15,7 +15,7 @@ export default function Poll({
 
     
     return (
-        <div className='poll shadow' style={{height: `${polls[pollIndexInPolls].options.length * 15 + 8}vh`}}>
+        <div className='poll shadow' style={{height: `${polls[pollIndexInPolls].options.length * 10}vh`}}>
 
             <h3>{polls[pollIndexInPolls].poll.question}</h3>
 

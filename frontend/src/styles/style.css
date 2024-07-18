@@ -200,6 +200,15 @@ transform: scale(1.01);
     
 }
 
+#options {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 50vw;
+    gap: 1rem;
+}
+
 .delete {
     position: absolute;
     top: 5%;
@@ -244,6 +253,7 @@ transform: scale(1.01);
     align-items: center;
     gap: 10px;
     flex-direction: row;
+    user-select: none
     
 }
 

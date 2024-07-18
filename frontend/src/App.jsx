@@ -12,7 +12,7 @@ import Announcements from './pages/Announcements';
 import Polls from './pages/Polls';
 import Rewards from './pages/Rewards';
 import Search from './pages/Search';
-
+import Activate from './pages/Activate';
 
 // Axios settings for authentication
 axios.defaults.xsrfCookieName = 'X-CSRFToken';
@@ -21,7 +21,7 @@ axios.defaults.withCredentials = true;
 
       
 const client = axios.create({
-    baseURL: `http://${window.location.hostname}`, // Constructing the baseURL dynamically
+    baseURL: `http://${window.location.hostname}:8000`, // Constructing the baseURL dynamically
 });
 
 // Fetch the CSRF token
@@ -348,6 +348,12 @@ function App() {
                         theme={theme}
                         setTheme={setTheme}
                         setRewardsId={setRewardsId}
+                    />
+                }/>
+                <Route path="/activate" element={
+                    <Activate 
+                        user={user}
+                        client={client}
                     />
                 }/>
 

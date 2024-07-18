@@ -12,8 +12,8 @@ export default function CreateSuggestion({ client, user, getSuggestions, order, 
     
 
     const handleSuggestionCreation = (e) => {
-        
         e.preventDefault();
+        const id = toast.loading("Creating suggestion");
         client.post(
             '/api/create_suggestion',
             { body: body },
@@ -23,12 +23,15 @@ export default function CreateSuggestion({ client, user, getSuggestions, order, 
                 }
             }).then(response => {
             setShowPrompt(false);
-            getSuggestions(true, order);
+            // getSuggestions(true, order);
             setBody("");
-            checkUser();
-            toast.success('Suggestion Created!', {
+            // checkUser();
+            toast.update(id, {
+                render: 'Suggestion pending review',
+                type: "success",
                 position: "top-right",
-                autoClose: 3000,
+                autoClose: 1500,
+                isLoading: false,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -41,9 +44,12 @@ export default function CreateSuggestion({ client, user, getSuggestions, order, 
             
         }).catch(error => {
             
-            toast.error(error.response.data.message, {
+            toast.update(id, {
+                render: error.response.data.message,
+                type: "error",
                 position: "top-right",
-                autoClose: 3000,
+                autoClose: 1500,
+                isLoading: false,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,

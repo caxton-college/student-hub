@@ -21,6 +21,7 @@ class Suggestion(models.Model):
     liked_by = models.ManyToManyField('users.User', related_name='liked_suggestions', blank=True)
     date_created = models.DateTimeField(auto_now=True)
     owner = models.ForeignKey('users.User', related_name='suggestions', on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=False)
     
     class Meta:
         ordering = ['-pinned', '-likes']

@@ -32,7 +32,7 @@ export default function SuggestionLike({
             }
                      
         ).then(response => {
-            setLiked(response.dat?.liked);
+            setLiked(response.data?.liked);
             setLikes(response.data?.likes);
 
             let newSuggestionsLikeData = suggestionsLikeData;

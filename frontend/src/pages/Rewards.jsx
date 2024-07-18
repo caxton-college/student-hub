@@ -81,10 +81,7 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
                         ))
                     ) : (
                         <h3 className='content' style={{ textAlign: 'center' } }>
-                            No rewards for now, the will be added soon...
-                            <br/>
-                            <br/>
-                            Here you will be able to spend your points
+                            No owned rewards
                         </h3>
                     )
                 }

@@ -1,14 +1,27 @@
+import io
+
+import environ
+
+from django.conf import settings
+
+from django.core.mail import send_mail
+
+from django.contrib.auth.tokens import PasswordResetTokenGenerator  
 from django.http import HttpRequest
 from django.contrib.auth import login, logout, authenticate
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
-from django.db.models import Q
 
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import permissions, status
+
+from django.template.loader import render_to_string
+
+from django.utils.encoding import force_str, force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode  
 
 from fuzzywuzzy import fuzz
 
@@ -24,6 +37,9 @@ from feed.serialisers import AnnouncementSerializer, SuggestionSerializer, PollS
 
 from rewards.models import Reward
 from rewards.serialisers import RewardSerialiser
+
+
+card_activation_token = PasswordResetTokenGenerator()
 
 class GetCSRFToken(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -184,7 +200,7 @@ class GetPopularSuggestions(APIView):
         Returns:
             Response: A list of suggestions as serialized data and a status code of 200 (OK).
         """
-        suggestions = Suggestion.objects.all().filter(date_created__gte=datetime.now(tz=timezone.utc)-timedelta(days=30)).order_by("-likes").order_by("-pinned")
+        suggestions = Suggestion.objects.all().filter(date_created__gte=datetime.now(tz=timezone.utc)-timedelta(days=30), is_active=True).order_by("-likes").order_by("-pinned")
         serialiser = SuggestionSerializer(suggestions, many=True)
         
         for i in range(len(serialiser.data)):
@@ -217,7 +233,7 @@ class GetNewSuggestions(APIView):
         Returns:
             Response: A list of suggestions as serialized data and a status code of 200 (OK).
         """
-        suggestions = Suggestion.objects.all().filter(date_created__gte=datetime.now(tz=timezone.utc)-timedelta(days=30)).order_by("-date_created")
+        suggestions = Suggestion.objects.all().filter(date_created__gte=datetime.now(tz=timezone.utc)-timedelta(days=30), is_active=True).order_by("-date_created")
         
         serialiser = SuggestionSerializer(suggestions, many=True)
         
@@ -253,7 +269,7 @@ class GetUserSuggestions(APIView):
         Returns:
             Response: A list of suggestions as serialized data and a status code of 200 (OK).
         """
-        suggestions = Suggestion.objects.all().filter(owner=request.user)
+        suggestions = Suggestion.objects.all().filter(owner=request.user, is_active=True)
         serialiser = SuggestionSerializer(suggestions, many=True)
         
         for i in range(len(serialiser.data)):
@@ -296,14 +312,23 @@ class CreateSuggestion(APIView):
        
         new_suggestion.save()
 
-        suggestion_data = {
-            "suggestion_id": new_suggestion.id,
-            "body": new_suggestion.body,
-            "name": new_suggestion.owner.name,
-            "surname": new_suggestion.owner.surname
-        }
+        site_url = settings.DOMAIN_URL 
+        email_from: str = settings.EMAIL_HOST_USER
+        email_to: str = ["clorenzozuniga@gmail.com"]
+        subject = 'Studenthub - New suggestion'
+
+        url = f'{site_url}/activate?id={new_suggestion.id}'
         
-        #log_suggestion(suggestion_data)
+        context = {
+            "url": url,
+            "user": user,
+            "suggestion": new_suggestion.body
+        }
+
+        message = render_to_string('email/suggestion_activation_query.html', context)
+
+        send_mail(subject, message, email_from, email_to, html_message=message)        
+        
         
         return Response({"message": "Suggestion created"}, status=status.HTTP_200_OK)
         
@@ -345,6 +370,103 @@ class DeleteSuggestion(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
+
+class ActivateSuggestion(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        """
+        Activate a suggestion by ID.
+
+        Args:
+            request: Request to activate a suggestion.
+
+        Returns:
+            Response:
+            Status code 200 (No Content) if the suggestion is successfully activated.
+            Status code 404 (Not Found) if the suggestion with the given ID is not found.
+        """
+        
+        suggestion_id = request.GET.get("id")
+        
+        try:
+            suggestion = Suggestion.objects.get(id=suggestion_id)
+            owner = suggestion.owner
+            
+            if request.user.role != 1:
+                suggestion.is_active = True
+                suggestion.save()
+                 
+                email_from: str = settings.EMAIL_HOST_USER
+                email_to: str = ["clorenzozuniga@gmail.com"]
+                subject = 'Suggestion Accepted'
+
+             
+                
+                context = {
+                    "owner": owner,
+                    "suggestion": suggestion.body
+                }
+
+                message = render_to_string('email/suggestion_activated.html', context)
+
+                send_mail(subject, message, email_from, email_to, html_message=message)        
+                
+                
+                return Response({"message": "Suggestion activated"}, status=status.HTTP_200_OK)
+        
+        except Suggestion.DoesNotExist:
+            return Response({"message": "Suggestion not found."}, status=status.HTTP_404_NOT_FOUND)
+
+
+class RejectSuggestion(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        """
+        Activate a suggestion by ID.
+
+        Args:
+            request: Request to activate a suggestion.
+
+        Returns:
+            Response:
+            Status code 200 (No Content) if the suggestion is successfully activated.
+            Status code 404 (Not Found) if the suggestion with the given ID is not found.
+        """
+        
+        suggestion_id = request.GET.get("id")
+        
+        try:
+            suggestion = Suggestion.objects.get(id=suggestion_id)
+            owner = suggestion.owner
+            
+            if request.user.role != 1:
+
+                suggestion.delete()
+                
+                email_from: str = settings.EMAIL_HOST_USER
+                email_to: str = ["clorenzozuniga@gmail.com"]
+                subject = 'Suggestion Rejected'
+
+             
+                
+                context = {
+                    "owner": owner,
+                    "suggestion": suggestion.body
+                }
+
+                message = render_to_string('email/suggestion_rejected.html', context)
+
+                send_mail(subject, message, email_from, email_to, html_message=message)        
+                
+                
+                return Response({"message": "Suggestion rejected"}, status=status.HTTP_200_OK)
+        
+        except Suggestion.DoesNotExist:
+            return Response({"message": "Suggestion not found."}, status=status.HTTP_404_NOT_FOUND)   
+        
+    
 
 class UpdateSuggestionLikes(APIView):
     permission_classes = (permissions.IsAuthenticated,)

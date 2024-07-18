@@ -18,9 +18,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 IP = socket.gethostbyname(socket.gethostname())
+DOMAIN_URL = f"http://{IP}:3000"
 
 CSRF_TRUSTED_ORIGINS = [f"http://{IP}", f"http://{IP}:3000"]
 
@@ -72,7 +73,7 @@ ROOT_URLCONF = "backend.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        'DIRS': [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -85,31 +86,32 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = "backend.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
-
-"""#Replace sqlite with this on production
-DATABASES = {
-'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env("DB_NAME"),
-        'USER': env("DB_USER"),
-        'PASSWORD': env("DB_PASSWORD"),
-        'HOST': env("DB_HOST"),
-        'PORT': env("DB_PORT"),
-    }
-}
-"""
+else:
+    
+    DATABASES = {
+        'default': {
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'NAME': env("DB_NAME"),
+                'USER': env("DB_USER"),
+                'PASSWORD': env("DB_PASSWORD"),
+                'HOST': env("DB_HOST"),
+                'PORT': env("DB_PORT"),
+            }
+        }
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -158,3 +160,10 @@ STATIC_ROOT= os.path.join(BASE_DIR, "static")
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# SMTP conf
+EMAIL_USE_TLS = True  
+EMAIL_HOST = 'smtp.gmail.com'  
+EMAIL_HOST_USER = env("EMAIL_HOST_USER") 
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = 587

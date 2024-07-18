@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studenthub - New Suggestion</title>
+
+    <style type="text/css">
+
+        
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #d8d8ee;
+            color: #0d0d17;
+            margin: 0;
+            padding: 0;
+        }
+        a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #3e3e6f !important;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            
+            background-color: #d8d8ee;
+            border-radius: 15px;
+            box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
+        }
+        
+        h2 {
+            color: #0d0d17;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            color: #0d0d17;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        hr {
+            color: #0d0d17;
+            border: none;
+            height: 1px;
+            margin: 20px 0;
+        }
+
+        h3 {
+            color: #3e3e6f;
+            text-decoration: underline;
+        }
+                    
+        .message {
+            background-color: #f9f9fa;
+            padding: 10px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+        }
+        
+        #footer {
+            
+            margin-top: 20px;
+            font-size: 0.9em;
+
+            display: grid;
+            place-items: center;
+            width: 100%;
+            
+        }
+
+        #footer-content {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            gap: 1rem;
+            place-self: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>New Suggestion</h2>
+        <p>{{ user.name }} {{ user.surname }} has suggested the following</p>
+        <br>
+        <div class="message">
+            <p>{{ suggestion }}</p>
+        </div>
+        <br>
+        <p>Please review the suggestion</p>
+        <a href="{{ url }}"><h3>Review</h3></a>
+
+        <hr>
+        <div id="footer">
+            <div id="footer-content">
+                <p>Studenthub</p>
+            </div>   
+        </div>
+    </div>
+</body>
+</html>
