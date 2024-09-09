@@ -99,7 +99,7 @@ export default function Activate({ client }) {
     return <div className='content'>
         <h2>Review Suggestion</h2>
         <div id="options">
-            <button className='submit shadow' onClick={() => activateSuggestion()}><h3>Activate</h3></button>
+            <button className='submit shadow' onClick={() => activateSuggestion()}><h3>Accept</h3></button>
             <button className='submit shadow' onClick={() => rejectSuggestion()}><h3>Reject</h3></button>
         </div>
     </div>

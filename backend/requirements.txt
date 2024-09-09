@@ -11,3 +11,10 @@ psycopg2-binary==2.9.9
 rapidfuzz==3.6.1
 tqdm==4.66.2
 pandas==2.2.0
+asgiref==3.7.2
+gevent==24.2.1
+sqlparse==0.4.3
+django-templated-mail==1.1.1
+django_csp==3.8
+django-environ==0.11.2
+python-dotenv==1.0.0
