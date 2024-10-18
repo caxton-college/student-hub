@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { faCoins } from '@fortawesome/free-solid-svg-icons';
+import { faCoins, faTrophy } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import UserReward from './components/UserReward';
@@ -55,7 +55,7 @@ export default function Rewards({ client, user, rewards, theme, setTheme, type, 
                     <div id='points-banner-rewards' className='shadow'>
                         <h3>{user.points}</h3>
                         <FontAwesomeIcon 
-                        icon={faCoins} 
+                        icon={faTrophy} 
                         style={{ color: "#eeb825" }}> 
                         </FontAwesomeIcon>
                     </div>

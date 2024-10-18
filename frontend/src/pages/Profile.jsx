@@ -2,7 +2,7 @@ import React, { useState, useReducer, useEffect } from 'react';
 
 import { Link } from "react-router-dom";
 
-import { faHeart, faCoins, faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faLightbulb, faTrophy } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Login from './components/Login';
@@ -38,7 +38,7 @@ export default function Profile({ user, checkUser, setUser, client, theme, setTh
                                     <div id='points' className='shadow'>
                                         <h3>{user.points}</h3>
                                         <FontAwesomeIcon 
-                                        icon={faCoins} 
+                                        icon={faTrophy} 
                                         style={{ color: "#eeb825" }}> 
                                         </FontAwesomeIcon>
                                     </div>
@@ -74,13 +74,13 @@ export default function Profile({ user, checkUser, setUser, client, theme, setTh
                                     <div id='reward-links'>
                                         <Link to="/shop" onClick={(e) => setSelected("none")}>
                                             <button className='reward-link shadow'>
-                                                <h2>Shop</h2>
+                                                <h2>Exchange</h2>
                                             </button>
                                         </Link>
                                         
                                         <Link to="/rewards" onClick={(e) => setSelected("none")}>
                                             <button className='reward-link shadow'>
-                                                <h2>Rewards</h2>
+                                                <h2>Owned</h2>
                                             </button>
                                         </Link>
 

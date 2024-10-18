@@ -6,6 +6,8 @@ const Header = ({ page, theme, setTheme }) => {
     const [isDarkMode, setDarkMode] = useState(false);
     
     const [logo, setLogo] = useState('/logo_black_side2.png');
+    const logoCaxton = "/logo-caxton.png";
+
 
     const toggleDarkMode = () => {
         setDarkMode(!isDarkMode);
@@ -18,7 +20,11 @@ const Header = ({ page, theme, setTheme }) => {
     return (
         <div className='shadow header'>
             <div className="header-content">
-                <img src={logo} alt="Logo" height={"100px"} className='logo'/>
+                <div className="logos">
+                    <img src={logo} alt="Logo" height={"35px"} className='logo'/>
+                    <img src={logoCaxton} alt="Logo" height={"100px"} className='logo'/>
+                </div>
+                
                 <h3>{page}</h3>
                 <div className="toggle-dark-mode" onClick={toggleDarkMode}>
                 

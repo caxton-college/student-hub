@@ -96,9 +96,7 @@ a {
     
 }
 
-.logo {
-    place-self: start;
-}
+
 
 
 .shadow {
@@ -1006,3 +1004,11 @@ option {
     
 }
 
+.logos {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    place-self: center start;
+
+}

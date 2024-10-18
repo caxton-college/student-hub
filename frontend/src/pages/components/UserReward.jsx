@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { faHeart, faCoins, faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faTrophy, faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { toast } from 'react-toastify';
@@ -138,7 +138,7 @@ export default function UserReward({ client, user, name, cost, id, action, getAl
             <div className='reward-actions'>
                 <div className='reward-points shadow'>
                     <FontAwesomeIcon 
-                        icon={faCoins} 
+                        icon={faTrophy} 
                         style={{ color: "#eeb825" }}> 
                     </FontAwesomeIcon>
                     <p><b>{cost}</b></p>
