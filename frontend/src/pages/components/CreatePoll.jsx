@@ -98,7 +98,7 @@ export default function CreatePoll({
                                     key={`create-poll-question`}>
                                     
                                 </textarea>
-                                <label htmlFor="question" key={"quesiton-lable"}><span>Question</span></label>
+                                <label htmlFor="question" key={"quesiton-lable"}></label>
                         
                             
                                 {

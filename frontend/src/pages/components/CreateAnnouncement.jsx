@@ -89,7 +89,7 @@ export default function CreateAnnouncement({
                         required 
                         autoComplete="off"
                         placeholder='Announcement title'></textarea>
-                        <label htmlFor="title"><span>Title</span></label>
+                        <label htmlFor="title"></label>
                         <textarea 
                         name="body" 
                         value={body} 
@@ -99,7 +99,7 @@ export default function CreateAnnouncement({
                         id="body" required 
                         autoComplete="off"
                         placeholder='Announcement body'></textarea>
-                        <label htmlFor="body"><span>Body</span></label>
+                        <label htmlFor="body"></label>
                         <input type="submit" value="Share"/>
                     </form>
                 </div>

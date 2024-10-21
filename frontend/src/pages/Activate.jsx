@@ -9,6 +9,8 @@ export default function Activate({ client }) {
     function parseError(error, type) {
         if (error.response.data.message) {
             return error.response.data.message
+        } else if (error.response.data.detail) {
+            return "You must be logged in to do this"
         }
         else {
             return `An error occurred while ${type} the suggestion.`

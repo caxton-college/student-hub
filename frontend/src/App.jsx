@@ -14,7 +14,7 @@ import Rewards from './pages/Rewards';
 import Search from './pages/Search';
 import Activate from './pages/Activate';
 import Disabled from './pages/Disabled';
-// Axios settings for authentication
+// Axios settings for authenticwation
 axios.defaults.xsrfCookieName = 'X-CSRFToken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;

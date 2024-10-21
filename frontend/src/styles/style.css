@@ -60,7 +60,7 @@ a {
     padding-top: 1dvh;
     padding-bottom: 2dvh;
     place-items: start center;
-    
+    overflow-y: scroll;
     grid-template-rows: auto 1fr; /* Use "auto" for the header row and 1fr for the content row */
     
 }
@@ -664,7 +664,7 @@ input[type="submit"] {
     display: grid;
     place-items: center;
     width: 100vw;
-    height: 100%;
+    height: 60dvh;
     grid-template-rows: 2fr 2fr 2fr 1fr;
 }
 

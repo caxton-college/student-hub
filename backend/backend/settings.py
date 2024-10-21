@@ -18,12 +18,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 IP = socket.gethostbyname(socket.gethostname())
-DOMAIN_URL = f"http://{IP}:3000"
+DOMAIN_URL = f"http://studenthub.caxtoncollege.local"
 
-CSRF_TRUSTED_ORIGINS = [f"http://{IP}", f"http://{IP}:3000"]
+CSRF_TRUSTED_ORIGINS = [f"http://{IP}", f"http://{IP}:3000", "http://192.168.1.61", "http://studenthub.caxtoncollege.local"]
 
 ALLOWED_HOSTS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
@@ -93,7 +93,7 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-if True: #DEBUG:
+if DEBUG: #DEBUG:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",

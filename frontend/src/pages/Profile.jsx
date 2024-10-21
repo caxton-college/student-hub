@@ -98,7 +98,7 @@ export default function Profile({ user, checkUser, setUser, client, theme, setTh
                         }
                         
 
-                        <Logout setUser={setUser} client={client} />
+                            <Logout setUser={setUser} client={client} />
                         </div>
                     </>
                 ) : (

@@ -34,7 +34,7 @@ export default function PollOptionInput({ index, current_option, options, setOpt
                     autoComplete="off"
                     placeholder={`Option ${index + 1}`}
                 />
-                <label htmlFor={`question_${index}`}><span>Option</span></label>
+                <label htmlFor={`question_${index}`}></label>
             </div>
             
             <FontAwesomeIcon 
