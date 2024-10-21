@@ -3,7 +3,7 @@ services:
     volumes:
       - static:/app/static
     env_file:
-      - .env
+      - /backend/backend/.env
     build:
       context: ./backend
     ports:

@@ -13,7 +13,7 @@ import Polls from './pages/Polls';
 import Rewards from './pages/Rewards';
 import Search from './pages/Search';
 import Activate from './pages/Activate';
-
+import Disabled from './pages/Disabled';
 // Axios settings for authentication
 axios.defaults.xsrfCookieName = 'X-CSRFToken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -48,6 +48,8 @@ function App() {
     const [allRewards, setAllRewards] = useState([]);
     const [userRewards, setUserRewards] = useState([]);
     const [selected, setSelected] = useState(window.location.pathname);
+
+    const [isAccessible, setIsAccessible] = useState(true);
 
     // Check if the user is logged in, if no error, user authenticated
 	const checkUser = () => {	
@@ -252,131 +254,167 @@ function App() {
         getAnnouncements();
         getPolls();
         getAllRewards();
+
+        const checkTime = () => {            
+            // Disable P1 and P2: between 9:40 and 11:30            
+            if (isTimeWithinRange(9, 40, 11, 35) || isTimeWithinRange(12, 0, 13, 35) || isTimeWithinRange(14, 50, 16, 30)) {
+                setIsAccessible(false);
+            } else {
+                setIsAccessible(true);
+            }
+          };
+      
+        checkTime();
+        // Optionally set an interval to check the time every minute
+        const interval = setInterval(checkTime, 10000);
+    
+        // Clean up the interval when the component unmounts
+        return () => clearInterval(interval);
             
 	}, []);
 
+    function isTimeWithinRange(startHour, startMinutes, endHour, endMinutes) {
+        const currentTime = new Date().getHours() * 60 + new Date().getMinutes();
+        const startTime = startHour * 60 + startMinutes;
+        const endTime = endHour * 60 + endMinutes;
+    
+        // Handle cases where the range crosses midnight (e.g., 23:00 to 01:00)
+        if (startTime <= endTime) {
+            return currentTime >= startTime && currentTime <= endTime;
+        } else {
+            return currentTime >= startTime || currentTime <= endTime;
+        }
+    }
+
 	return (
 		<>
-            
-			<Routes>
-				<Route path="/" element={
-                    <Profile 
-                        user={user} 
-                        checkUser={checkUser} 
-                        client={client} 
-                        userSuggestions={userSuggestions}
-                        setUser={setUser}
-                        theme={theme}
-                        setTheme={setTheme}
+            {isAccessible ? (
+                <> 
+                    <Routes>
+                        <Route path="/" element={
+                            <Profile 
+                                user={user} 
+                                checkUser={checkUser} 
+                                client={client} 
+                                userSuggestions={userSuggestions}
+                                setUser={setUser}
+                                theme={theme}
+                                setTheme={setTheme}
+                                selected={selected}
+                                setSelected={setSelected}
+                                
+                            />
+                        }/>
+                        <Route path="/suggestions" element={
+                            <Suggestions 
+                                user={user} 
+                                client={client} 
+                                checkUser={checkUser} 
+                                which={"new"}
+                                suggestions={suggestions}
+                                getSuggestions={getSuggestions}
+                                suggestionsLikeData={suggestionsLikeData}
+                                setSuggestionsLikeData={setSuggestionsLikeData}
+                                theme={theme}
+                                setTheme={setTheme}
+                            />
+                        }/>
+
+                        <Route path="/announcements" element={
+                            <Announcements 
+                                user={user} 
+                                client={client} 
+                                announcements={announcements}
+                                getAnnouncements={getAnnouncements}
+                                theme={theme}
+                                setTheme={setTheme}
+                            />
+                        }/>
+                        <Route path="/polls" element={
+                            <Polls 
+                                user={user} 
+                                client={client} 
+                                checkUser={checkUser}
+                                polls={polls} 
+                                setPolls={setPolls}
+                                getPolls={getPolls}
+                                theme={theme}
+                                setTheme={setTheme}
+                                
+                            />
+                        }/>
+
+                        <Route path="/rewards" element={
+                            <Rewards 
+                                user={user}
+                                client={client}
+                                rewards={userRewards}
+                                theme={theme}
+                                setTheme={setTheme}
+                                type={"view"}
+                                getAllRewards={getAllRewards}
+                                getUserRewards={getUserRewards}
+                                checkUser={checkUser}
+                            />
+                        }/>
+
+                        <Route path="/shop" element={
+                            <Rewards 
+                                user={user}
+                                client={client}
+                                rewards={allRewards}
+                                theme={theme}
+                                setTheme={setTheme}
+                                type={"shop"}
+                                getAllRewards={getAllRewards}
+                                getUserRewards={getUserRewards}
+                                checkUser={checkUser}
+                            />
+                        }/>
+
+                        <Route path="/search" element={
+                            <Search 
+                                user={user}
+                                client={client}
+                                rewards={allRewards}
+                                theme={theme}
+                                setTheme={setTheme}
+                                setRewardsId={setRewardsId}
+                            />
+                        }/>
+                        <Route path="/activate" element={
+                            <Activate 
+                                user={user}
+                                client={client}
+                            />
+                        }/>
+
+                    </Routes>
+
+                    <Navbar 
                         selected={selected}
                         setSelected={setSelected}
-                        
                     />
-                }/>
-				<Route path="/suggestions" element={
-                    <Suggestions 
-                        user={user} 
-                        client={client} 
-                        checkUser={checkUser} 
-                        which={"new"}
-                        suggestions={suggestions}
-                        getSuggestions={getSuggestions}
-                        suggestionsLikeData={suggestionsLikeData}
-                        setSuggestionsLikeData={setSuggestionsLikeData}
-                        theme={theme}
-                        setTheme={setTheme}
+                    
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={300000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme={document.documentElement.getAttribute('data-theme')}
                     />
-                }/>
+            </>
+        ) : (
+            <Disabled />
 
-				<Route path="/announcements" element={
-                    <Announcements 
-                        user={user} 
-                        client={client} 
-                        announcements={announcements}
-                        getAnnouncements={getAnnouncements}
-                        theme={theme}
-                        setTheme={setTheme}
-                    />
-                }/>
-				<Route path="/polls" element={
-                    <Polls 
-                        user={user} 
-                        client={client} 
-                        checkUser={checkUser}
-                        polls={polls} 
-                        setPolls={setPolls}
-                        getPolls={getPolls}
-                        theme={theme}
-                        setTheme={setTheme}
-                        
-                    />
-                }/>
-
-                <Route path="/rewards" element={
-                    <Rewards 
-                        user={user}
-                        client={client}
-                        rewards={userRewards}
-                        theme={theme}
-                        setTheme={setTheme}
-                        type={"view"}
-                        getAllRewards={getAllRewards}
-                        getUserRewards={getUserRewards}
-                        checkUser={checkUser}
-                    />
-                }/>
-
-                <Route path="/shop" element={
-                    <Rewards 
-                        user={user}
-                        client={client}
-                        rewards={allRewards}
-                        theme={theme}
-                        setTheme={setTheme}
-                        type={"shop"}
-                        getAllRewards={getAllRewards}
-                        getUserRewards={getUserRewards}
-                        checkUser={checkUser}
-                    />
-                }/>
-
-                <Route path="/search" element={
-                    <Search 
-                        user={user}
-                        client={client}
-                        rewards={allRewards}
-                        theme={theme}
-                        setTheme={setTheme}
-                        setRewardsId={setRewardsId}
-                    />
-                }/>
-                <Route path="/activate" element={
-                    <Activate 
-                        user={user}
-                        client={client}
-                    />
-                }/>
-
-			</Routes>
-
-			<Navbar 
-                selected={selected}
-                setSelected={setSelected}
-            />
-            
-            <ToastContainer
-                position="top-right"
-                autoClose={300000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme={document.documentElement.getAttribute('data-theme')}
-            />
+        )}
 		</>
+        
 	);
 }
 

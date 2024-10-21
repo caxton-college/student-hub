@@ -1,6 +1,3 @@
-* {
-    overflow-x: hidden;
-}
 
 
 
@@ -417,7 +414,7 @@ display: flex;
 #create-suggestion-form {
     height: 100%;
     display: grid;
-    
+    overflow-x: hidden;
     place-items: center;
     text-align: left;
 }
@@ -1010,5 +1007,14 @@ option {
     align-items: center;
     justify-content: center;
     place-self: center start;
+
+}
+
+#disabled {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center ;
+    height: 100dvh;
 
 }

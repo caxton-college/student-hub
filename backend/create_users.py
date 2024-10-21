@@ -5,9 +5,12 @@ from email.mime.text import MIMEText
 import environ
 import string
 from random import choice
-from typing import List, Dict
+from typing import Dict
 
 from django.contrib.auth.hashers import make_password
+
+from django.template.loader import render_to_string
+
 
 import pandas as pd
 from tqdm import tqdm
@@ -17,12 +20,12 @@ from users.models import User
 def email_creds() -> None:
     
     env = environ.Env()
-    environ.Env.read_env()
+    environ.Env.read_env(env_file="/backend/.env")
     
     smtp_server = 'smtp.gmail.com'
     smtp_port = 587
-    smtp_username = env("email")
-    smtp_password = env("passkey")
+    smtp_username = env("EMAIL_HOST_USER")
+    smtp_password = env("EMAIL_HOST_PASSWORD")
     
     users = pd.read_csv("users.csv")
     
@@ -41,23 +44,32 @@ def email_creds() -> None:
                 
                 subject = "Welcome to Student Hub!"
                 
-                body = f"""
-                <html>
-                <body>
-                    <p>Hi {name},</p>
-                    <p>We are thrilled to welcome you to Student Hub! 🎉</p>
-                    <p>Your login credentials are as follows:</p>
-                    <ul>
-                    <li><strong>Username:</strong> {recipient}</li>
-                    <li><strong>Password:</strong> {password}</li>
-                    </ul>
-                    <p>You can access the Student Hub platform using the following link: http://studenthub.caxtoncollege.local</p>
-                    <p>We hope it imporves school and allows you to win prizes ;)</p>
-                    <p>Best regards,<br/>Carlos Lorenzo</p>
-                </body>
-                </html>
-                """         
+                # body = f"""
+                # <html>
+                # <body>
+                #     <p>Hi {name},</p>
+                #     <p>We are thrilled to welcome you to Student Hub! 🎉</p>
+                #     <p>Your login credentials are as follows:</p>
+                #     <ul>
+                #     <li><strong>Username:</strong> {recipient}</li>
+                #     <li><strong>Password:</strong> {password}</li>
+                #     </ul>
+                #     <p>You can access the Student Hub platform using the following link: http://studenthub.caxtoncollege.local</p>
+                #     <p>We hope it imporves school and allows you to win prizes ;)</p>
+                #     <p>Best regards,<br/>Carlos Lorenzo</p>
+                # </body>
+                # </html>
+                # """         
 
+                context = {
+                    "name": name,
+                    "recipient": recipient,
+                    "password": password
+                }
+
+                body = render_to_string('email/credentials.html', context)
+                
+                
                 msg = MIMEMultipart()
                 msg["From"] = from_email
                 msg["To"] = recipient
@@ -108,7 +120,7 @@ def create_user(email: str,
     
 
 def populate_db() -> None:
-    df = pd.read_csv("test.csv")
+    df = pd.read_csv("student_data.csv")
     users = pd.DataFrame(columns=["name", "email", "password"])
     
     print("Creating users...")
@@ -133,4 +145,4 @@ def populate_db() -> None:
         
     # using pandas, save the users array of dictionaries as csv
     pd.DataFrame(users).to_csv("users.csv", index=False)
-    df = pd.read_csv("users.csv")
+    #df = pd.read_csv("users.csv")

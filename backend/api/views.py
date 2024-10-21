@@ -303,7 +303,7 @@ class CreateSuggestion(APIView):
             return Response({"message": "You sure you're a student?"}, status=status.HTTP_403_FORBIDDEN)
         
         data = dict(request.data)
-        if not "body" in data.keys() or len(data.get("body")) <= 10:
+        if  "body" not in data.keys() or len(data.get("body")) <= 10:
             return Response({"message": "Try explaining a little more..."}, status=status.HTTP_400_BAD_REQUEST)
         
         suggestion_body = data["body"]
@@ -314,7 +314,7 @@ class CreateSuggestion(APIView):
 
         site_url = settings.DOMAIN_URL 
         email_from: str = settings.EMAIL_HOST_USER
-        email_to: str = ["clorenzozuniga@gmail.com"]
+        email_to: str = ["clorenzozunigamari@caxtoncollege.net"]
         subject = 'Studenthub - New suggestion'
 
         url = f'{site_url}/activate?id={new_suggestion.id}'

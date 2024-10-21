@@ -25,7 +25,7 @@ export default function CreateSuggestion({ client, user, getSuggestions, order, 
             setShowPrompt(false);
             // getSuggestions(true, order);
             setBody("");
-            // checkUser();
+            checkUser();
             toast.update(id, {
                 render: 'Suggestion pending review',
                 type: "success",
@@ -83,7 +83,7 @@ export default function CreateSuggestion({ client, user, getSuggestions, order, 
                             id="body" required 
                             autoComplete="off"
                             placeholder='Share your brilliant idea...'></textarea>
-                            <label htmlFor="body"><span>Suggestion</span></label>
+                            <label htmlFor="body"><span></span></label>
                             <input type="submit" value="Collaborate!"/>
                         </form>
                     </div>

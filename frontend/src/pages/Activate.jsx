@@ -6,6 +6,17 @@ import { toast } from 'react-toastify'
 export default function Activate({ client }) {
     const params = useParams();
 
+    function parseError(error, type) {
+        if (error.response.data.message) {
+            return error.response.data.message
+        }
+        else {
+            return `An error occurred while ${type} the suggestion.`
+
+        }
+        
+    }
+
     function activateSuggestion() {
 
         const id = toast.loading("Activating suggestion");
@@ -33,7 +44,7 @@ export default function Activate({ client }) {
         })
         .catch(error => {
             toast.update(id, {
-                render: error.response.data.message,
+                render: parseError(error, 'activating'),
                 type: "error",
                 position: "top-right",
                 autoClose: 1500,
@@ -74,7 +85,7 @@ export default function Activate({ client }) {
         })
         .catch(error => {
             toast.update(id, {
-                render: error.response.data.message,
+                render: parseError(error, 'rejecting'),
                 type: "error",
                 position: "top-right",
                 autoClose: 1500,
