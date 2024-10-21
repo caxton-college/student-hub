@@ -5,7 +5,7 @@ import environ
 from django.conf import settings
 
 from django.core.mail import send_mail
-
+import smtplib
 from django.contrib.auth.tokens import PasswordResetTokenGenerator  
 from django.http import HttpRequest
 from django.contrib.auth import login, logout, authenticate
@@ -327,8 +327,12 @@ class CreateSuggestion(APIView):
 
         message = render_to_string('email/suggestion_activation_query.html', context)
 
-        send_mail(subject, message, email_from, email_to, html_message=message)        
-        
+
+        try:
+            send_mail(subject, message, email_from, email_to, html_message=message)        
+        except smtplib.SMTPDataError:
+            return Response({"message": "User not in school"}, status=status.HTTP_401_UNAUTHORIZED)
+            
         
         return Response({"message": "Suggestion created"}, status=status.HTTP_200_OK)
         
@@ -410,7 +414,11 @@ class ActivateSuggestion(APIView):
 
                 message = render_to_string('email/suggestion_activated.html', context)
 
-                send_mail(subject, message, email_from, email_to, html_message=message)        
+                try:
+                    send_mail(subject, message, email_from, email_to, html_message=message)        
+                except smtplib.SMTPDataError:
+                    suggestion.delete()
+                    return Response({"message": "User not in school, suggestion deleted"}, status=status.HTTP_401_UNAUTHORIZED)        
                 
                 
                 return Response({"message": "Suggestion activated"}, status=status.HTTP_200_OK)
@@ -458,7 +466,10 @@ class RejectSuggestion(APIView):
 
                 message = render_to_string('email/suggestion_rejected.html', context)
 
-                send_mail(subject, message, email_from, email_to, html_message=message)        
+                try:
+                    send_mail(subject, message, email_from, email_to, html_message=message)        
+                except smtplib.SMTPDataError:
+                    return Response({"message": "User not in school, suggestion deleted"}, status=status.HTTP_401_UNAUTHORIZED)
                 
                 
                 return Response({"message": "Suggestion rejected"}, status=status.HTTP_200_OK)
