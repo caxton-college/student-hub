@@ -21,7 +21,7 @@ axios.defaults.withCredentials = true;
 
       
 const client = axios.create({
-    baseURL: `http://${window.location.hostname}:8000`, // Constructing the baseURL dynamically
+    baseURL: `http://${window.location.hostname}`, // Constructing the baseURL dynamically
 });
 
 // Fetch the CSRF token
