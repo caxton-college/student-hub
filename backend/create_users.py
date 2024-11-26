@@ -13,6 +13,7 @@ from django.template.loader import render_to_string
 
 
 import pandas as pd
+import numpy as np
 from tqdm import tqdm
 
 from users.models import User
@@ -29,6 +30,7 @@ def email_creds() -> None:
     
     users = pd.read_csv("users.csv")
     
+    users = users.loc[users["year"] == 13]
 
     with smtplib.SMTP(smtp_server, smtp_port) as smtp:
         smtp.starttls()
@@ -114,6 +116,7 @@ def create_user(email: str,
     
     return {
         "name": name,
+        "year": year,
         "email": email,
         "password": password
     }
@@ -121,11 +124,12 @@ def create_user(email: str,
 
 def populate_db() -> None:
     df = pd.read_csv("student_data.csv")
-    users = pd.DataFrame(columns=["name", "email", "password"])
+    df['house'] = df['house'].replace(np.nan, 0)
+    users = pd.DataFrame(columns=["name", "year", "email", "password"])
     
     print("Creating users...")
     for i, row in tqdm(df.iterrows()):
-        try:
+        try: 
             new_user = create_user(email=row["email"],
                                   name=row["name"],
                                   surname=row["surname"],

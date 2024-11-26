@@ -1,10 +1,16 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { toast } from 'react-toastify'
 
-export default function Activate({ client }) {
-    const params = useParams();
+export default function Activate({ user, client }) {
+    
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (!user.loggedIn) {
+            navigate('/login');
+        }
+    }, []);
 
     function parseError(error, type) {
         if (error.response.data.message) {

@@ -17,3 +17,6 @@ static
 db.
 
 migrations/
+
+student_data.csv
+users.csv

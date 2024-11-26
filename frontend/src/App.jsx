@@ -255,7 +255,10 @@ function App() {
         getPolls();
         getAllRewards();
 
-        const checkTime = () => {            
+        const checkTime = () => {
+            if (user.role !== 1 && user.role !== 2) {
+                return false;
+            }            
             // Disable P1 and P2: between 9:40 and 11:30            
             if (isTimeWithinRange(9, 40, 11, 35) || isTimeWithinRange(12, 0, 13, 35) || isTimeWithinRange(14, 50, 16, 30)) {
                 setIsAccessible(false);
