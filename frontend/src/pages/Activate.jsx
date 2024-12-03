@@ -7,9 +7,37 @@ export default function Activate({ user, client }) {
     
     const navigate = useNavigate();
     useEffect(() => {
-        if (!user.loggedIn) {
-            navigate('/login');
-        }
+        client.get('/api/user', {
+            headers: {
+                'Authorization': `Token ${localStorage.getItem('token')}`
+            }
+
+        }).then(response => {
+            if (response.data.user.role !== 3 && response.data.user.role !== 4) {
+                toast.warning("Only student council members can activate suggestions", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                navigate('/');
+            }
+        })
+        .catch(error => {
+            toast.error("You must be logged in to do this, log in and try again", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            navigate('/');
+        })
     }, []);
 
     function parseError(error, type) {

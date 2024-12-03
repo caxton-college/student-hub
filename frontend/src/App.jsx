@@ -257,6 +257,7 @@ function App() {
 
         const checkTime = () => {
             if (user.role !== 1 && user.role !== 2) {
+                setIsAccessible(true);
                 return false;
             }            
             // Disable P1 and P2: between 9:40 and 11:30            

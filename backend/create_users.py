@@ -30,7 +30,7 @@ def email_creds() -> None:
     
     users = pd.read_csv("users.csv")
     
-    users = users.loc[users["year"] == 13]
+    users = users.loc[users["year"] != 13]
 
     with smtplib.SMTP(smtp_server, smtp_port) as smtp:
         smtp.starttls()
